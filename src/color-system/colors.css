@@ -1,0 +1,329 @@
+/**
+ * Color Management System
+ * 
+ * Centralized color palette using CSS custom properties (variables).
+ * Inspired by the gradient approach in the alert component.
+ * 
+ * Features:
+ * - Semantic color naming (success, warning, error, info, primary, etc.)
+ * - Gradient backgrounds for each theme
+ * - Light and dark mode support
+ * - Opacity variants for overlays and backgrounds
+ * - Neutral grays for UI elements
+ * - Consistent color usage across the entire codebase
+ * 
+ * Usage:
+ * - Use var(--color-primary) for primary brand color
+ * - Use var(--gradient-success) for success gradient backgrounds
+ * - Use var(--color-success-light) for light success backgrounds
+ * 
+ * @author Austin Steil
+ * @version 1.0.0
+ */
+
+:root {
+    /* ============================================
+       PRIMARY BRAND COLORS
+       ============================================ */
+    --color-primary: #007bff;
+    --color-primary-dark: #0056b3;
+    --color-primary-light: #e7f3ff;
+    --color-primary-rgb: 0, 123, 255; /* For rgba() usage */
+
+    /* ============================================
+       SUCCESS COLORS (Green Theme)
+       ============================================ */
+    --color-success: #10b981;
+    --color-success-dark: #059669;
+    --color-success-darker: #047857;
+    --color-success-darkest: #065f46;    /* High contrast variant: 7.2:1 on white */
+    --color-success-light: #f0fdf4;
+    --color-success-border: #10b981;
+    --color-success-rgb: 16, 185, 129;
+    
+    /* Success Gradients (inspired by alert component) */
+    --gradient-success: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+    --gradient-success-solid: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    --gradient-success-subtle: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+
+    /* ============================================
+       WARNING COLORS (Yellow/Orange Theme)
+       ============================================ */
+    --color-warning: #f59e0b;
+    --color-warning-dark: #d97706;
+    --color-warning-darker: #b45309;
+    --color-warning-darkest: #92400e;    /* High contrast variant: 7.1:1 on white */
+    --color-warning-light: #fffbeb;
+    --color-warning-border: #f59e0b;
+    --color-warning-rgb: 245, 158, 11;
+    
+    /* Warning Gradients */
+    --gradient-warning: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%);
+    --gradient-warning-solid: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    --gradient-warning-subtle: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+
+    /* ============================================
+       ERROR/DANGER COLORS (Red Theme)
+       ============================================ */
+    --color-error: #ef4444;
+    --color-error-dark: #dc2626;
+    --color-error-darker: #b91c1c;
+    --color-error-darkest: #991b1b;      /* High contrast variant: 8.1:1 on white */
+    --color-error-light: #fef2f2;
+    --color-error-border: #ef4444;
+    --color-error-rgb: 239, 68, 68;
+    
+    /* Error Gradients */
+    --gradient-error: linear-gradient(135deg, #fef2f2 0%, #ffffff 100%);
+    --gradient-error-solid: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    --gradient-error-subtle: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+
+    /* ============================================
+       INFO COLORS (Blue Theme)
+       ============================================ */
+    --color-info: #3b82f6;
+    --color-info-dark: #2563eb;
+    --color-info-darker: #1d4ed8;
+    --color-info-darkest: #1e40af;       /* High contrast variant: 7.5:1 on white */
+    --color-info-light: #eff6ff;
+    --color-info-border: #3b82f6;
+    --color-info-rgb: 59, 130, 246;
+    
+    /* Info Gradients */
+    --gradient-info: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);
+    --gradient-info-solid: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    --gradient-info-subtle: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+
+    /* ============================================
+       SECONDARY/NEUTRAL COLORS (Gray Theme)
+       ============================================ */
+    --color-secondary: #6c757d;
+    --color-secondary-dark: #545b62;
+    --color-secondary-darker: #3d4349;
+    --color-secondary-light: #f8f9fa;
+    --color-secondary-rgb: 108, 117, 125;
+    
+    /* Secondary Gradients */
+    --gradient-secondary: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    --gradient-secondary-solid: linear-gradient(135deg, #6c757d 0%, #545b62 100%);
+
+    /* ============================================
+       NEUTRAL GRAYS (UI Elements)
+       ============================================ */
+    --color-gray-50: #f9fafb;
+    --color-gray-100: #f3f4f6;
+    --color-gray-200: #e5e7eb;
+    --color-gray-300: #d1d5db;
+    --color-gray-400: #9ca3af;
+    --color-gray-500: #6b7280;
+    --color-gray-600: #4b5563;
+    --color-gray-700: #374151;
+    --color-gray-800: #1f2937;
+    --color-gray-900: #111827;
+
+    /* ============================================
+       TEXT COLORS
+       ============================================ */
+    --color-text-primary: #1a1a1a;        /* Improved contrast: 16.1:1 on white */
+    --color-text-secondary: #4a4a4a;      /* Improved contrast: 9.7:1 on white */
+    --color-text-tertiary: #737373;       /* Improved contrast: 4.7:1 on white (AA compliant) */
+    --color-text-light: #f3f4f6;
+    --color-text-white: #ffffff;
+
+    /* ============================================
+       BACKGROUND COLORS
+       ============================================ */
+    --color-bg-primary: #ffffff;
+    --color-bg-secondary: #f5f5f5;
+    --color-bg-tertiary: #f8f9fa;
+    --color-bg-dark: #1f2937;
+
+    /* ============================================
+       BORDER COLORS
+       ============================================ */
+    --color-border-light: #e0e0e0;
+    --color-border-medium: #ddd;
+    --color-border-dark: #dee2e6;
+    --color-border-darker: #c3c3c3;
+
+    /* ============================================
+       SHADOW COLORS (with opacity)
+       ============================================ */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+    --shadow-lg: 0 4px 20px rgba(0, 0, 0, 0.25);
+    --shadow-xl: 0 8px 30px rgba(0, 0, 0, 0.3);
+
+    /* ============================================
+       OPACITY VARIANTS (for overlays)
+       ============================================ */
+    --opacity-10: 0.1;
+    --opacity-20: 0.2;
+    --opacity-30: 0.3;
+    --opacity-40: 0.4;
+    --opacity-50: 0.5;
+    --opacity-60: 0.6;
+    --opacity-70: 0.7;
+    --opacity-80: 0.8;
+    --opacity-90: 0.9;
+
+    /* ============================================
+       SPACING (bonus - for consistency)
+       ============================================ */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 12px;
+    --spacing-lg: 16px;
+    --spacing-xl: 20px;
+    --spacing-2xl: 24px;
+    --spacing-3xl: 32px;
+
+    /* ============================================
+       BORDER RADIUS (bonus - for consistency)
+       ============================================ */
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 8px;
+    --radius-xl: 12px;
+    --radius-full: 9999px;
+
+    /* ============================================
+       TRANSITIONS (bonus - for consistency)
+       ============================================ */
+    --transition-fast: 0.15s ease;
+    --transition-base: 0.2s ease;
+    --transition-slow: 0.3s ease;
+    --transition-cubic: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================
+   DARK MODE SUPPORT
+   Manual dark mode via .dark-mode class on <html> or <body>
+   Also supports system preference as fallback
+   ============================================ */
+.dark-mode,
+@media (prefers-color-scheme: dark) {
+    :root:not(.light-mode) {
+        /* Primary colors adjusted for dark mode */
+        --color-primary: #3b82f6;
+        --color-primary-dark: #2563eb;
+        --color-primary-light: #1e3a8a;
+
+        /* Success colors for dark mode */
+        --color-success: #10b981;
+        --color-success-light: #064e3b;
+        --gradient-success: linear-gradient(135deg, #064e3b 0%, #1f2937 100%);
+
+        /* Warning colors for dark mode */
+        --color-warning: #f59e0b;
+        --color-warning-light: #78350f;
+        --gradient-warning: linear-gradient(135deg, #78350f 0%, #1f2937 100%);
+
+        /* Error colors for dark mode */
+        --color-error: #ef4444;
+        --color-error-light: #7f1d1d;
+        --gradient-error: linear-gradient(135deg, #7f1d1d 0%, #1f2937 100%);
+
+        /* Info colors for dark mode */
+        --color-info: #3b82f6;
+        --color-info-light: #1e3a8a;
+        --gradient-info: linear-gradient(135deg, #1e3a8a 0%, #1f2937 100%);
+
+        /* Text colors for dark mode */
+        --color-text-primary: #f9fafb;        /* Improved contrast: 15.5:1 on #1f2937 */
+        --color-text-secondary: #d1d5db;      /* Improved contrast: 9.2:1 on #1f2937 */
+        --color-text-tertiary: #9ca3af;       /* Improved contrast: 5.1:1 on #1f2937 (AA compliant) */
+
+        /* Background colors for dark mode */
+        --color-bg-primary: #1f2937;
+        --color-bg-secondary: #111827;
+        --color-bg-tertiary: #374151;
+
+        /* Border colors for dark mode */
+        --color-border-light: #374151;
+        --color-border-medium: #4b5563;
+        --color-border-dark: #6b7280;
+
+        /* Shadows for dark mode */
+        --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+        --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+        --shadow-lg: 0 4px 20px rgba(0, 0, 0, 0.5);
+        --shadow-xl: 0 8px 30px rgba(0, 0, 0, 0.6);
+    }
+}
+
+/* Dark mode when .dark-mode class is applied */
+.dark-mode {
+    /* Primary colors adjusted for dark mode */
+    --color-primary: #3b82f6;
+    --color-primary-dark: #2563eb;
+    --color-primary-light: #1e3a8a;
+
+    /* Success colors for dark mode */
+    --color-success: #10b981;
+    --color-success-light: #064e3b;
+    --gradient-success: linear-gradient(135deg, #064e3b 0%, #1f2937 100%);
+
+    /* Warning colors for dark mode */
+    --color-warning: #f59e0b;
+    --color-warning-light: #78350f;
+    --gradient-warning: linear-gradient(135deg, #78350f 0%, #1f2937 100%);
+
+    /* Error colors for dark mode */
+    --color-error: #ef4444;
+    --color-error-light: #7f1d1d;
+    --gradient-error: linear-gradient(135deg, #7f1d1d 0%, #1f2937 100%);
+
+    /* Info colors for dark mode */
+    --color-info: #3b82f6;
+    --color-info-light: #1e3a8a;
+    --gradient-info: linear-gradient(135deg, #1e3a8a 0%, #1f2937 100%);
+
+    /* Text colors for dark mode */
+    --color-text-primary: #f9fafb;        /* Improved contrast: 15.5:1 on #1f2937 */
+    --color-text-secondary: #d1d5db;      /* Improved contrast: 9.2:1 on #1f2937 */
+    --color-text-tertiary: #9ca3af;       /* Improved contrast: 5.1:1 on #1f2937 (AA compliant) */
+
+    /* Background colors for dark mode */
+    --color-bg-primary: #1f2937;
+    --color-bg-secondary: #111827;
+    --color-bg-tertiary: #374151;
+
+    /* Border colors for dark mode */
+    --color-border-light: #374151;
+    --color-border-medium: #4b5563;
+    --color-border-dark: #6b7280;
+
+    /* Shadows for dark mode */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 4px 20px rgba(0, 0, 0, 0.5);
+    --shadow-xl: 0 8px 30px rgba(0, 0, 0, 0.6);
+}
+
+/* ============================================
+   UTILITY CLASSES (optional helpers)
+   ============================================ */
+
+/* Background utilities */
+.bg-success { background: var(--gradient-success); }
+.bg-warning { background: var(--gradient-warning); }
+.bg-error { background: var(--gradient-error); }
+.bg-info { background: var(--gradient-info); }
+.bg-secondary { background: var(--gradient-secondary); }
+
+/* Text color utilities */
+.text-success { color: var(--color-success); }
+.text-warning { color: var(--color-warning); }
+.text-error { color: var(--color-error); }
+.text-info { color: var(--color-info); }
+.text-primary { color: var(--color-primary); }
+.text-secondary { color: var(--color-text-secondary); }
+
+/* Border utilities */
+.border-success { border-color: var(--color-success-border); }
+.border-warning { border-color: var(--color-warning-border); }
+.border-error { border-color: var(--color-error-border); }
+.border-info { border-color: var(--color-info-border); }
+.border-primary { border-color: var(--color-primary); }
+

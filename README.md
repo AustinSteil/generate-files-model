@@ -12,6 +12,8 @@ Live demo: <https://austinsteil.github.io/generate-files-model/>
 - 💾 Automatic document download
 - 🔧 Configurable template variables via JSON
 - 💾 **Save for Later** - Securely store your form data for future use
+- 🎨 **Color System** - Centralized color management for consistent UI
+- 🌙 **Dark Mode** - Toggleable dark mode for improved readability
 
 ### Save for Later Security
 
@@ -20,9 +22,42 @@ The Save for Later feature uses industry-standard security practices to protect 
 - **🔐 Client-Side Encryption**: All data is encrypted using AES-256-GCM encryption before being stored
 - **🔑 Passphrase Protection**: Your data is protected by a user-defined passphrase that never leaves your device
 - **🍪 Encrypted Cookies**: Data is stored in encrypted browser cookies, not on external servers
-- **⏰ Automatic Expiration**: Saved data automatically expires after a configurable time period
+- **⏰ Automatic Expiration**: Saved data automatically expires after a configurable time period (default: 30 days)
 - **🔒 Zero-Knowledge Architecture**: The application cannot access your data without your passphrase
 - **🚫 No Server Storage**: All encryption and storage happens locally in your browser
+
+**How it works:**
+
+1. Enter your form data and click "Save Data for Later"
+2. Create a secure passphrase (never stored anywhere)
+3. Data is encrypted using AES-256-GCM and saved as a browser cookie
+4. To retrieve: Click "Load Saved Data" and enter your passphrase
+5. The data is decrypted client-side and restored to the form
+
+### Color System
+
+The color system provides a centralized, consistent approach to colors across the entire application:
+
+- **Semantic color naming** - Use meaningful names like `success`, `warning`, `error` instead of arbitrary color values
+- **Beautiful gradients** - Smooth gradient backgrounds for alerts and UI elements
+- **Light/dark mode support** - All colors automatically adjust for dark mode with proper contrast ratios
+- **Opacity variants** - Pre-defined opacity levels for overlays and backgrounds
+- **Consistent spacing & transitions** - Standardized spacing and animation timing
+
+The color system ensures visual consistency across all components and makes it easy to maintain a cohesive design. For detailed documentation, see [`src/color-system/COLOR-SYSTEM.md`](src/color-system/COLOR-SYSTEM.md).
+
+### Dark Mode
+
+The dark mode feature provides an enhanced viewing experience in low-light environments:
+
+- **🌙 System preference detection** - Automatically detects your OS dark mode setting on first visit
+- **💾 Persistent preference** - Your choice is saved to localStorage and remembered across sessions
+- **🎨 Seamless integration** - Works with the color system to ensure proper contrast and readability
+- **🎯 Floating toggle** - Convenient toggle button in the bottom-right corner
+- **📱 Responsive design** - Adapts to mobile screens with a compact layout
+- **♿ Accessible** - Keyboard accessible and respects `prefers-reduced-motion`
+
+The toggle button shows the current mode and allows instant switching between light and dark themes. All UI components automatically adapt their colors when dark mode is enabled.
 
 ## Prerequisites
 
@@ -84,6 +119,58 @@ The Save for Later feature uses industry-standard security practices to protect 
    - **Update**: Modify your data and click "Update Saved Data"
    - **Clear**: Select "Clear all Saved Data" to permanently delete stored information
 
+## Demos & Examples
+
+The project includes interactive demo pages for testing and showcasing components:
+
+- **[Color System Demo](src/color-system/color-system-demo.html)** - Interactive showcase of the entire color palette with light/dark mode
+- **[Contrast Test Tool](src/color-system/contrast-test.html)** - Accessibility testing tool for color contrast ratios
+- **[Alert Component Demo](src/components/alert/alert-example.html)** - Examples of alert notifications with different colors and configurations
+- **[Tooltip Component Demo](src/components/tooltip/tooltip-example.html)** - Interactive tooltip examples with different positions
+
+These demo files can be opened directly in your browser or served through a local web server.
+
+## Components
+
+The application includes several reusable UI components:
+
+### Alert Component
+
+Floating alert notifications with color-coded messages:
+
+- **Multiple alerts** - Stack multiple alerts vertically with tight spacing
+- **Color coding** - Red (error), yellow (warning), green (success)
+- **Auto-dismiss** - Configurable auto-dismiss timing
+- **Manual dismiss** - Optional X button for user dismissal
+- **Beautiful gradients** - Smooth gradient backgrounds for visual appeal
+
+### Tooltip Component
+
+Contextual help text on hover:
+
+- **Configurable position** - Left, right, top, or bottom placement
+- **Simple API** - Just position and text content
+- **Consistent styling** - Matches the application's design system
+- **Accessible** - Works with keyboard navigation
+
+### Dropdown Component
+
+State-aware dropdown menus:
+
+- **Single button mode** - Shows one button when no data exists
+- **Dropdown mode** - Expands to show multiple options when data is loaded
+- **Split-button behavior** - Main area triggers default action, arrow opens menu
+- **Intuitive labels** - Button text matches actual functionality
+
+### Toggle Component
+
+Customizable toggle switches:
+
+- **Icon support** - Optional icons for on/off states
+- **Callback support** - onChange event handler
+- **Accessible** - Keyboard and screen reader friendly
+- **Smooth animations** - Beautiful transitions
+
 ## Configuration
 
 ### Template Variables
@@ -118,14 +205,34 @@ generate-files-model/
 ├── docxtemplater.js        # Generated: Document templating library
 ├── pizzip.js               # Generated: ZIP file handling library
 └── src/                    # Source code organization
+    ├── color-system/       # Centralized color management
+    │   ├── colors.css              # Color variables and dark mode
+    │   ├── COLOR-SYSTEM.md         # Color system documentation
+    │   ├── COLOR-QUICK-REFERENCE.md # Quick reference guide
+    │   ├── CONTRAST-AUDIT.md       # Accessibility audit
+    │   ├── color-system-demo.html  # Interactive demo
+    │   └── contrast-test.html      # Contrast testing tool
     ├── components/         # Reusable UI components
+    │   ├── alert/          # Alert notification component
+    │   │   ├── alert.js            # Alert functionality
+    │   │   ├── alert.css           # Alert styling with gradients
+    │   │   ├── alert-example.html  # Alert demo page
+    │   │   └── README.md           # Alert documentation
     │   ├── tooltip/        # Tooltip component
     │   │   ├── tooltip.js          # Tooltip functionality
     │   │   ├── tooltip.css         # Tooltip styling
     │   │   └── tooltip-example.html # Tooltip demo page
-    │   └── dropdown/       # Dropdown component
-    │       ├── dropdown.js         # Dropdown functionality
-    │       └── dropdown.css        # Dropdown styling
+    │   ├── dropdown/       # Dropdown component
+    │   │   ├── dropdown.js         # Dropdown functionality
+    │   │   └── dropdown.css        # Dropdown styling
+    │   └── toggle/         # Toggle switch component
+    │       ├── toggle.js           # Toggle functionality
+    │       ├── toggle.css          # Toggle styling
+    │       └── README.md           # Toggle documentation
+    ├── dark-mode-toggle/   # Dark mode feature (non-reusable)
+    │   ├── dark-mode-toggle.js     # Dark mode logic
+    │   ├── dark-mode-toggle.css    # Dark mode toggle styling
+    │   └── README.md               # Dark mode documentation
     └── save-data/          # Storage and data management
         ├── secure-storage.js       # Encrypted storage foundation
         ├── phrase-modal.js         # Passphrase modal for security
@@ -140,6 +247,54 @@ generate-files-model/
 - **pizzip** (^3.2.0): ZIP file handling for DOCX processing
 
 > **Note:** The bundled JS files (`docxtemplater.js`, `pizzip.js`) are generated from npm packages during setup and should not be committed to version control.
+
+## Development
+
+### NPM Scripts
+
+- `npm install` - Install dependencies
+- `npm run setup` - Copy required libraries from node_modules to project root
+- `npm run clean` - Remove generated library files
+
+### Adding New Components
+
+1. Create a new directory in `src/components/` for reusable components
+2. Include `.js`, `.css`, and `README.md` files
+3. Use the color system variables for consistent styling
+4. Add component references to `index.html`
+5. Document the component's API and usage
+
+### Code Organization
+
+- **Reusable components** → `src/components/` (alert, tooltip, dropdown, toggle)
+- **Application-specific features** → `src/` (dark-mode-toggle, save-data)
+- **Shared utilities** → `src/color-system/`
+
+## Browser Support
+
+This application works in all modern browsers that support:
+
+- **ES6 JavaScript** (classes, arrow functions, template literals)
+- **CSS Custom Properties** (CSS variables)
+- **Web Crypto API** (for AES-256-GCM encryption)
+- **localStorage** (for dark mode preference)
+- **matchMedia API** (for system preference detection)
+
+**Tested browsers:**
+
+- Chrome/Edge 90+
+- Firefox 88+
+- Safari 14+
+
+## Accessibility
+
+The application follows web accessibility best practices:
+
+- ✅ **Keyboard navigation** - All interactive elements are keyboard accessible
+- ✅ **Screen reader support** - Semantic HTML and ARIA labels where appropriate
+- ✅ **Color contrast** - WCAG AA compliant contrast ratios (see `src/color-system/CONTRAST-AUDIT.md`)
+- ✅ **Reduced motion** - Respects `prefers-reduced-motion` for animations
+- ✅ **Focus indicators** - Clear visual focus states for keyboard navigation
 
 ## License
 

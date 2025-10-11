@@ -6,10 +6,16 @@
     <title>Document Generator</title>
     <meta name="description" content="Generate word documents using docxtemplater and PizZip">
     <meta name="author" content="Austin Steil">
+    <!-- Color Management System - Must be loaded first -->
+    <link rel="stylesheet" href="src/color-system/colors.css">
+    <!-- Application Styles -->
     <link rel="stylesheet" href="main.css">
+    <!-- Component Styles -->
     <link rel="stylesheet" href="src/components/tooltip/tooltip.css">
     <link rel="stylesheet" href="src/components/dropdown/dropdown.css">
     <link rel="stylesheet" href="src/components/alert/alert.css">
+    <link rel="stylesheet" href="src/components/toggle/toggle.css">
+    <link rel="stylesheet" href="src/dark-mode-toggle/dark-mode-toggle.css">
 </head>
 <body>
     <div class="container">
@@ -95,6 +101,11 @@
             console.log('Page loaded. PizZip:', typeof window.PizZip, 'docxtemplater:', typeof window.docxtemplater);
         });
     </script>
+
+    <!-- Component Scripts -->
+    <script src="src/components/toggle/toggle.js"></script>
+    <script src="src/dark-mode-toggle/dark-mode-toggle.js"></script>
+
     <!-- Main application logic -->
     <script src="main.js"></script>
 

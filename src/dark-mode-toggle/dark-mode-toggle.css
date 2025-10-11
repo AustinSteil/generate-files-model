@@ -1,0 +1,106 @@
+/**
+ * Dark Mode Toggle Component Styles
+ *
+ * Floating dark mode toggle button with:
+ * - Fixed positioning in bottom right corner
+ * - Smooth animations
+ * - Responsive design
+ * - Clean, modern styling
+ *
+ * NOTE: This component uses the centralized color management system from src/color-system/colors.css
+ * All colors are referenced using CSS custom properties (variables) for consistency.
+ *
+ * @author Austin Steil
+ * @version 1.0.0
+ */
+
+/* Floating Dark Mode Toggle Container */
+.floating-dark-mode-toggle {
+    position: fixed;
+    bottom: var(--spacing-xl);
+    right: var(--spacing-xl);
+    z-index: 1000;
+    animation: floatInBottom var(--transition-slow) ease-out;
+}
+
+@keyframes floatInBottom {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Dark Mode Toggle Button */
+.dark-mode-toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: 10px var(--spacing-lg);
+    background: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    border: 2px solid var(--color-border-light);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all var(--transition-slow);
+    box-shadow: var(--shadow-md);
+    white-space: nowrap;
+}
+
+.dark-mode-toggle-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--color-primary);
+}
+
+/* Dark Mode Toggle Icon */
+.dark-mode-icon {
+    font-size: 18px;
+    line-height: 1;
+}
+
+/* Dark Mode Toggle Text */
+.dark-mode-text {
+    font-size: 14px;
+}
+
+/* Responsive - Hide text on mobile */
+@media (max-width: 768px) {
+    .floating-dark-mode-toggle {
+        bottom: 10px;
+        right: 10px;
+    }
+
+    .dark-mode-toggle-btn {
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+
+    .dark-mode-text {
+        display: none;
+    }
+
+    .dark-mode-icon {
+        font-size: 20px;
+    }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    .floating-dark-mode-toggle {
+        animation: none;
+    }
+
+    .dark-mode-toggle-btn {
+        transition: none;
+    }
+
+    .dark-mode-toggle-btn:hover {
+        transform: none;
+    }
+}
+

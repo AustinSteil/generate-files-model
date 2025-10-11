@@ -7,19 +7,24 @@
  * - Responsive design for mobile and desktop
  * - Stacking support for multiple alerts
  * - Clean, modern design with shadows and rounded corners
+ *
+ * NOTE: This component uses the centralized color management system from src/color-system/colors.css
+ * All colors are referenced using CSS custom properties (variables) for consistency.
+ *
+ * @version 2.0.0
  */
 
 /* Alert Container - Fixed positioning at top of page */
 .alert-container {
     position: fixed;
-    top: 20px;
+    top: var(--spacing-xl);
     left: 50%;
     transform: translateX(-50%);
     z-index: 10000;
     pointer-events: none; /* Allow clicks to pass through container */
     width: 100%;
     max-width: 500px;
-    padding: 0 20px;
+    padding: 0 var(--spacing-xl);
     box-sizing: border-box;
     /* Container needs to be relative for absolute positioned children */
     /* Height will grow automatically as alerts are positioned */
@@ -28,14 +33,14 @@
 /* Individual Alert Styling */
 .alert {
     position: absolute;
-    background: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    background: var(--color-bg-primary);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
     margin-bottom: 0; /* Remove margin since we're using absolute positioning */
     pointer-events: auto; /* Re-enable clicks for alerts */
     transform: translateY(-100px);
     opacity: 0;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all var(--transition-cubic);
     border-left: 4px solid;
     max-width: 100%;
     width: 100%; /* Ensure full width within container */
@@ -62,7 +67,7 @@
 .alert-content {
     display: flex;
     align-items: center;
-    padding: 12px 16px;
+    padding: var(--spacing-md) var(--spacing-lg);
     gap: 10px;
     min-height: 20px;
 }
@@ -81,7 +86,7 @@
     flex: 1;
     font-size: 14px;
     line-height: 1.4;
-    color: #333333;
+    color: var(--color-text-primary);
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
@@ -91,7 +96,7 @@
     border: none;
     font-size: 20px;
     line-height: 1;
-    color: #666666;
+    color: var(--color-text-secondary);
     cursor: pointer;
     padding: 0;
     width: 24px;
@@ -99,14 +104,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
     flex-shrink: 0;
-    transition: all 0.2s ease;
+    transition: all var(--transition-base);
 }
 
 .alert-close:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-    color: #333333;
+    background-color: rgba(0, 0, 0, var(--opacity-10));
+    color: var(--color-text-primary);
 }
 
 .alert-close:active {
@@ -115,44 +120,107 @@
 
 /* Success Alert - Green Theme */
 .alert-success {
-    border-left-color: #10b981;
-    background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+    border-left-color: var(--color-success-border);
+    background: var(--gradient-success);
 }
 
 .alert-success .alert-icon {
-    color: #10b981;
+    color: var(--color-success-dark);  /* Darker variant for better contrast on light gradient */
+}
+
+.alert-success .alert-message {
+    color: var(--color-text-primary);  /* Ensure dark text on light background */
 }
 
 .alert-success .alert-close:hover {
-    background-color: rgba(16, 185, 129, 0.1);
+    background-color: rgba(var(--color-success-rgb), var(--opacity-10));
 }
 
 /* Warning Alert - Yellow Theme */
 .alert-warning {
-    border-left-color: #f59e0b;
-    background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%);
+    border-left-color: var(--color-warning-border);
+    background: var(--gradient-warning);
 }
 
 .alert-warning .alert-icon {
-    color: #f59e0b;
+    color: var(--color-warning-darker);  /* Much darker variant for better contrast */
+}
+
+.alert-warning .alert-message {
+    color: var(--color-text-primary);  /* Ensure dark text on light background */
 }
 
 .alert-warning .alert-close:hover {
-    background-color: rgba(245, 158, 11, 0.1);
+    background-color: rgba(var(--color-warning-rgb), var(--opacity-10));
 }
 
 /* Error Alert - Red Theme */
 .alert-error {
-    border-left-color: #ef4444;
-    background: linear-gradient(135deg, #fef2f2 0%, #ffffff 100%);
+    border-left-color: var(--color-error-border);
+    background: var(--gradient-error);
 }
 
 .alert-error .alert-icon {
-    color: #ef4444;
+    color: var(--color-error-dark);  /* Darker variant for better contrast on light gradient */
+}
+
+.alert-error .alert-message {
+    color: var(--color-text-primary);  /* Ensure dark text on light background */
 }
 
 .alert-error .alert-close:hover {
-    background-color: rgba(239, 68, 68, 0.1);
+    background-color: rgba(var(--color-error-rgb), var(--opacity-10));
+}
+
+/* Info Alert - Blue Theme */
+.alert-info {
+    border-left-color: var(--color-info-border);
+    background: var(--gradient-info);
+}
+
+.alert-info .alert-icon {
+    color: var(--color-info-dark);  /* Darker variant for better contrast on light gradient */
+}
+
+.alert-info .alert-message {
+    color: var(--color-text-primary);  /* Ensure dark text on light background */
+}
+
+.alert-info .alert-close:hover {
+    background-color: rgba(var(--color-info-rgb), var(--opacity-10));
+}
+
+/* Dark Mode Adjustments for Alerts */
+.dark-mode .alert-success .alert-icon {
+    color: var(--color-success);  /* Brighter in dark mode for visibility */
+}
+
+.dark-mode .alert-success .alert-message {
+    color: var(--color-text-primary);  /* Light text in dark mode */
+}
+
+.dark-mode .alert-warning .alert-icon {
+    color: var(--color-warning);  /* Brighter in dark mode */
+}
+
+.dark-mode .alert-warning .alert-message {
+    color: var(--color-text-primary);  /* Light text in dark mode */
+}
+
+.dark-mode .alert-error .alert-icon {
+    color: var(--color-error);  /* Brighter in dark mode */
+}
+
+.dark-mode .alert-error .alert-message {
+    color: var(--color-text-primary);  /* Light text in dark mode */
+}
+
+.dark-mode .alert-info .alert-icon {
+    color: var(--color-info);  /* Brighter in dark mode */
+}
+
+.dark-mode .alert-info .alert-message {
+    color: var(--color-text-primary);  /* Light text in dark mode */
 }
 
 /* Responsive Design */
@@ -215,26 +283,26 @@
     }
 
     .alert-success {
-        border-color: #10b981;
+        border-color: var(--color-success);
     }
 
     .alert-warning {
-        border-color: #f59e0b;
+        border-color: var(--color-warning);
     }
 
     .alert-error {
-        border-color: #ef4444;
+        border-color: var(--color-error);
     }
 
     .alert-close {
-        border: 1px solid #666666;
+        border: 1px solid var(--color-text-secondary);
     }
 }
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
     .alert {
-        transition: opacity 0.2s ease;
+        transition: opacity var(--transition-base);
     }
 
     .alert.alert-show {
@@ -246,42 +314,42 @@
     }
 }
 
-/* Dark mode support */
+/* Dark mode support - Note: Colors auto-adjust via color system */
 @media (prefers-color-scheme: dark) {
     .alert {
-        background: #1f2937;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        background: var(--color-bg-dark);
+        box-shadow: var(--shadow-xl);
     }
 
     .alert-message {
-        color: #f3f4f6;
+        color: var(--color-text-light);
     }
 
     .alert-close {
-        color: #9ca3af;
+        color: var(--color-gray-400);
     }
 
     .alert-close:hover {
-        background-color: rgba(255, 255, 255, 0.1);
-        color: #f3f4f6;
+        background-color: rgba(255, 255, 255, var(--opacity-10));
+        color: var(--color-text-light);
     }
 
     .alert-success {
-        background: linear-gradient(135deg, #064e3b 0%, #1f2937 100%);
+        background: var(--gradient-success);
     }
 
     .alert-warning {
-        background: linear-gradient(135deg, #78350f 0%, #1f2937 100%);
+        background: var(--gradient-warning);
     }
 
     .alert-error {
-        background: linear-gradient(135deg, #7f1d1d 0%, #1f2937 100%);
+        background: var(--gradient-error);
     }
 }
 
 /* Focus styles for accessibility */
 .alert-close:focus {
-    outline: 2px solid #3b82f6;
+    outline: 2px solid var(--color-info);
     outline-offset: 2px;
 }
 
