@@ -1,0 +1,31 @@
+{
+  "name": "generate-files-model",
+  "version": "1.0.0",
+  "description": "A web-based document generation tool using docxtemplater and pizzip for creating Word documents from templates",
+  "main": "index.html",
+  "author": "Austin Steil",
+  "license": "MIT",
+  "keywords": [
+    "document-generation",
+    "docx",
+    "template",
+    "word-documents",
+    "docxtemplater",
+    "pizzip"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/austinsteil/generate-files-model.git"
+  },
+  "scripts": {
+    "setup": "copy node_modules\\docxtemplater\\build\\docxtemplater.js . && copy node_modules\\pizzip\\dist\\pizzip.js .",
+    "start": "echo \"Open index.html with Live Server extension in VS Code\" && echo \"Or serve the files using any local web server\""
+  },
+  "dependencies": {
+    "docxtemplater": "^3.66.7",
+    "pizzip": "^3.2.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
