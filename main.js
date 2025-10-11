@@ -172,52 +172,25 @@ class DocumentGenerator {
 
     async generateDocument() {
         if (!this.validateForm()) {
-            this.showAlert('Please fill in all required fields', 'error');
+            showError('Please fill in all required fields');
             return;
         }
 
         this.collectFormData();
 
-        const outputSection = document.getElementById('outputSection');
-        const outputContent = document.getElementById('outputContent');
-
-        // Show output section with loading state
-        outputSection.style.display = 'block';
-        outputContent.innerHTML = `
-            <div class="loading"></div>
-            <p>Generating your document...</p>
-            <div class="download-area" id="downloadArea" style="display: none;">
-            </div>
-        `;
-
-        // Scroll to output section
-        outputSection.scrollIntoView({ behavior: 'smooth' });
-
         try {
             // Generate document using docxtemplater
             const generatedDoc = await this.generateDocumentWithTemplate();
 
-            // Show success message and download link first
-            outputContent.innerHTML = `
-                <div class="alert alert-success">
-                    <strong>Success!</strong> Your document has been generated successfully.
-                </div>
-                <div class="download-area" id="downloadArea" style="display: block;">
-                </div>
-            `;
-
-            // Create download link for the generated document
+            // Trigger download directly
             this.createDownloadLinkForDoc(generatedDoc);
+
+            // Show success message
+            showSuccess('Document generated and download started successfully!');
 
         } catch (error) {
             console.error('Document generation failed:', error);
-            outputContent.innerHTML = `
-                <div class="alert alert-error">
-                    <strong>Error!</strong> Failed to generate document: ${error.message}
-                </div>
-                <div class="download-area" id="downloadArea" style="display: none;">
-                </div>
-            `;
+            showError(`Failed to generate document: ${error.message}`);
         }
     }
 
@@ -293,13 +266,6 @@ class DocumentGenerator {
     }
 
     createDownloadLinkForDoc(documentBuffer) {
-        const downloadArea = document.getElementById('downloadArea');
-
-        if (!downloadArea) {
-            console.error('Download area element not found');
-            throw new Error('Download area element not found');
-        }
-
         // Create blob from the generated document buffer
         const blob = new Blob([documentBuffer], {
             type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
@@ -310,46 +276,24 @@ class DocumentGenerator {
         const downloadLink = document.createElement('a');
         downloadLink.href = url;
         downloadLink.download = `${this.formData.documentTitle || 'document'}.docx`;
-        downloadLink.textContent = 'Download Generated Document (.docx)';
-        downloadLink.className = 'btn btn-success';
-        downloadLink.id = 'downloadLink';
+        downloadLink.style.display = 'none'; // Hide the link since we're auto-clicking it
 
-        // Clear the download area and add the new link
-        downloadArea.innerHTML = '';
-        downloadArea.appendChild(downloadLink);
+        // Add to document temporarily for download
+        document.body.appendChild(downloadLink);
 
-        // Clean up the URL when the link is clicked
-        downloadLink.addEventListener('click', () => {
-            setTimeout(() => URL.revokeObjectURL(url), 100);
-        });
-
-        // Also trigger automatic download
+        // Trigger automatic download
         downloadLink.click();
-    }
 
-
-
-    showAlert(message, type = 'info') {
-        // Remove existing alerts
-        const existingAlerts = document.querySelectorAll('.alert');
-        existingAlerts.forEach(alert => alert.remove());
-
-        // Create new alert
-        const alert = document.createElement('div');
-        alert.className = `alert alert-${type}`;
-        alert.textContent = message;
-
-        // Insert at the top of the form section
-        const formSection = document.querySelector('.form-section');
-        formSection.insertBefore(alert, formSection.firstChild);
-
-        // Auto-remove after 5 seconds
+        // Clean up
         setTimeout(() => {
-            if (alert.parentNode) {
-                alert.remove();
-            }
-        }, 5000);
+            URL.revokeObjectURL(url);
+            document.body.removeChild(downloadLink);
+        }, 100);
     }
+
+
+
+    // Removed old showAlert method - now using global alert component
 
     /**
      * Handle saving form data securely
@@ -359,7 +303,7 @@ class DocumentGenerator {
         if (this.storageDataManager) {
             return await this.storageDataManager.handleSaveData(isUpdate);
         } else {
-            this.showAlert('Storage system not initialized. Please try again.', 'error');
+            showError('Storage system not initialized. Please try again.');
             return false;
         }
     }
@@ -371,7 +315,7 @@ class DocumentGenerator {
         if (this.storageDataManager) {
             return await this.storageDataManager.handleLoadData();
         } else {
-            this.showAlert('Storage system not initialized. Please try again.', 'error');
+            showError('Storage system not initialized. Please try again.');
             return false;
         }
     }
@@ -383,7 +327,7 @@ class DocumentGenerator {
         if (this.storageDataManager) {
             return await this.storageDataManager.handleClearData();
         } else {
-            this.showAlert('Storage system not initialized. Please try again.', 'error');
+            showError('Storage system not initialized. Please try again.');
             return false;
         }
     }

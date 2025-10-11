@@ -30,7 +30,7 @@ class StorageDataManager {
         this.documentGenerator.collectFormData();
 
         if (Object.keys(this.documentGenerator.formData).length === 0) {
-            this.documentGenerator.showAlert('Please fill in some information before saving', 'error');
+            showError('Please fill in some information before saving');
             return false;
         }
 
@@ -56,7 +56,7 @@ class StorageDataManager {
                     ? `Data updated successfully! Your changes have been saved. Saved data will expire in ${expirationDays} days.`
                     : `Information saved securely! Use the same phrase to load it later. Saved data will expire in ${expirationDays} days.`;
 
-                this.documentGenerator.showAlert(message, 'success');
+                showSuccess(message, { duration: 8 });
 
                 // Handle UI state based on operation type
                 if (this.documentGenerator.storageUIManager) {
@@ -70,12 +70,12 @@ class StorageDataManager {
                 }
                 return true;
             } else {
-                this.documentGenerator.showAlert('Failed to save information. Please try again.', 'error');
+                showError('Failed to save information. Please try again.');
                 return false;
             }
         } catch (error) {
             console.error('Save error:', error);
-            this.documentGenerator.showAlert('Failed to save information. Please try again.', 'error');
+            showError('Failed to save information. Please try again.');
             return false;
         }
     }
@@ -92,7 +92,7 @@ class StorageDataManager {
             const formData = await this.secureStorage.loadFormData(userPhrase);
             if (formData) {
                 this.populateForm(formData);
-                this.documentGenerator.showAlert('Information loaded successfully!', 'success');
+                showSuccess('Information loaded successfully!');
 
                 // Store the passphrase for potential updates during this session
                 this.sessionPassphrase = userPhrase;
@@ -103,12 +103,12 @@ class StorageDataManager {
                 }
                 return true;
             } else {
-                this.documentGenerator.showAlert('No saved information found.', 'info');
+                showWarning('No saved information found.');
                 return false;
             }
         } catch (error) {
             console.error('Load error:', error);
-            this.documentGenerator.showAlert('Failed to load information. Please check your phrase and try again.', 'error');
+            showError('Failed to load information. Please check your phrase and try again.');
             return false;
         }
     }
@@ -130,7 +130,7 @@ class StorageDataManager {
                 this.documentGenerator.storageUIManager.handleStorageOperation('clear', true);
             }
 
-            this.documentGenerator.showAlert('Saved information cleared successfully.', 'info');
+            showSuccess('Saved information cleared successfully.');
             return true;
         }
         return false;
@@ -161,7 +161,7 @@ class StorageDataManager {
             }
 
             if (phrase.length < 4) {
-                this.documentGenerator.showAlert('Please use a phrase that\'s at least 4 characters long for better security.', 'error');
+                showError('Please use a phrase that\'s at least 4 characters long for better security.');
                 return null;
             }
 

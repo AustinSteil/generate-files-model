@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="main.css">
     <link rel="stylesheet" href="src/components/tooltip/tooltip.css">
     <link rel="stylesheet" href="src/components/dropdown/dropdown.css">
+    <link rel="stylesheet" href="src/components/alert/alert.css">
 </head>
 <body>
     <div class="container">
@@ -47,14 +48,7 @@
                 </form>
             </section>
 
-            <section class="output-section" id="outputSection" style="display: none;">
-                <h2>Generated Document</h2>
-                <div id="outputContent" class="output-content">
-                    <p>Your document is being generated...</p>
-                    <div class="download-area" id="downloadArea" style="display: none;">
-                    </div>
-                </div>
-            </section>
+
         </main>
 
         <footer>
@@ -67,6 +61,9 @@
 
     <!-- Load secure storage functionality -->
     <script src="src/save-data/secure-storage.js"></script>
+
+    <!-- Load alert component -->
+    <script src="src/components/alert/alert.js"></script>
 
     <!-- Load tooltip component -->
     <script src="src/components/tooltip/tooltip.js"></script>

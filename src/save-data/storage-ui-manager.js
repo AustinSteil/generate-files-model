@@ -85,16 +85,13 @@ class StorageUIManager {
             alertModal.innerHTML = `
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h3>🔒 Saved Information Found</h3>
+                        <h3>Previous Session Data Discovered</h3>
                     </div>
                     <div class="modal-body">
-                        <div class="alert-icon">💾</div>
-                        <p><strong>We found your previously saved information!</strong></p>
-                        <p>Your form data is securely stored and encrypted. Would you like to enter your passphrase to load it now?</p>
-                        <p><small>Saved data will expire in ${this.documentGenerator.storageDataManager ?
+                        <p>Saved data will expire in ${this.documentGenerator.storageDataManager ?
                             (this.documentGenerator.storageDataManager.getRemainingDays() || this.documentGenerator.storageDataManager.getExpirationDays()) :
-                            (this.secureStorage.getRemainingDays() || this.secureStorage.getExpirationDays())} days.</small></p>
-                        <div class="alert-benefits">
+                            (this.secureStorage.getRemainingDays() || this.secureStorage.getExpirationDays())} days.</p>
+                            <div class="alert-benefits">
                             <div class="benefit-item">
                                 <span class="benefit-icon">⚡</span>
                                 <span>Quick access to your saved data</span>
@@ -110,8 +107,9 @@ class StorageUIManager {
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" id="alertDismiss">Not Now</button>
-                        <button type="button" class="btn btn-primary" id="alertLoad">Load My Data</button>
+                        <button type="button" class="btn btn-secondary" id="alertDismiss">Close</button>
+                        <button type="button" class="btn btn-warning" id="alertClear">Clear Data</button>
+                        <button type="button" class="btn btn-primary" id="alertLoad">Load Data</button>
                     </div>
                 </div>
             `;
@@ -125,6 +123,7 @@ class StorageUIManager {
             // Handle button clicks
             const loadBtn = alertModal.querySelector('#alertLoad');
             const dismissBtn = alertModal.querySelector('#alertDismiss');
+            const clearBtn = alertModal.querySelector('#alertClear');
 
             const cleanup = () => {
                 alertModal.remove();
@@ -139,6 +138,13 @@ class StorageUIManager {
             dismissBtn.addEventListener('click', () => {
                 cleanup();
                 resolve(false);
+            });
+
+            clearBtn.addEventListener('click', async () => {
+                cleanup();
+                // Call the clear data function
+                await this.documentGenerator.handleClearData();
+                resolve(false); // Don't load data after clearing
             });
 
             // Close on outside click

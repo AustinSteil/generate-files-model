@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alert Component Example</title>
+    <link rel="stylesheet" href="alert.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            background-color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .demo-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 40px;
+            font-size: 16px;
+        }
+
+        .demo-section {
+            margin-bottom: 40px;
+        }
+
+        .demo-section h2 {
+            color: #374151;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .demo-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .demo-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .demo-button:active {
+            transform: translateY(0);
+        }
+
+        .btn-success {
+            background-color: #10b981;
+            color: white;
+        }
+
+        .btn-warning {
+            background-color: #f59e0b;
+            color: white;
+        }
+
+        .btn-error {
+            background-color: #ef4444;
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: #6b7280;
+            color: white;
+        }
+
+        .code-block {
+            background-color: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 16px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            overflow-x: auto;
+            margin-top: 10px;
+        }
+
+        .alert-info {
+            background-color: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 20px;
+            color: #1e40af;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <h1>Alert Component Demo</h1>
+        <p class="subtitle">A flexible floating alert system with multiple configuration options</p>
+
+        <div class="alert-info">
+            <strong>Note:</strong> Alerts appear at the top of the page and stack vertically when multiple alerts are shown.
+        </div>
+
+        <div class="demo-section">
+            <h2>Basic Alert Types</h2>
+            <div class="button-group">
+                <button class="demo-button btn-success" onclick="showSuccess('Operation completed successfully!')">
+                    Show Success
+                </button>
+                <button class="demo-button btn-warning" onclick="showWarning('Please review your settings before continuing.')">
+                    Show Warning
+                </button>
+                <button class="demo-button btn-error" onclick="showError('An error occurred while processing your request.')">
+                    Show Error
+                </button>
+            </div>
+            <div class="code-block">
+// Basic usage
+showSuccess('Operation completed successfully!');
+showWarning('Please review your settings.');
+showError('An error occurred.');
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>Auto-Dismiss Configuration</h2>
+            <div class="button-group">
+                <button class="demo-button btn-success" onclick="showQuickAlert()">
+                    Quick Alert (2s)
+                </button>
+                <button class="demo-button btn-warning" onclick="showLongAlert()">
+                    Long Alert (10s)
+                </button>
+                <button class="demo-button btn-error" onclick="showPersistentAlert()">
+                    Persistent Alert
+                </button>
+            </div>
+            <div class="code-block">
+// Custom duration
+showSuccess('Quick message', { duration: 2 });
+showWarning('Longer message', { duration: 10 });
+showError('Persistent message', { autoDisappear: false });
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>Close Button Configuration</h2>
+            <div class="button-group">
+                <button class="demo-button btn-success" onclick="showCloseableAlert()">
+                    Closeable Alert
+                </button>
+                <button class="demo-button btn-warning" onclick="showNonCloseableAlert()">
+                    Non-Closeable Alert
+                </button>
+            </div>
+            <div class="code-block">
+// Closeable configuration
+showSuccess('You can close this', { closeable: true });
+showWarning('Cannot close this', { closeable: false });
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>Multiple Alerts & Management</h2>
+            <div class="button-group">
+                <button class="demo-button btn-success" onclick="showMultipleAlerts()">
+                    Show Multiple Alerts
+                </button>
+                <button class="demo-button btn-secondary" onclick="dismissAllAlerts()">
+                    Dismiss All Alerts
+                </button>
+            </div>
+            <div class="code-block">
+// Multiple alerts stack automatically
+showSuccess('First alert');
+showWarning('Second alert');
+showError('Third alert');
+
+// Dismiss all at once
+dismissAllAlerts();
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>Advanced Usage</h2>
+            <div class="button-group">
+                <button class="demo-button btn-success" onclick="showAdvancedAlert()">
+                    Advanced Configuration
+                </button>
+                <button class="demo-button btn-secondary" onclick="showAlertWithId()">
+                    Alert with Manual Dismiss
+                </button>
+            </div>
+            <div class="code-block">
+// Full configuration object
+const alertId = showAlert({
+    message: 'Custom configured alert',
+    type: 'success',
+    autoDisappear: true,
+    duration: 8,
+    closeable: true
+});
+
+// Manual dismiss by ID
+dismissAlert(alertId);
+            </div>
+        </div>
+    </div>
+
+    <script src="alert.js"></script>
+    <script>
+        // Demo functions
+        function showQuickAlert() {
+            showSuccess('This alert disappears in 2 seconds', { duration: 2 });
+        }
+
+        function showLongAlert() {
+            showWarning('This alert stays for 10 seconds', { duration: 10 });
+        }
+
+        function showPersistentAlert() {
+            showError('This alert stays until manually closed', { autoDisappear: false });
+        }
+
+        function showCloseableAlert() {
+            showSuccess('Click the X to close this alert', { closeable: true, duration: 15 });
+        }
+
+        function showNonCloseableAlert() {
+            showWarning('This alert cannot be manually closed', { closeable: false, duration: 5 });
+        }
+
+        function showMultipleAlerts() {
+            showSuccess('First alert in the stack');
+            setTimeout(() => showWarning('Second alert appears'), 500);
+            setTimeout(() => showError('Third alert stacks on top'), 1000);
+        }
+
+        function showAdvancedAlert() {
+            showAlert({
+                message: 'This is a fully configured alert with custom settings',
+                type: 'success',
+                autoDisappear: true,
+                duration: 8,
+                closeable: true
+            });
+        }
+
+        let savedAlertId = null;
+        function showAlertWithId() {
+            if (savedAlertId && window.alertManager.isAlertActive(savedAlertId)) {
+                dismissAlert(savedAlertId);
+                savedAlertId = null;
+            } else {
+                savedAlertId = showSuccess('Click the button again to dismiss this specific alert', { 
+                    autoDisappear: false 
+                });
+            }
+        }
+    </script>
+</body>
+</html>
