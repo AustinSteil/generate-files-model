@@ -25,6 +25,9 @@ class DocumentGenerator {
         this.formData = {}; // Stores user input from the form
         this.varsConfig = {}; // Configuration mapping for template variables
         this.templatePath = 'template_1.docx'; // Default template file path
+        this.secureStorage = new SecureStorage(); // Secure storage instance
+        this.storageUIManager = null; // Storage UI manager instance
+        this.storageDataManager = null; // Storage data manager instance
 
         this.init();
     }
@@ -45,6 +48,9 @@ class DocumentGenerator {
 
         // Set default date to today's date
         this.setDefaultDate();
+
+        // Initialize storage managers
+        this.initializeStorageManagers();
     }
 
     /**
@@ -80,17 +86,11 @@ class DocumentGenerator {
      */
     setupEventListeners() {
         const form = document.getElementById('documentForm');
-        const previewBtn = document.getElementById('previewBtn');
 
         // Handle form submission for document generation
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             this.generateDocument();
-        });
-
-        // Handle preview button click
-        previewBtn.addEventListener('click', () => {
-            this.previewData();
         });
 
         // Real-time form validation on input changes
@@ -112,6 +112,38 @@ class DocumentGenerator {
     }
 
     /**
+     * Initialize storage managers (UI and Data)
+     */
+    initializeStorageManagers() {
+        // Initialize storage data manager
+        if (typeof StorageDataManager !== 'undefined') {
+            this.storageDataManager = new StorageDataManager(this);
+        }
+
+        // Initialize storage UI manager
+        if (typeof StorageUIManager !== 'undefined') {
+            this.storageUIManager = new StorageUIManager(this);
+            this.storageUIManager.initialize();
+        }
+
+        // Retry if managers aren't loaded yet
+        if (!this.storageDataManager || !this.storageUIManager) {
+            setTimeout(() => this.initializeStorageManagers(), 100);
+        }
+    }
+
+    /**
+     * Refresh storage UI state (called after storage operations)
+     */
+    refreshStorageUI() {
+        if (this.storageUIManager) {
+            this.storageUIManager.refreshStorageUI();
+        }
+    }
+
+
+
+    /**
      * Collect all form data and store it in this.formData
      * @returns {Object} The collected form data
      */
@@ -127,42 +159,7 @@ class DocumentGenerator {
         return this.formData;
     }
 
-    /**
-     * Display a preview of the form data before document generation
-     */
-    previewData() {
-        this.collectFormData();
 
-        const previewSection = document.getElementById('previewSection');
-        const previewContent = document.getElementById('previewContent');
-
-        let previewHTML = '<h3>Form Data Preview:</h3>';
-
-        // Show form data with template variable mapping
-        Object.entries(this.formData).forEach(([key, value]) => {
-            const placeholder = this.varsConfig[key] || `{${key}}`;
-            previewHTML += `
-                <div class="preview-item">
-                    <strong>${placeholder}:</strong>
-                    <span>${value || 'Not provided'}</span>
-                </div>
-            `;
-        });
-
-        // Show template file information
-        previewHTML += `
-            <div class="preview-item">
-                <strong>Template File:</strong>
-                <span>${this.templatePath}</span>
-            </div>
-        `;
-
-        previewContent.innerHTML = previewHTML;
-        previewSection.style.display = 'block';
-
-        // Smooth scroll to preview section
-        previewSection.scrollIntoView({ behavior: 'smooth' });
-    }
 
     validateForm() {
         const form = document.getElementById('documentForm');
@@ -353,6 +350,45 @@ class DocumentGenerator {
             }
         }, 5000);
     }
+
+    /**
+     * Handle saving form data securely
+     * @param {boolean} isUpdate - Whether this is an update to existing unlocked data
+     */
+    async handleSaveData(isUpdate = false) {
+        if (this.storageDataManager) {
+            return await this.storageDataManager.handleSaveData(isUpdate);
+        } else {
+            this.showAlert('Storage system not initialized. Please try again.', 'error');
+            return false;
+        }
+    }
+
+    /**
+     * Handle loading saved form data
+     */
+    async handleLoadData() {
+        if (this.storageDataManager) {
+            return await this.storageDataManager.handleLoadData();
+        } else {
+            this.showAlert('Storage system not initialized. Please try again.', 'error');
+            return false;
+        }
+    }
+
+    /**
+     * Handle clearing saved data
+     */
+    async handleClearData() {
+        if (this.storageDataManager) {
+            return await this.storageDataManager.handleClearData();
+        } else {
+            this.showAlert('Storage system not initialized. Please try again.', 'error');
+            return false;
+        }
+    }
+
+
 }
 
 // Initialize the application when the DOM is loaded

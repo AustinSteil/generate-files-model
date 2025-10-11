@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tooltip Component Example</title>
+    <link rel="stylesheet" href="tooltip.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 40px;
+            background: #f5f5f5;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .demo-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            background: #f9f9f9;
+        }
+        
+        .demo-section h2 {
+            margin-bottom: 15px;
+            color: #555;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        
+        .demo-button {
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        
+        .demo-button:hover {
+            background: #0056b3;
+        }
+        
+        .floating-demo {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 20px;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(40, 167, 69, 0.3);
+        }
+        
+        .center-demo {
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        .code-example {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tooltip Component Demo</h1>
+        
+        <div class="demo-section">
+            <h2>Basic Usage</h2>
+            <p>The tooltip component has two main configurable options:</p>
+            <ul>
+                <li><strong>Text:</strong> The content to display in the tooltip</li>
+                <li><strong>Position:</strong> Where the tooltip appears relative to the element (left, right, top, bottom, auto)</li>
+            </ul>
+            
+            <div class="code-example">
+// Initialize tooltip system
+const tooltip = new Tooltip();
+
+// Add tooltip to an element
+tooltip.add(element, "Your tooltip text here", "left");
+
+// Or let it auto-detect the best position
+tooltip.add(element, "Auto-positioned tooltip", "auto");
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2>Position Examples</h2>
+            <div class="button-group">
+                <button class="demo-button" id="leftBtn">Left Tooltip</button>
+                <button class="demo-button" id="rightBtn">Right Tooltip</button>
+                <button class="demo-button" id="topBtn">Top Tooltip</button>
+                <button class="demo-button" id="bottomBtn">Bottom Tooltip</button>
+                <button class="demo-button" id="autoBtn">Auto Position</button>
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2>Smart Positioning</h2>
+            <p>The tooltip automatically adjusts its position when it would go off-screen:</p>
+            <div class="center-demo">
+                <button class="demo-button" id="smartBtn">Smart Positioning Demo</button>
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2>Dynamic Content</h2>
+            <p>You can update tooltip text dynamically:</p>
+            <button class="demo-button" id="dynamicBtn">Click to Change Tooltip</button>
+            <div class="code-example">
+// Update tooltip text
+tooltip.update(element, "New tooltip text");
+
+// Remove tooltip
+tooltip.remove(element);
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2>API Reference</h2>
+            <div class="code-example">
+// Create tooltip instance
+const tooltip = new Tooltip();
+
+// Add tooltip with text and position
+tooltip.add(element, text, position);
+// - element: HTMLElement to attach tooltip to
+// - text: String content for the tooltip
+// - position: 'left'|'right'|'top'|'bottom'|'auto'
+
+// Update tooltip text
+tooltip.update(element, newText);
+
+// Remove tooltip from element
+tooltip.remove(element);
+
+// Clean up (removes all event listeners and DOM elements)
+tooltip.destroy();
+            </div>
+        </div>
+    </div>
+    
+    <!-- Floating button demo -->
+    <button class="floating-demo" id="floatingBtn">Floating Button</button>
+    
+    <script src="tooltip.js"></script>
+    <script>
+        // Initialize tooltip system
+        const tooltip = new Tooltip();
+        
+        // Add tooltips to demo buttons
+        tooltip.add(document.getElementById('leftBtn'), 
+            "This tooltip appears to the left of the button", "left");
+        
+        tooltip.add(document.getElementById('rightBtn'), 
+            "This tooltip appears to the right of the button", "right");
+        
+        tooltip.add(document.getElementById('topBtn'), 
+            "This tooltip appears above the button", "top");
+        
+        tooltip.add(document.getElementById('bottomBtn'), 
+            "This tooltip appears below the button", "bottom");
+        
+        tooltip.add(document.getElementById('autoBtn'), 
+            "This tooltip automatically chooses the best position based on available space", "auto");
+        
+        tooltip.add(document.getElementById('smartBtn'), 
+            "Try moving this button near the edges of the screen to see how the tooltip adjusts its position automatically", "top");
+        
+        tooltip.add(document.getElementById('floatingBtn'), 
+            "This floating button demonstrates mobile-responsive positioning", "left");
+        
+        // Dynamic content demo
+        let clickCount = 0;
+        const dynamicBtn = document.getElementById('dynamicBtn');
+        tooltip.add(dynamicBtn, "Click me to see the tooltip change!", "top");
+        
+        dynamicBtn.addEventListener('click', () => {
+            clickCount++;
+            tooltip.update(dynamicBtn, `You've clicked me ${clickCount} time${clickCount !== 1 ? 's' : ''}!`);
+        });
+    </script>
+</body>
+</html>

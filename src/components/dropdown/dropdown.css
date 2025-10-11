@@ -1,0 +1,262 @@
+/**
+ * Dropdown Component Styles
+ * 
+ * Comprehensive styling for the reusable dropdown component including:
+ * - Standard dropdown mode
+ * - Split-button mode
+ * - Hover and active states
+ * - Unlocked state indicators
+ * - Mobile-responsive adjustments
+ * - Smooth transitions and animations
+ * 
+ * @author Austin Steil
+ * @version 1.0.0
+ */
+
+/* Base Dropdown Styles */
+.dropdown-container {
+    position: relative;
+    display: inline-block;
+}
+
+/* Standard Dropdown Trigger */
+.dropdown-trigger:not(.split-button) {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    min-width: 140px;
+    justify-content: space-between;
+}
+
+.dropdown-trigger:not(.split-button):hover {
+    background: #0056b3;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+}
+
+/* Dropdown Arrow */
+.dropdown-arrow {
+    font-size: 10px;
+    transition: transform 0.2s ease;
+}
+
+.dropdown-open .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    min-width: 160px;
+    z-index: 1000;
+    margin-top: 4px;
+}
+
+/* Dropdown Items */
+.dropdown-item {
+    padding: 10px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.2s ease;
+}
+
+.dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.dropdown-item:hover {
+    background: #f8f9fa;
+}
+
+.dropdown-item.selected {
+    background: #e7f3ff;
+    color: #007bff;
+    font-weight: 500;
+}
+
+/* Unlocked State - Standard Dropdown */
+.dropdown-trigger.unlocked:not(.split-button) {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    box-shadow: 0 2px 10px rgba(40, 167, 69, 0.4);
+}
+
+.dropdown-trigger.unlocked:not(.split-button):hover {
+    background: linear-gradient(135deg, #1e7e34, #1ba085);
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.5);
+}
+
+.dropdown-trigger.unlocked:not(.split-button)::before {
+    content: '🔓';
+    margin-right: 4px;
+    font-size: 12px;
+}
+
+/* Split Button Styles */
+.dropdown-trigger.split-button {
+    display: flex;
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.dropdown-main-button {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    background: #007bff;
+    color: white;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 6px 0 0 6px;
+}
+
+.dropdown-arrow-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 10px;
+    background: #0056b3;
+    color: white;
+    border: none;
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 0 6px 6px 0;
+    min-width: 32px;
+}
+
+.dropdown-main-button:hover {
+    background: #0056b3;
+    transform: translateY(-1px);
+}
+
+.dropdown-arrow-button:hover {
+    background: #004085;
+    transform: translateY(-1px);
+}
+
+/* Split Button Unlocked State */
+.dropdown-trigger.split-button.unlocked .dropdown-main-button {
+    background: linear-gradient(135deg, #28a745, #20c997);
+}
+
+.dropdown-trigger.split-button.unlocked .dropdown-arrow-button {
+    background: linear-gradient(135deg, #1e7e34, #1ba085);
+    border-left-color: rgba(255, 255, 255, 0.3);
+}
+
+.dropdown-trigger.split-button.unlocked .dropdown-main-button:hover {
+    background: linear-gradient(135deg, #1e7e34, #1ba085);
+}
+
+.dropdown-trigger.split-button.unlocked .dropdown-arrow-button:hover {
+    background: linear-gradient(135deg, #155724, #138f75);
+}
+
+/* Unlocked indicator for split button */
+.dropdown-trigger.split-button.unlocked .dropdown-main-button::before {
+    content: '🔓';
+    margin-right: 4px;
+    font-size: 12px;
+}
+
+/* Focus States for Accessibility */
+.dropdown-trigger:focus,
+.dropdown-main-button:focus,
+.dropdown-arrow-button:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+
+.dropdown-item:focus {
+    background: #e7f3ff;
+    outline: none;
+}
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 768px) {
+    .dropdown-trigger:not(.split-button) {
+        min-width: auto;
+        padding: 8px 10px;
+    }
+
+    /* Split button mobile adjustments */
+    .dropdown-main-button {
+        padding: 8px 10px;
+        font-size: 13px;
+    }
+
+    .dropdown-arrow-button {
+        padding: 8px 8px;
+        min-width: 28px;
+    }
+
+    .dropdown-menu {
+        right: -10px;
+        min-width: 140px;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .dropdown-trigger:not(.split-button),
+    .dropdown-main-button,
+    .dropdown-arrow-button {
+        border: 2px solid white;
+    }
+    
+    .dropdown-menu {
+        border: 2px solid black;
+    }
+    
+    .dropdown-item:hover,
+    .dropdown-item.selected {
+        border: 1px solid black;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .dropdown-trigger,
+    .dropdown-main-button,
+    .dropdown-arrow-button,
+    .dropdown-item,
+    .dropdown-arrow {
+        transition: none;
+    }
+    
+    .dropdown-trigger:hover,
+    .dropdown-main-button:hover,
+    .dropdown-arrow-button:hover {
+        transform: none;
+    }
+}
+
+/* Print styles - hide dropdowns when printing */
+@media print {
+    .dropdown-menu {
+        display: none !important;
+    }
+}
