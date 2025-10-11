@@ -43,9 +43,10 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# Bundled/compiled dependency files (use npm install instead)
-docxtemplater.js
-pizzip.js
+# Bundled/compiled dependency files (use npm install)
+# These must be included otherwise document generation will fail.
+#    docxtemplater.js
+#    pizzip.js
 
 # Generated documents (add specific patterns if needed)
 # *.docx
