@@ -134,6 +134,7 @@
 
 .alert-success .alert-close:hover {
     background-color: rgba(var(--color-success-rgb), var(--opacity-10));
+    color: var(--color-success-dark);
 }
 
 /* Warning Alert - Yellow Theme */
@@ -152,6 +153,7 @@
 
 .alert-warning .alert-close:hover {
     background-color: rgba(var(--color-warning-rgb), var(--opacity-10));
+    color: var(--color-warning-darker);
 }
 
 /* Error Alert - Red Theme */
@@ -170,6 +172,7 @@
 
 .alert-error .alert-close:hover {
     background-color: rgba(var(--color-error-rgb), var(--opacity-10));
+    color: var(--color-error-dark);
 }
 
 /* Info Alert - Blue Theme */
@@ -188,6 +191,7 @@
 
 .alert-info .alert-close:hover {
     background-color: rgba(var(--color-info-rgb), var(--opacity-10));
+    color: var(--color-info-dark);
 }
 
 /* Dark Mode Adjustments for Alerts */

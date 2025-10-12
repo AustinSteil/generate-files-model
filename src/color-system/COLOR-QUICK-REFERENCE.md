@@ -80,6 +80,12 @@ border-left: 4px solid var(--color-info-border);
 .text-primary { color: var(--color-text-primary); }
 .text-secondary { color: var(--color-text-secondary); }
 .text-success { color: var(--color-success); }
+
+/* Code blocks with proper dark mode contrast */
+.code-block {
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-code);
+}
 ```
 
 ## 🎯 Utility Classes
@@ -160,6 +166,7 @@ All colors automatically adjust for dark mode. No extra code needed!
 
 - `--color-text-primary`, `--color-text-secondary`, `--color-text-tertiary`
 - `--color-text-light`, `--color-text-white`
+- `--color-text-code` (optimized for code blocks with proper dark mode contrast)
 
 ### Backgrounds
 

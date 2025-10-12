@@ -129,6 +129,7 @@
     --color-text-tertiary: #737373;       /* Improved contrast: 4.7:1 on white (AA compliant) */
     --color-text-light: #f3f4f6;
     --color-text-white: #ffffff;
+    --color-text-code: #1a1a1a;           /* Code block text - high contrast on light backgrounds */
 
     /* ============================================
        BACKGROUND COLORS
@@ -201,57 +202,6 @@
    Manual dark mode via .dark-mode class on <html> or <body>
    Also supports system preference as fallback
    ============================================ */
-.dark-mode,
-@media (prefers-color-scheme: dark) {
-    :root:not(.light-mode) {
-        /* Primary colors adjusted for dark mode */
-        --color-primary: #3b82f6;
-        --color-primary-dark: #2563eb;
-        --color-primary-light: #1e3a8a;
-
-        /* Success colors for dark mode */
-        --color-success: #10b981;
-        --color-success-light: #064e3b;
-        --gradient-success: linear-gradient(135deg, #064e3b 0%, #1f2937 100%);
-
-        /* Warning colors for dark mode */
-        --color-warning: #f59e0b;
-        --color-warning-light: #78350f;
-        --gradient-warning: linear-gradient(135deg, #78350f 0%, #1f2937 100%);
-
-        /* Error colors for dark mode */
-        --color-error: #ef4444;
-        --color-error-light: #7f1d1d;
-        --gradient-error: linear-gradient(135deg, #7f1d1d 0%, #1f2937 100%);
-
-        /* Info colors for dark mode */
-        --color-info: #3b82f6;
-        --color-info-light: #1e3a8a;
-        --gradient-info: linear-gradient(135deg, #1e3a8a 0%, #1f2937 100%);
-
-        /* Text colors for dark mode */
-        --color-text-primary: #f9fafb;        /* Improved contrast: 15.5:1 on #1f2937 */
-        --color-text-secondary: #d1d5db;      /* Improved contrast: 9.2:1 on #1f2937 */
-        --color-text-tertiary: #9ca3af;       /* Improved contrast: 5.1:1 on #1f2937 (AA compliant) */
-
-        /* Background colors for dark mode */
-        --color-bg-primary: #1f2937;
-        --color-bg-secondary: #111827;
-        --color-bg-tertiary: #374151;
-
-        /* Border colors for dark mode */
-        --color-border-light: #374151;
-        --color-border-medium: #4b5563;
-        --color-border-dark: #6b7280;
-
-        /* Shadows for dark mode */
-        --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
-        --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
-        --shadow-lg: 0 4px 20px rgba(0, 0, 0, 0.5);
-        --shadow-xl: 0 8px 30px rgba(0, 0, 0, 0.6);
-    }
-}
-
 /* Dark mode when .dark-mode class is applied */
 .dark-mode {
     /* Primary colors adjusted for dark mode */
@@ -283,6 +233,7 @@
     --color-text-primary: #f9fafb;        /* Improved contrast: 15.5:1 on #1f2937 */
     --color-text-secondary: #d1d5db;      /* Improved contrast: 9.2:1 on #1f2937 */
     --color-text-tertiary: #9ca3af;       /* Improved contrast: 5.1:1 on #1f2937 (AA compliant) */
+    --color-text-code: #e5e7eb;           /* Code block text - high contrast on dark backgrounds (11.2:1 on #374151) */
 
     /* Background colors for dark mode */
     --color-bg-primary: #1f2937;

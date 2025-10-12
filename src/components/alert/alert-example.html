@@ -4,66 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alert Component Example</title>
+    <link rel="stylesheet" href="../../color-system/colors.css">
     <link rel="stylesheet" href="alert.css">
+    <link rel="stylesheet" href="../toggle/toggle.css">
+    <link rel="stylesheet" href="../../dark-mode-toggle/dark-mode-toggle.css">
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             margin: 0;
-            padding: 40px 20px;
-            background-color: #f8fafc;
+            padding: var(--spacing-3xl) var(--spacing-xl);
+            background-color: var(--color-bg-secondary);
             min-height: 100vh;
         }
 
         .demo-container {
             max-width: 800px;
             margin: 0 auto;
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background: var(--color-bg-primary);
+            padding: var(--spacing-3xl);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-md);
         }
 
         h1 {
-            color: #1f2937;
+            color: var(--color-text-primary);
             margin-bottom: 10px;
         }
 
         .subtitle {
-            color: #6b7280;
-            margin-bottom: 40px;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-3xl);
             font-size: 16px;
         }
 
         .demo-section {
-            margin-bottom: 40px;
+            margin-bottom: var(--spacing-3xl);
         }
 
         .demo-section h2 {
-            color: #374151;
-            margin-bottom: 20px;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-xl);
             font-size: 20px;
         }
 
         .button-group {
             display: flex;
-            gap: 12px;
+            gap: var(--spacing-md);
             flex-wrap: wrap;
-            margin-bottom: 20px;
+            margin-bottom: var(--spacing-xl);
         }
 
         .demo-button {
-            padding: 10px 20px;
+            padding: 10px var(--spacing-xl);
             border: none;
-            border-radius: 6px;
+            border-radius: var(--radius-md);
             cursor: pointer;
             font-size: 14px;
             font-weight: 500;
-            transition: all 0.2s ease;
+            transition: all var(--transition-base);
         }
 
         .demo-button:hover {
             transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            box-shadow: var(--shadow-md);
         }
 
         .demo-button:active {
@@ -71,44 +74,61 @@
         }
 
         .btn-success {
-            background-color: #10b981;
-            color: white;
+            background-color: var(--color-success);
+            color: var(--color-text-white);
+        }
+
+        .btn-success:hover {
+            background-color: var(--color-success-dark);
         }
 
         .btn-warning {
-            background-color: #f59e0b;
-            color: white;
+            background-color: var(--color-warning);
+            color: var(--color-text-white);
+        }
+
+        .btn-warning:hover {
+            background-color: var(--color-warning-dark);
         }
 
         .btn-error {
-            background-color: #ef4444;
-            color: white;
+            background-color: var(--color-error);
+            color: var(--color-text-white);
+        }
+
+        .btn-error:hover {
+            background-color: var(--color-error-dark);
         }
 
         .btn-secondary {
-            background-color: #6b7280;
-            color: white;
+            background-color: var(--color-secondary);
+            color: var(--color-text-white);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--color-secondary-dark);
         }
 
         .code-block {
-            background-color: #f3f4f6;
-            border: 1px solid #e5e7eb;
-            border-radius: 6px;
-            padding: 16px;
+            background-color: var(--color-bg-tertiary);
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
             font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
             font-size: 13px;
             line-height: 1.5;
             overflow-x: auto;
             margin-top: 10px;
+            color: var(--color-text-code);
         }
 
         .alert-info {
-            background-color: #eff6ff;
-            border: 1px solid #bfdbfe;
-            border-radius: 6px;
-            padding: 16px;
-            margin-bottom: 20px;
-            color: #1e40af;
+            background: var(--gradient-info);
+            border: 1px solid var(--color-info-border);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+            color: var(--color-text-primary);
         }
     </style>
 </head>
@@ -134,12 +154,10 @@
                     Show Error
                 </button>
             </div>
-            <div class="code-block">
-// Basic usage
+            <div class="code-block">// Basic usage
 showSuccess('Operation completed successfully!');
 showWarning('Please review your settings.');
-showError('An error occurred.');
-            </div>
+showError('An error occurred.');</div>
         </div>
 
         <div class="demo-section">
@@ -155,12 +173,10 @@ showError('An error occurred.');
                     Persistent Alert
                 </button>
             </div>
-            <div class="code-block">
-// Custom duration
+            <div class="code-block">// Custom duration
 showSuccess('Quick message', { duration: 2 });
 showWarning('Longer message', { duration: 10 });
-showError('Persistent message', { autoDisappear: false });
-            </div>
+showError('Persistent message', { autoDisappear: false });</div>
         </div>
 
         <div class="demo-section">
@@ -173,11 +189,9 @@ showError('Persistent message', { autoDisappear: false });
                     Non-Closeable Alert
                 </button>
             </div>
-            <div class="code-block">
-// Closeable configuration
+            <div class="code-block">// Closeable configuration
 showSuccess('You can close this', { closeable: true });
-showWarning('Cannot close this', { closeable: false });
-            </div>
+showWarning('Cannot close this', { closeable: false });</div>
         </div>
 
         <div class="demo-section">
@@ -190,15 +204,13 @@ showWarning('Cannot close this', { closeable: false });
                     Dismiss All Alerts
                 </button>
             </div>
-            <div class="code-block">
-// Multiple alerts stack automatically
+            <div class="code-block">// Multiple alerts stack automatically
 showSuccess('First alert');
 showWarning('Second alert');
 showError('Third alert');
 
 // Dismiss all at once
-dismissAllAlerts();
-            </div>
+dismissAllAlerts();</div>
         </div>
 
         <div class="demo-section">
@@ -211,8 +223,7 @@ dismissAllAlerts();
                     Alert with Manual Dismiss
                 </button>
             </div>
-            <div class="code-block">
-// Full configuration object
+            <div class="code-block">// Full configuration object
 const alertId = showAlert({
     message: 'Custom configured alert',
     type: 'success',
@@ -222,12 +233,13 @@ const alertId = showAlert({
 });
 
 // Manual dismiss by ID
-dismissAlert(alertId);
-            </div>
+dismissAlert(alertId);</div>
         </div>
     </div>
 
     <script src="alert.js"></script>
+    <script src="../toggle/toggle.js"></script>
+    <script src="../../dark-mode-toggle/dark-mode-toggle.js"></script>
     <script>
         // Demo functions
         function showQuickAlert() {
