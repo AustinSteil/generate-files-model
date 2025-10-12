@@ -165,6 +165,10 @@ class Tooltip {
         this.tooltipContainer.style.display = 'block';
         this.currentTooltip = element;
 
+        // Force reflow to retrigger CSS animation
+        // This is necessary because changing display from none to block doesn't retrigger animations
+        void this.tooltipContainer.offsetWidth;
+
         // Position tooltip and arrow
         this.positionTooltip(element, position);
     }
@@ -219,10 +223,14 @@ class Tooltip {
         left = Math.max(this.MARGIN, Math.min(viewportWidth - tooltipRect.width - this.MARGIN, left));
         top = Math.max(this.MARGIN, Math.min(viewportHeight - tooltipRect.height - this.MARGIN, top));
 
-        // Update tooltip class and position
-        this.tooltipContainer.className = `tooltip-container tooltip-${position}`;
+        // Update tooltip position first
         tooltip.style.left = left + 'px';
         tooltip.style.top = top + 'px';
+
+        // Remove animation class, force reflow, then add it back to retrigger animation
+        this.tooltipContainer.className = 'tooltip-container';
+        void this.tooltipContainer.offsetWidth; // Force reflow
+        this.tooltipContainer.className = `tooltip-container tooltip-${position}`;
 
         // Position arrow to point at element
         this.positionArrow(element, position, left, top);

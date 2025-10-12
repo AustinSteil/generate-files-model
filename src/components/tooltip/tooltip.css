@@ -20,7 +20,7 @@
     position: fixed;
     z-index: 10000;
     pointer-events: none;
-    opacity: 0;
+    opacity: 1; /* Changed from 0 - animation will override this */
     animation: tooltipFadeIn var(--transition-base) ease-out forwards;
 }
 

@@ -5,11 +5,9 @@
  * - Single button mode for initial save operations
  * - Dropdown mode for load/update/clear operations
  * - State-aware UI that adapts based on stored data availability
- * - Integration with secure storage and tooltip systems
  *
  * Dependencies:
  * - dropdown.js (Dropdown component)
- * - tooltip.js (Tooltip component)
  *
  * @author Austin Steil
  * @version 1.0.0
@@ -81,15 +79,6 @@ class FloatingStorageButton {
         `;
 
         this.button = this.content.querySelector('.storage-btn');
-        
-        // Add tooltip
-        const remainingDays = this.documentGenerator.storageDataManager ?
-            (this.documentGenerator.storageDataManager.getRemainingDays() || this.documentGenerator.storageDataManager.getExpirationDays()) :
-            (this.documentGenerator.secureStorage.getRemainingDays() || this.documentGenerator.secureStorage.getExpirationDays());
-        window.tooltip.add(this.button,
-            `Save your form information securely using encrypted cookies stored on your device. Your data is encrypted before storage and never sent to any server. Saved data will expire in ${remainingDays} days.`,
-            'left'
-        );
 
         // Add click handler
         this.button.addEventListener('click', () => {
@@ -166,19 +155,6 @@ class FloatingStorageButton {
             trigger.classList.remove('unlocked');
         }
 
-        // Add tooltips with context-aware text
-        const remainingDays = this.documentGenerator.storageDataManager ?
-            (this.documentGenerator.storageDataManager.getRemainingDays() || this.documentGenerator.storageDataManager.getExpirationDays()) :
-            (this.documentGenerator.secureStorage.getRemainingDays() || this.documentGenerator.secureStorage.getExpirationDays());
-
-        const mainButtonTooltip = this.isUnlocked
-            ? `Click to update your saved data with current changes. Saved data will expire in ${remainingDays} days.`
-            : `Click to load your previously saved data. Saved data will expire in ${remainingDays} days.`;
-
-        const arrowTooltip = `Click arrow to see all storage options including clear saved data.`;
-
-        window.tooltip.add(mainButton, mainButtonTooltip, 'left');
-        window.tooltip.add(arrowButton, arrowTooltip, 'left');
     }
 
     refresh() {

@@ -131,7 +131,10 @@
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
-    transition: all var(--transition-base);
+    /* Separate transitions for smoother effect */
+    transition: background-color var(--transition-base),
+                box-shadow var(--transition-base),
+                filter var(--transition-base);
     border-radius: var(--radius-md) 0 0 var(--radius-md);
 }
 
@@ -145,19 +148,22 @@
     border: none;
     border-left: 1px solid rgba(255, 255, 255, var(--opacity-20));
     cursor: pointer;
-    transition: all var(--transition-base);
+    /* Separate transitions for smoother effect */
+    transition: background-color var(--transition-base),
+                box-shadow var(--transition-base),
+                filter var(--transition-base);
     border-radius: 0 var(--radius-md) var(--radius-md) 0;
     min-width: 32px;
 }
 
 .dropdown-main-button:hover {
-    background: var(--color-primary-dark);
-    transform: translateY(-1px);
+    /* Use filter for subtle brightness change instead of transform to avoid flash */
+    filter: brightness(1.1);
 }
 
 .dropdown-arrow-button:hover {
-    background: var(--color-primary-darker);
-    transform: translateY(-1px);
+    /* Use filter for subtle brightness change instead of transform to avoid flash */
+    filter: brightness(1.1);
 }
 
 /* Split Button Unlocked State */
@@ -171,11 +177,13 @@
 }
 
 .dropdown-trigger.split-button.unlocked .dropdown-main-button:hover {
-    background: var(--color-success-dark);
+    /* Use filter for consistent hover effect */
+    filter: brightness(1.1);
 }
 
 .dropdown-trigger.split-button.unlocked .dropdown-arrow-button:hover {
-    background: var(--color-success-darker);
+    /* Use filter for consistent hover effect */
+    filter: brightness(1.1);
 }
 
 /* Unlocked indicator for split button */

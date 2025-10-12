@@ -568,130 +568,18 @@ footer {
     }
 }
 
-/* Tooltip Styles - Note: These are duplicated from tooltip.css for backwards compatibility */
-/* Consider removing these and using only the component CSS file */
-.tooltip-container {
-    position: fixed;
-    z-index: 10000;
-    pointer-events: none;
-    opacity: 0;
-    animation: tooltipFadeIn var(--transition-base) ease-out forwards;
-}
-
-.tooltip-content {
-    background: var(--color-gray-800);
-    color: var(--color-text-white);
-    padding: var(--spacing-md) var(--spacing-lg);
-    border-radius: var(--radius-lg);
-    font-size: 14px;
-    line-height: 1.5;
-    max-width: 280px;
-    box-shadow: var(--shadow-lg);
-    position: relative;
-}
-
-.tooltip-arrow {
-    position: absolute;
-    width: 0;
-    height: 0;
-}
-
-/* Arrow positioning for different tooltip positions */
-.tooltip-left .tooltip-arrow {
-    top: 50%;
-    right: -8px;
-    transform: translateY(-50%);
-    border-left: 8px solid var(--color-gray-800);
-    border-top: 8px solid transparent;
-    border-bottom: 8px solid transparent;
-}
-
-.tooltip-right .tooltip-arrow {
-    top: 50%;
-    left: -8px;
-    transform: translateY(-50%);
-    border-right: 8px solid var(--color-gray-800);
-    border-top: 8px solid transparent;
-    border-bottom: 8px solid transparent;
-}
-
-.tooltip-top .tooltip-arrow {
-    bottom: -8px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-top: 8px solid var(--color-gray-800);
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-}
-
-.tooltip-bottom .tooltip-arrow {
-    top: -8px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-bottom: 8px solid var(--color-gray-800);
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-}
-
-@keyframes tooltipFadeIn {
-    from {
-        opacity: 0;
-        transform: translateX(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-/* Fade in animation for different positions */
-.tooltip-right {
-    animation: tooltipFadeInRight 0.2s ease-out forwards;
-}
-
-.tooltip-top {
-    animation: tooltipFadeInTop 0.2s ease-out forwards;
-}
-
-.tooltip-bottom {
-    animation: tooltipFadeInBottom 0.2s ease-out forwards;
-}
-
-@keyframes tooltipFadeInRight {
-    from {
-        opacity: 0;
-        transform: translateX(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes tooltipFadeInTop {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes tooltipFadeInBottom {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+/* Tooltip Styles - Removed duplicates, now using only src/components/tooltip/tooltip.css */
+/* Keeping only the cursor override for buttons */
 
 .has-tooltip {
     cursor: help;
+}
+
+/* Override tooltip cursor for buttons - buttons should always show pointer */
+button.has-tooltip,
+.btn.has-tooltip,
+.storage-btn.has-tooltip {
+    cursor: pointer;
 }
 
 
@@ -728,14 +616,17 @@ footer {
     cursor: pointer;
     font-size: 14px;
     font-weight: 500;
-    transition: all var(--transition-slow);
+    /* Separate transitions for smoother effect - no transform flash */
+    transition: background-color var(--transition-base),
+                box-shadow var(--transition-base),
+                filter var(--transition-base);
     box-shadow: var(--shadow-md);
     white-space: nowrap;
 }
 
 .storage-btn:hover {
-    background: var(--color-success-dark);
-    transform: translateY(-2px);
+    /* Use filter for subtle brightness change instead of transform to avoid flash */
+    filter: brightness(1.1);
     box-shadow: var(--shadow-lg);
 }
 
@@ -745,7 +636,8 @@ footer {
 }
 
 .storage-btn.single-mode:hover {
-    background: var(--color-info-dark);
+    /* Consistent hover effect - brightness instead of color change */
+    filter: brightness(1.1);
     box-shadow: var(--shadow-lg);
 }
 
