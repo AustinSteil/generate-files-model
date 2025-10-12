@@ -11,6 +11,7 @@ Live demo: <https://austinsteil.github.io/generate-files-model/>
 - 📝 Form-based data input with validation
 - 💾 Automatic document download
 - 🔧 Configurable template variables via JSON
+- 🃏 Card Selection - Interactive card-based choice system with responsive layouts
 - 💾 **Save for Later** - Securely store your form data for future use
 - 🎨 **Color System** - Centralized color management for consistent UI
 - 🌙 **Dark Mode** - Toggleable dark mode for improved readability
@@ -126,6 +127,7 @@ The project includes interactive demo pages for testing and showcasing component
 - **[Color System Demo](https://austinsteil.github.io/generate-files-model/src/color-system/color-system-demo.html)** - Interactive showcase of the entire color palette with light/dark mode
 - **[Contrast Test Tool](https://austinsteil.github.io/generate-files-model/src/color-system/contrast-test.html)** - Accessibility testing tool for color contrast ratios
 - **[Alert Component Demo](https://austinsteil.github.io/generate-files-model/src/components/alert/alert-example.html)** - Examples of alert notifications with different colors and configurations
+- **[Cards Component Demo](https://austinsteil.github.io/generate-files-model/src/components/cards/cards-example.html)** - Interactive card selection examples with responsive layouts, PDF preview, and validation
 - **[Tooltip Component Demo](https://austinsteil.github.io/generate-files-model/src/components/tooltip/tooltip-example.html)** - Interactive tooltip examples with different positions
 
 These demo files can be opened directly in your browser or served through a local web server.
@@ -171,6 +173,20 @@ Customizable toggle switches:
 - **Accessible** - Keyboard and screen reader friendly
 - **Smooth animations** - Beautiful transitions
 
+### Cards Component
+
+Interactive card-based selection system with advanced preview capabilities:
+
+- **Flexible selection** - Single-select or multi-select modes
+- **Responsive layouts** - Auto-adjusting grids (1-2 cards centered, 3-4 in 2×2, 5-6 in 3×2)
+- **Rich content** - Support for images, titles, and custom content
+- **Dual preview modes** - Image thumbnails for cards, PDF full-screen preview on expand
+- **Secure PDF viewing** - Full-screen PDF preview with disabled download/print
+- **Optimized layout** - Full-height PDF viewer (100vh) with document-focused width (70vw)
+- **Dark/light mode** - Floating close button optimized for both themes
+- **Validation integration** - Required/optional validation with alert system
+- **Choice feedback** - Visual selection indicators and hover effects
+
 ## Configuration
 
 ### Template Variables (vars.json)
@@ -204,7 +220,18 @@ For detailed documentation, see [`fields/vars.json.README.md`](fields/vars.json.
 
 ### Custom Templates
 
-Replace `template_1.docx` with your own Word template file. Ensure your template uses the same placeholder variables defined in `fields/vars.json`.
+The application supports multiple templates organized in the `templates/` folder:
+
+- **Add new templates**: Place files in `templates/word/`, `templates/pdf/`, and `templates/images/`
+- **Template naming**: Use consistent naming (e.g., `template_7.docx`, `template_7.pdf`, `template_7.png`)
+- **Variable consistency**: Ensure all templates use the same placeholder variables defined in `fields/vars.json`
+- **Update template cards**: Add new template configurations to `src/tabs/intro/intro.js`
+
+**Template Workflow**:
+
+1. **PNG Image**: Shows as card preview in template selection
+2. **PDF File**: Displays in full-screen preview when user clicks expand button
+3. **DOCX File**: Used for actual document generation based on user's selection
 
 ## Project Structure
 
@@ -218,7 +245,28 @@ generate-files-model/
 │   ├── vars.json.README.md # Detailed vars.json documentation
 │   ├── QUICK-START-ADDING-FIELDS.md # Quick guide for adding fields
 │   └── STORAGE-SYSTEM-IMPROVEMENTS.md # Storage system architecture
-├── template_1.docx         # Default Word template
+├── templates/              # Template files organized by type
+│   ├── images/             # PNG preview images for template cards
+│   │   ├── template_1.png          # Classic template preview
+│   │   ├── template_2.png          # Modern template preview
+│   │   ├── template_3.png          # Minimal template preview
+│   │   ├── template_4.png          # Corporate template preview
+│   │   ├── template_5.png          # Creative template preview
+│   │   └── template_6.png          # Academic template preview
+│   ├── pdf/                # PDF files for full-screen preview
+│   │   ├── template_1.pdf          # Classic template full preview
+│   │   ├── template_2.pdf          # Modern template full preview
+│   │   ├── template_3.pdf          # Minimal template full preview
+│   │   ├── template_4.pdf          # Corporate template full preview
+│   │   ├── template_5.pdf          # Creative template full preview
+│   │   └── template_6.pdf          # Academic template full preview
+│   └── word/               # DOCX templates for document generation
+│       ├── template_1.docx         # Classic template source
+│       ├── template_2.docx         # Modern template source
+│       ├── template_3.docx         # Minimal template source
+│       ├── template_4.docx         # Corporate template source
+│       ├── template_5.docx         # Creative template source
+│       └── template_6.docx         # Academic template source
 ├── package.json            # Project dependencies and scripts
 ├── LICENSE                 # MIT license
 ├── README.md               # This file
@@ -238,6 +286,11 @@ generate-files-model/
     │   │   ├── alert.css           # Alert styling with gradients
     │   │   ├── alert-example.html  # Alert demo page
     │   │   └── README.md           # Alert documentation
+    │   ├── cards/          # Card selection component
+    │   │   ├── cards.js            # Card functionality
+    │   │   ├── cards.css           # Card styling with responsive grids
+    │   │   ├── cards-example.html  # Card demo page
+    │   │   └── README.md           # Card documentation
     │   ├── tooltip/        # Tooltip component
     │   │   ├── tooltip.js          # Tooltip functionality
     │   │   ├── tooltip.css         # Tooltip styling
@@ -249,6 +302,12 @@ generate-files-model/
     │       ├── toggle.js           # Toggle functionality
     │       ├── toggle.css          # Toggle styling
     │       └── README.md           # Toggle documentation
+    ├── tabs/               # Tab-based application structure
+    │   ├── tabs.js                 # Tab management and navigation
+    │   ├── tabs.css                # Tab styling and layout
+    │   ├── tabs-content.css        # Content area styling
+    │   └── intro/          # Intro tab (template selection)
+    │       └── intro.js            # Template selection with Cards component
     ├── dark-mode-toggle/   # Dark mode feature (non-reusable)
     │   ├── dark-mode-toggle.js     # Dark mode logic
     │   ├── dark-mode-toggle.css    # Dark mode toggle styling
@@ -286,7 +345,7 @@ generate-files-model/
 
 ### Code Organization
 
-- **Reusable components** → `src/components/` (alert, tooltip, dropdown, toggle)
+- **Reusable components** → `src/components/` (alert, cards, tooltip, dropdown, toggle)
 - **Application-specific features** → `src/` (dark-mode-toggle, save-data)
 - **Shared utilities** → `src/color-system/`
 

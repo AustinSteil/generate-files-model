@@ -1,0 +1,687 @@
+/**
+ * Cards Component Styles
+ *
+ * Comprehensive styling for the reusable card selection component with:
+ * - Responsive grid layouts (auto-adjusting based on card count)
+ * - Card styling with hover and selection states
+ * - Image and content support
+ * - Full dark/light mode support using color management system
+ * - Smooth animations and transitions
+ * - Accessibility features
+ *
+ * Grid Layouts:
+ * - 1-2 cards: Centered horizontally and vertically
+ * - 3-4 cards: 2x2 grid
+ * - 5-6 cards: 3x2 or 2x3 grid (responsive)
+ * - 7+ cards: Auto-flowing grid
+ *
+ * NOTE: This component uses the centralized color management system from src/color-system/colors.css
+ * All colors are referenced using CSS custom properties (variables) for consistency.
+ *
+ * @author Austin Steil
+ * @version 1.0.0
+ */
+
+/* ============================================
+   CARDS CONTAINER
+   ============================================ */
+.cards-component {
+    display: grid;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-lg);
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+/* ============================================
+   GRID LAYOUTS
+   ============================================ */
+
+/* Auto layout - default flowing grid */
+.cards-auto {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* Centered layout for 1-2 cards */
+.cards-center-2 {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 400px));
+    justify-content: center;
+    max-width: 900px;
+}
+
+/* 2x2 grid for 3-4 cards */
+.cards-2x2 {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 800px;
+}
+
+/* 3x2 grid for 5-6 cards (desktop preference) */
+.cards-3x2 {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 1200px;
+}
+
+/* 2x3 grid for 5-6 cards (alternative) */
+.cards-2x3 {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 800px;
+}
+
+/* ============================================
+   INDIVIDUAL CARD STYLING
+   ============================================ */
+.card {
+    background: var(--color-bg-primary);
+    border: 2px solid var(--color-border-light);
+    border-radius: var(--radius-lg);
+    padding: 0;
+    cursor: pointer;
+    transition: all var(--transition-cubic);
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--color-primary);
+}
+
+.card:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* ============================================
+   CARD INNER CONTENT
+   ============================================ */
+.card-inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+}
+
+/* ============================================
+   CARD IMAGE
+   ============================================ */
+.card-image {
+    width: 100%;
+    height: 120px;
+    overflow: hidden;
+    background: var(--color-bg-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-base);
+}
+
+.card:hover .card-image img {
+    transform: scale(1.05);
+}
+
+/* ============================================
+   EXPAND BUTTON
+   ============================================ */
+.card-expand-btn {
+    position: absolute;
+    top: var(--spacing-sm);
+    left: var(--spacing-sm);
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all var(--transition-cubic);
+    z-index: 2;
+    font-size: 16px;
+    line-height: 1;
+}
+
+.card-image:hover .card-expand-btn,
+.card-expand-btn:focus {
+    opacity: 1;
+}
+
+.card-expand-btn:hover {
+    background: rgba(0, 0, 0, 0.9);
+    transform: scale(1.1);
+}
+
+.card-expand-btn:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+.expand-icon {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* ============================================
+   CARD CONTENT
+   ============================================ */
+.card-content {
+    padding: var(--spacing-lg);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0;
+    line-height: 1.3;
+    text-align: center;
+}
+
+.card-text {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    text-align: center;
+    flex: 1;
+}
+
+/* ============================================
+   SELECTION INDICATOR
+   ============================================ */
+.card-selection-indicator {
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--color-bg-primary);
+    border: 2px solid var(--color-border-medium);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-cubic);
+    opacity: 0.7;
+}
+
+.selection-icon {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--color-success);
+    opacity: 0;
+    transition: opacity var(--transition-base);
+}
+
+/* ============================================
+   SELECTED STATE
+   ============================================ */
+.card.selected {
+    border-color: var(--color-success);
+    background: var(--gradient-success-subtle);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.card.selected .card-selection-indicator {
+    background: var(--color-success);
+    border-color: var(--color-success);
+    opacity: 1;
+}
+
+.card.selected .selection-icon {
+    opacity: 1;
+    color: white;
+}
+
+.card.selected .card-title {
+    color: var(--color-success-darker);
+    font-weight: 700;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+/* Tablet adjustments */
+@media (max-width: 1024px) {
+    .cards-3x2 {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 800px;
+    }
+    
+    .cards-component {
+        gap: var(--spacing-md);
+        padding: var(--spacing-md);
+    }
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .cards-component {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+        padding: var(--spacing-sm);
+    }
+    
+    .cards-2x2,
+    .cards-3x2,
+    .cards-2x3,
+    .cards-center-2 {
+        grid-template-columns: 1fr;
+        max-width: 100%;
+    }
+    
+    .card {
+        min-height: 160px;
+    }
+    
+    .card-image {
+        height: 100px;
+    }
+    
+    .card-content {
+        padding: var(--spacing-md);
+    }
+    
+    .card-title {
+        font-size: 16px;
+    }
+    
+    .card-text {
+        font-size: 13px;
+    }
+}
+
+/* Small mobile adjustments */
+@media (max-width: 480px) {
+    .cards-component {
+        padding: var(--spacing-xs);
+        gap: var(--spacing-sm);
+    }
+    
+    .card {
+        min-height: 140px;
+    }
+    
+    .card-image {
+        height: 80px;
+    }
+    
+    .card-selection-indicator {
+        width: 28px;
+        height: 28px;
+        top: var(--spacing-sm);
+        right: var(--spacing-sm);
+    }
+    
+    .selection-icon {
+        font-size: 14px;
+    }
+}
+
+/* ============================================
+   DARK MODE SUPPORT
+   Manual dark mode via .dark-mode class (matches color system pattern)
+   ============================================ */
+
+/* Dark mode when .dark-mode class is applied */
+.dark-mode .card {
+    background: var(--color-bg-tertiary);
+    border-color: var(--color-border-medium);
+    box-shadow: var(--shadow-md);
+}
+
+.dark-mode .card-pdf-modal .modal-close {
+    background: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    border-color: var(--color-border-light);
+    box-shadow: var(--shadow-xl);
+}
+
+.dark-mode .card-pdf-modal .modal-close:hover {
+    background: var(--color-bg-secondary);
+    border-color: var(--color-primary);
+}
+
+.dark-mode .card:hover {
+    box-shadow: var(--shadow-xl);
+    border-color: var(--color-primary);
+}
+
+.dark-mode .card-image {
+    background: var(--color-bg-secondary);
+}
+
+.dark-mode .card-selection-indicator {
+    background: var(--color-bg-tertiary);
+    border-color: var(--color-border-dark);
+}
+
+.dark-mode .card.selected {
+    background: var(--gradient-success);
+    border-color: var(--color-success);
+}
+
+.dark-mode .card.selected .card-title {
+    color: var(--color-text-light);
+}
+
+.dark-mode .card.selected .card-text {
+    color: var(--color-text-light);
+    opacity: 0.9;
+}
+
+/* System preference fallback (when .dark-mode class is not present) */
+@media (prefers-color-scheme: dark) {
+    html:not(.dark-mode) .card {
+        background: var(--color-bg-tertiary);
+        border-color: var(--color-border-medium);
+        box-shadow: var(--shadow-md);
+    }
+
+    html:not(.dark-mode) .card:hover {
+        box-shadow: var(--shadow-xl);
+        border-color: var(--color-primary);
+    }
+
+    html:not(.dark-mode) .card-image {
+        background: var(--color-bg-secondary);
+    }
+
+    html:not(.dark-mode) .card-selection-indicator {
+        background: var(--color-bg-tertiary);
+        border-color: var(--color-border-dark);
+    }
+
+    html:not(.dark-mode) .card.selected {
+        background: var(--gradient-success);
+        border-color: var(--color-success);
+    }
+
+    html:not(.dark-mode) .card.selected .card-title {
+        color: var(--color-text-light);
+    }
+
+    html:not(.dark-mode) .card.selected .card-text {
+        color: var(--color-text-light);
+        opacity: 0.9;
+    }
+
+    html:not(.dark-mode) .card-pdf-modal .modal-close {
+        background: var(--color-bg-primary);
+        color: var(--color-text-primary);
+        border-color: var(--color-border-light);
+        box-shadow: var(--shadow-xl);
+    }
+
+    html:not(.dark-mode) .card-pdf-modal .modal-close:hover {
+        background: var(--color-bg-secondary);
+        border-color: var(--color-primary);
+    }
+}
+
+/* ============================================
+   ACCESSIBILITY ENHANCEMENTS
+   ============================================ */
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .card {
+        border-width: 3px;
+    }
+    
+    .card.selected {
+        border-width: 4px;
+    }
+    
+    .card-selection-indicator {
+        border-width: 3px;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .card,
+    .card-image img,
+    .card-selection-indicator,
+    .selection-icon {
+        transition: none;
+    }
+    
+    .card:hover {
+        transform: none;
+    }
+    
+    .card:hover .card-image img {
+        transform: none;
+    }
+}
+
+/* Focus visible for better keyboard navigation */
+.card:focus-visible {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+@media print {
+    .cards-component {
+        display: block;
+    }
+    
+    .card {
+        break-inside: avoid;
+        margin-bottom: var(--spacing-lg);
+        box-shadow: none;
+        border: 2px solid var(--color-border-dark);
+    }
+    
+    .card-selection-indicator,
+    .card-expand-btn,
+    .card-image-modal,
+    .card-pdf-modal {
+        display: none;
+    }
+}
+
+/* ============================================
+   FULL-SCREEN IMAGE MODAL
+   ============================================ */
+.card-image-modal,
+.card-pdf-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh; 
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: modalFadeIn var(--transition-slow) ease-out;
+}
+
+.modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    cursor: pointer;
+}
+
+.modal-content {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1;
+}
+
+/* PDF modal content takes full space */
+.card-pdf-modal .modal-content {
+    max-width: 100vw;
+    max-height: 100vh;
+    width: 100%;
+    height: 100%;
+}
+
+.modal-close {
+    position: absolute;
+    top: -50px;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: bold;
+    transition: all var(--transition-base);
+    z-index: 2;
+}
+
+/* Floating close button for PDF modal */
+.card-pdf-modal .modal-close {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    border: 2px solid var(--color-border-medium);
+    box-shadow: var(--shadow-lg);
+    z-index: 10001;
+}
+
+.card-pdf-modal .modal-close:hover {
+    background: var(--color-bg-secondary);
+    border-color: var(--color-border-dark);
+    transform: scale(1.1);
+}
+
+.modal-close:hover {
+    background: white;
+    transform: scale(1.1);
+}
+
+.modal-close:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+.modal-image {
+    max-width: 100%;
+    max-height: calc(90vh - 60px);
+    object-fit: contain;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+}
+
+.modal-pdf {
+    width: 70vw;
+    height: 100vh;
+    border: none;
+    border-radius: 0;
+    box-shadow: var(--shadow-xl);
+    background: white;
+}
+
+.modal-title {
+    margin-top: var(--spacing-lg);
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Mobile adjustments for modal */
+@media (max-width: 768px) {
+    .modal-content {
+        max-width: 95vw;
+        max-height: 95vh;
+    }
+
+    .modal-close {
+        top: -40px;
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+    }
+
+    .modal-image {
+        max-height: calc(95vh - 50px);
+    }
+
+    .modal-pdf {
+        width: 90vw;
+        height: 100vh;
+        border-radius: 0;
+    }
+
+    .card-pdf-modal .modal-close {
+        top: 10px;
+        right: 10px;
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+        border-width: 1px;
+    }
+
+    .modal-title {
+        font-size: 16px;
+        margin-top: var(--spacing-md);
+    }
+}
+
+/* Reduced motion support for modal */
+@media (prefers-reduced-motion: reduce) {
+    .card-image-modal {
+        animation: none;
+    }
+
+    @keyframes modalFadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+}

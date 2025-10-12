@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cards Component - Examples</title>
+    
+    <!-- Color Management System -->
+    <link rel="stylesheet" href="../../color-system/colors.css">
+    
+    <!-- Cards Component -->
+    <link rel="stylesheet" href="cards.css">
+    
+    <!-- Alert Component -->
+    <link rel="stylesheet" href="../alert/alert.css">
+
+    <!-- Toggle Component (required for dark mode toggle) -->
+    <link rel="stylesheet" href="../toggle/toggle.css">
+
+    <!-- Dark Mode Toggle -->
+    <link rel="stylesheet" href="../../dark-mode-toggle/dark-mode-toggle.css">
+    
+    <!-- Demo Styles -->
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--color-bg-primary);
+            color: var(--color-text-primary);
+            margin: 0;
+            padding: var(--spacing-xl);
+            line-height: 1.6;
+            transition: all var(--transition-base);
+        }
+        
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .demo-section {
+            margin-bottom: var(--spacing-4xl);
+            padding: var(--spacing-xl);
+            background: var(--color-bg-secondary);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border-light);
+        }
+        
+        .demo-section h2 {
+            margin-top: 0;
+            color: var(--color-text-primary);
+            border-bottom: 2px solid var(--color-primary);
+            padding-bottom: var(--spacing-sm);
+        }
+        
+        .demo-section h3 {
+            color: var(--color-text-secondary);
+            margin-top: var(--spacing-xl);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: var(--spacing-md);
+            margin: var(--spacing-lg) 0;
+            flex-wrap: wrap;
+        }
+        
+        .demo-button {
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border: 2px solid var(--color-primary);
+            background: var(--color-primary);
+            color: white;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all var(--transition-base);
+        }
+        
+        .demo-button:hover {
+            background: var(--color-primary-dark);
+            border-color: var(--color-primary-dark);
+            transform: translateY(-1px);
+        }
+        
+        .demo-button.btn-secondary {
+            background: var(--color-secondary);
+            border-color: var(--color-secondary);
+        }
+        
+        .demo-button.btn-secondary:hover {
+            background: var(--color-secondary-dark);
+            border-color: var(--color-secondary-dark);
+        }
+        
+        .code-block {
+            background: var(--color-bg-tertiary);
+            border: 1px solid var(--color-border-medium);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 13px;
+            color: var(--color-text-code);
+            overflow-x: auto;
+            margin: var(--spacing-lg) 0;
+            white-space: pre-wrap;
+        }
+        
+        .selection-output {
+            background: var(--gradient-info-subtle);
+            border: 1px solid var(--color-info-border);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            margin: var(--spacing-lg) 0;
+            font-family: monospace;
+            font-size: 13px;
+            color: var(--color-info-darker);
+            min-height: 40px;
+        }
+        
+        .cards-container {
+            margin: var(--spacing-lg) 0;
+            min-height: 300px;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: var(--spacing-4xl);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: var(--spacing-sm);
+            background: linear-gradient(135deg, var(--color-primary), var(--color-success));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            color: var(--color-text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="header">
+            <h1>Cards Component</h1>
+            <p>A flexible, reusable card selection component with responsive layouts, validation, full-screen image preview, and dark mode support.</p>
+        </div>
+
+        <!-- Single Selection Example -->
+        <div class="demo-section">
+            <h2>Single Selection (Required)</h2>
+            <p>Choose one option. This example demonstrates required validation - try clicking the validate button without selecting anything.</p>
+            
+            <div class="button-group">
+                <button class="demo-button" onclick="validateSingleSelect()">Validate Selection</button>
+                <button class="demo-button btn-secondary" onclick="clearSingleSelect()">Clear Selection</button>
+                <button class="demo-button btn-secondary" onclick="setSingleSelect()">Set to Option 2</button>
+            </div>
+            
+            <div id="single-select-container" class="cards-container"></div>
+            
+            <div class="selection-output" id="single-select-output">
+                No selection made
+            </div>
+            
+            <div class="code-block">const singleSelect = new Cards({
+    containerId: 'single-select-container',
+    cards: [
+        { title: 'Basic Plan', content: '$10/month', value: 'basic' },
+        { title: 'Pro Plan', content: '$25/month', value: 'pro' },
+        { title: 'Enterprise', content: '$50/month', value: 'enterprise' }
+    ],
+    multiSelect: false,
+    required: true,
+    onChange: (selection) => {
+        console.log('Selected:', selection);
+    }
+});</div>
+        </div>
+
+        <!-- Multi Selection Example -->
+        <div class="demo-section">
+            <h2>Multi-Selection with Images</h2>
+            <p>Select multiple technologies. This example shows image support and multi-select mode. <strong>Hover over images to see the expand button for full-screen preview!</strong></p>
+            
+            <div class="button-group">
+                <button class="demo-button" onclick="getMultiSelection()">Get Selection</button>
+                <button class="demo-button btn-secondary" onclick="clearMultiSelect()">Clear All</button>
+                <button class="demo-button btn-secondary" onclick="setMultiSelect()">Select JS & React</button>
+            </div>
+            
+            <div id="multi-select-container" class="cards-container"></div>
+            
+            <div class="selection-output" id="multi-select-output">
+                No selections made
+            </div>
+            
+            <div class="code-block">const multiSelect = new Cards({
+    containerId: 'multi-select-container',
+    cards: [
+        { title: 'JavaScript', content: 'Modern web development', value: 'js' },
+        { title: 'Python', content: 'Data science and backend', value: 'python' },
+        { title: 'React', content: 'Frontend framework', value: 'react' },
+        { title: 'Node.js', content: 'Server-side JavaScript', value: 'node' },
+        { title: 'TypeScript', content: 'Typed JavaScript', value: 'ts' },
+        { title: 'Vue.js', content: 'Progressive framework', value: 'vue' }
+    ],
+    multiSelect: true,
+    required: false,
+    gridLayout: '3x2'
+});</div>
+        </div>
+
+        <!-- Centered Layout Example -->
+        <div class="demo-section">
+            <h2>Centered Layout (2 Cards)</h2>
+            <p>When you have fewer cards, they automatically center in the container.</p>
+            
+            <div class="button-group">
+                <button class="demo-button" onclick="getCenteredSelection()">Get Selection</button>
+                <button class="demo-button btn-secondary" onclick="clearCenteredSelect()">Clear Selection</button>
+            </div>
+            
+            <div id="centered-container" class="cards-container"></div>
+            
+            <div class="selection-output" id="centered-output">
+                No selection made
+            </div>
+            
+            <div class="code-block">const centeredCards = new Cards({
+    containerId: 'centered-container',
+    cards: [
+        { title: 'Light Mode', content: 'Classic bright interface', value: 'light' },
+        { title: 'Dark Mode', content: 'Easy on the eyes', value: 'dark' }
+    ],
+    multiSelect: false,
+    required: false,
+    gridLayout: 'center-2'
+});</div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../alert/alert.js"></script>
+    <script src="../toggle/toggle.js"></script>
+    <script src="../../dark-mode-toggle/dark-mode-toggle.js"></script>
+    <script src="cards.js"></script>
+
+    <script>
+        // Initialize components when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize dark mode toggle
+            new DarkModeToggle();
+
+            // Single Selection Example
+            window.singleSelect = new Cards({
+                containerId: 'single-select-container',
+                cards: [
+                    {
+                        title: 'Basic Plan',
+                        content: '$10/month<br><small>Perfect for individuals</small>',
+                        value: 'basic'
+                    },
+                    {
+                        title: 'Pro Plan',
+                        content: '$25/month<br><small>Great for small teams</small>',
+                        value: 'pro'
+                    },
+                    {
+                        title: 'Enterprise',
+                        content: '$50/month<br><small>For large organizations</small>',
+                        value: 'enterprise'
+                    }
+                ],
+                multiSelect: false,
+                required: true,
+                onChange: (selection) => {
+                    const output = document.getElementById('single-select-output');
+                    if (selection.length > 0) {
+                        output.textContent = `Selected: ${selection[0].title} (${selection[0].value})`;
+                    } else {
+                        output.textContent = 'No selection made';
+                    }
+                }
+            });
+
+            // Multi Selection Example
+            window.multiSelect = new Cards({
+                containerId: 'multi-select-container',
+                cards: [
+                    {
+                        title: 'JavaScript',
+                        content: 'Modern web development language',
+                        value: 'js'
+                    },
+                    {
+                        title: 'Python',
+                        content: 'Data science and backend development',
+                        value: 'python'
+                    },
+                    {
+                        title: 'React',
+                        content: 'Popular frontend framework',
+                        value: 'react'
+                    },
+                    {
+                        title: 'Node.js',
+                        content: 'Server-side JavaScript runtime',
+                        value: 'node'
+                    },
+                    {
+                        title: 'TypeScript',
+                        content: 'Typed superset of JavaScript',
+                        value: 'ts'
+                    },
+                    {
+                        title: 'Vue.js',
+                        content: 'Progressive JavaScript framework',
+                        value: 'vue'
+                    }
+                ],
+                multiSelect: true,
+                required: false,
+                gridLayout: '3x2',
+                onChange: (selection) => {
+                    const output = document.getElementById('multi-select-output');
+                    if (selection.length > 0) {
+                        const titles = selection.map(s => s.title).join(', ');
+                        const values = selection.map(s => s.value).join(', ');
+                        output.innerHTML = `Selected ${selection.length} items:<br>Titles: ${titles}<br>Values: ${values}`;
+                    } else {
+                        output.textContent = 'No selections made';
+                    }
+                }
+            });
+
+            // Centered Layout Example
+            window.centeredCards = new Cards({
+                containerId: 'centered-container',
+                cards: [
+                    {
+                        title: 'Light Mode',
+                        content: 'Classic bright interface for daytime use',
+                        value: 'light'
+                    },
+                    {
+                        title: 'Dark Mode',
+                        content: 'Easy on the eyes for nighttime coding',
+                        value: 'dark'
+                    }
+                ],
+                multiSelect: false,
+                required: false,
+                gridLayout: 'center-2',
+                onChange: (selection) => {
+                    const output = document.getElementById('centered-output');
+                    if (selection.length > 0) {
+                        output.textContent = `Selected: ${selection[0].title} (${selection[0].value})`;
+                    } else {
+                        output.textContent = 'No selection made';
+                    }
+                }
+            });
+        });
+
+        // Demo Functions
+        function validateSingleSelect() {
+            if (window.singleSelect.validate()) {
+                showSuccess('Selection is valid!');
+            } else {
+                window.singleSelect.showValidationError('Please select a plan to continue');
+            }
+        }
+
+        function clearSingleSelect() {
+            window.singleSelect.clearSelection();
+            showSuccess('Selection cleared');
+        }
+
+        function setSingleSelect() {
+            window.singleSelect.setSelection(['pro']);
+            showSuccess('Set to Pro Plan');
+        }
+
+        function getMultiSelection() {
+            const selection = window.multiSelect.getSelection();
+            if (selection.length > 0) {
+                const titles = selection.map(s => s.title).join(', ');
+                showSuccess(`Selected: ${titles}`);
+            } else {
+                showWarning('No technologies selected');
+            }
+        }
+
+        function clearMultiSelect() {
+            window.multiSelect.clearSelection();
+            showSuccess('All selections cleared');
+        }
+
+        function setMultiSelect() {
+            window.multiSelect.setSelection(['js', 'react']);
+            showSuccess('Selected JavaScript and React');
+        }
+
+        function getCenteredSelection() {
+            const selection = window.centeredCards.getSelection();
+            if (selection.length > 0) {
+                showSuccess(`Selected: ${selection[0].title}`);
+            } else {
+                showWarning('No theme selected');
+            }
+        }
+
+        function clearCenteredSelect() {
+            window.centeredCards.clearSelection();
+            showSuccess('Theme selection cleared');
+        }
+    </script>

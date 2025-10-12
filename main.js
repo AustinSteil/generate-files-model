@@ -29,7 +29,7 @@ class DocumentGenerator {
         // See fields/vars.json.README.md for detailed documentation
         this.varsConfig = {}; // Configuration mapping for template variables
 
-        this.templatePath = 'template_1.docx'; // Default template file path
+        this.templatePath = 'templates/word/template_1.docx'; // Default template file path
         this.secureStorage = new SecureStorage(); // Secure storage instance
         this.storageUIManager = null; // Storage UI manager instance
         this.storageDataManager = null; // Storage data manager instance
@@ -208,6 +208,9 @@ class DocumentGenerator {
 
         this.collectFormData();
 
+        // Set the template path based on selected template
+        this.setTemplateFromSelection();
+
         try {
             // Generate document using docxtemplater
             const generatedDoc = await this.generateDocumentWithTemplate();
@@ -221,6 +224,22 @@ class DocumentGenerator {
         } catch (error) {
             console.error('Document generation failed:', error);
             showError(`Failed to generate document: ${error.message}`);
+        }
+    }
+
+    /**
+     * Set the template path based on the selected template from the intro tab
+     */
+    setTemplateFromSelection() {
+        // Get the selected template from form data
+        const selectedTemplate = this.formData.selectedTemplate || this.formData.template;
+
+        if (selectedTemplate) {
+            this.templatePath = `templates/word/${selectedTemplate}.docx`;
+            console.log('Using template:', this.templatePath);
+        } else {
+            console.warn('No template selected, using default template');
+            this.templatePath = 'templates/word/template_1.docx';
         }
     }
 
