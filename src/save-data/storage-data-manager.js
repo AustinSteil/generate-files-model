@@ -176,25 +176,54 @@ class StorageDataManager {
 
     /**
      * Populate form with loaded data
-     * Uses varsConfig as the single source of truth for which fields to populate
+     * Uses the tabs manager to populate data instead of direct DOM manipulation
      * @param {Object} formData - Data to populate form with
      */
     populateForm(formData) {
-        // Use varsConfig to determine which fields should be populated
-        // This ensures we only populate fields that are defined in fields/vars.json
-        const varsConfig = this.documentGenerator.varsConfig;
+        // Check if we have a tabs manager (new tab-based system)
+        if (this.documentGenerator.tabsManager) {
+            // Use the tabs manager to populate data
+            // The formData structure should match what the tabs expect
+            const tabData = {
+                intro: {},
+                demographics: {},
+                jobs: formData.jobs || [],
+                summary: {}
+            };
 
-        Object.keys(varsConfig).forEach(fieldName => {
-            // Check if we have saved data for this field
-            if (formData.hasOwnProperty(fieldName)) {
-                const element = document.getElementById(fieldName);
-                if (element) {
-                    element.value = formData[fieldName];
-                } else {
-                    console.warn(`Field "${fieldName}" defined in fields/vars.json but not found in form`);
+            // Distribute the flat formData into tab-specific data
+            const varsConfig = this.documentGenerator.varsConfig;
+            Object.keys(varsConfig).forEach(fieldName => {
+                if (formData.hasOwnProperty(fieldName)) {
+                    // Map fields to appropriate tabs based on field names
+                    if (['title', 'subtitle', 'author', 'email', 'date', 'selectedTemplate', 'template'].includes(fieldName)) {
+                        tabData.intro[fieldName] = formData[fieldName];
+                    } else if (['name', 'age', 'location'].includes(fieldName)) {
+                        tabData.demographics[fieldName] = formData[fieldName];
+                    } else if (['documentContent'].includes(fieldName)) {
+                        tabData.summary[fieldName] = formData[fieldName];
+                    }
                 }
-            }
-        });
+            });
+
+            // Set data in all tabs
+            this.documentGenerator.tabsManager.setAllData(tabData);
+        } else {
+            // Fallback to old DOM-based approach for backward compatibility
+            const varsConfig = this.documentGenerator.varsConfig;
+
+            Object.keys(varsConfig).forEach(fieldName => {
+                // Check if we have saved data for this field
+                if (formData.hasOwnProperty(fieldName)) {
+                    const element = document.getElementById(fieldName);
+                    if (element) {
+                        element.value = formData[fieldName];
+                    } else {
+                        console.warn(`Field "${fieldName}" defined in fields/vars.json but not found in form`);
+                    }
+                }
+            });
+        }
 
         // Trigger validation after populating
         this.documentGenerator.validateForm();

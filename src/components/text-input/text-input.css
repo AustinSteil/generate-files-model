@@ -1,0 +1,241 @@
+/**
+ * TextInput Component Styles
+ * 
+ * Comprehensive styling for the reusable text input component.
+ * Uses the centralized color management system for consistency.
+ * 
+ * @author Austin Steil
+ * @version 1.0.0
+ */
+
+/* ============================================
+   TEXT INPUT COMPONENT BASE
+   ============================================ */
+
+.text-input-component {
+    margin-bottom: var(--spacing-2xl);
+    position: relative;
+}
+
+.text-input-component label {
+    display: block;
+    margin-bottom: var(--spacing-sm);
+    font-weight: 600;
+    background: linear-gradient(135deg, var(--color-text-primary), var(--color-text-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+}
+
+.text-input-field {
+    width: 100%;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border: 2px solid var(--color-border-medium);
+    border-radius: var(--radius-lg);
+    font-size: 16px;
+    font-family: inherit;
+    color: var(--color-text-primary);
+    background: linear-gradient(to bottom,
+        var(--color-bg-primary) 0%,
+        var(--color-gray-50) 100%);
+    transition: all var(--transition-cubic);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06),
+                inset 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.text-input-field:hover {
+    border-color: var(--color-border-dark);
+    background: var(--color-bg-primary);
+}
+
+.text-input-field:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    background: var(--color-bg-primary);
+    box-shadow: 0 0 0 4px rgba(var(--color-primary-rgb), 0.12),
+                0 2px 8px rgba(var(--color-primary-rgb), 0.15),
+                inset 0 1px 2px rgba(0, 0, 0, 0.05);
+    transform: translateY(-2px);
+}
+
+.text-input-field::placeholder {
+    color: var(--color-text-tertiary);
+    opacity: 0.7;
+}
+
+/* ============================================
+   ERROR STATES
+   ============================================ */
+
+.text-input-field.error {
+    border-color: var(--color-error);
+    background: linear-gradient(to bottom,
+        rgba(var(--color-error-rgb), 0.05) 0%,
+        rgba(var(--color-error-rgb), 0.02) 100%);
+}
+
+.text-input-field.error:focus {
+    border-color: var(--color-error);
+    box-shadow: 0 0 0 4px rgba(var(--color-error-rgb), 0.12),
+                0 2px 8px rgba(var(--color-error-rgb), 0.15),
+                inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.text-input-error {
+    margin-top: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: rgba(var(--color-error-rgb), 0.1);
+    border: 1px solid rgba(var(--color-error-rgb), 0.2);
+    border-radius: var(--radius-md);
+    color: var(--color-error);
+    font-size: 14px;
+    font-weight: 500;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================
+   DISABLED STATE
+   ============================================ */
+
+.text-input-field:disabled {
+    background: var(--color-gray-100);
+    color: var(--color-text-tertiary);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.text-input-field:disabled::placeholder {
+    color: var(--color-text-tertiary);
+    opacity: 0.5;
+}
+
+/* ============================================
+   REQUIRED FIELD INDICATOR
+   ============================================ */
+
+.text-input-component label::after {
+    content: '';
+}
+
+.text-input-component label:has-text('*')::after {
+    content: '';
+    color: var(--color-error);
+    margin-left: var(--spacing-xs);
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+    .text-input-field {
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: 16px; /* Prevent zoom on iOS */
+    }
+    
+    .text-input-component label {
+        font-size: 13px;
+    }
+}
+
+/* ============================================
+   DARK MODE ADJUSTMENTS
+   ============================================ */
+
+@media (prefers-color-scheme: dark) {
+    .text-input-field {
+        background: linear-gradient(to bottom,
+            var(--color-bg-primary) 0%,
+            var(--color-gray-800) 100%);
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2),
+                    inset 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+    
+    .text-input-field:hover {
+        background: var(--color-bg-primary);
+    }
+    
+    .text-input-field:focus {
+        background: var(--color-bg-primary);
+        box-shadow: 0 0 0 4px rgba(var(--color-primary-rgb), 0.15),
+                    0 2px 8px rgba(var(--color-primary-rgb), 0.2),
+                    inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    
+    .text-input-field.error {
+        background: linear-gradient(to bottom,
+            rgba(var(--color-error-rgb), 0.08) 0%,
+            rgba(var(--color-error-rgb), 0.04) 100%);
+    }
+}
+
+/* ============================================
+   SPECIAL INPUT TYPES
+   ============================================ */
+
+/* Date inputs */
+.text-input-field[type="date"] {
+    position: relative;
+}
+
+.text-input-field[type="date"]::-webkit-calendar-picker-indicator {
+    background: transparent;
+    bottom: 0;
+    color: transparent;
+    cursor: pointer;
+    height: auto;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: auto;
+}
+
+/* Number inputs */
+.text-input-field[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.text-input-field[type="number"]::-webkit-outer-spin-button,
+.text-input-field[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Email inputs */
+.text-input-field[type="email"] {
+    text-transform: lowercase;
+}
+
+/* ============================================
+   COMPONENT VARIANTS
+   ============================================ */
+
+.text-input-component.compact {
+    margin-bottom: var(--spacing-lg);
+}
+
+.text-input-component.compact .text-input-field {
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 14px;
+}
+
+.text-input-component.large .text-input-field {
+    padding: var(--spacing-lg) var(--spacing-xl);
+    font-size: 18px;
+}

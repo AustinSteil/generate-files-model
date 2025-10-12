@@ -16,6 +16,11 @@ class IntroTab {
         }
         this.templateCards = null;
         this.selectedTemplate = null;
+        this.titleInput = null;
+        this.subtitleInput = null;
+        this.authorInput = null;
+        this.emailInput = null;
+        this.dateInput = null;
         this.render();
         this.init();
     }
@@ -26,42 +31,93 @@ class IntroTab {
     render() {
         this.container.innerHTML = `
             <div class="intro-content">
-                <h2>Cover Page Information</h2>
-                <p>This section will collect information for the document cover page.</p>
+                <h2>Pick a Template</h2>
 
                 <div class="form-group">
-                    <label for="intro-title">Document Title:</label>
-                    <input type="text" id="intro-title" placeholder="Enter document title">
-                </div>
-
-                <div class="form-group">
-                    <label for="intro-subtitle">Subtitle:</label>
-                    <input type="text" id="intro-subtitle" placeholder="Enter subtitle (optional)">
-                </div>
-
-                <div class="form-group">
-                    <label for="intro-author">Author:</label>
-                    <input type="text" id="intro-author" placeholder="Enter author name">
-                </div>
-
-                <div class="form-group">
-                    <label for="intro-date">Date:</label>
-                    <input type="date" id="intro-date">
-                </div>
-
-                <div class="form-group">
-                    <label for="template-selection">Choose Template:</label>
+                    <label for="template-selection"></label>
                     <div id="template-selection-container"></div>
                     <!-- Hidden input for storage system compatibility -->
                     <input type="hidden" id="selectedTemplate" name="selectedTemplate" value="">
                 </div>
+
+                <p>This section will collect information for the document cover page.</p>
+
+                <div id="title-input-container"></div>
+                <div id="subtitle-input-container"></div>
+                <div id="author-input-container"></div>
+                <div id="email-input-container"></div>
+                <div id="date-input-container"></div>
             </div>
         `;
     }
 
     init() {
         console.log('Intro tab initialized');
+        this.initializeTextInputs();
         this.initializeTemplateSelection();
+    }
+
+    /**
+     * Initialize all text input components
+     */
+    initializeTextInputs() {
+        // Wait for TextInput component to be available
+        if (typeof TextInput === 'undefined') {
+            setTimeout(() => this.initializeTextInputs(), 100);
+            return;
+        }
+
+        // Title input
+        this.titleInput = new TextInput({
+            containerId: 'title-input-container',
+            id: 'intro-title',
+            name: 'title',
+            label: 'Document Title',
+            placeholder: 'Enter document title',
+            defaultValue: 'Job Demands Analysis',
+            required: true
+        });
+
+        // Subtitle input
+        this.subtitleInput = new TextInput({
+            containerId: 'subtitle-input-container',
+            id: 'intro-subtitle',
+            name: 'subtitle',
+            label: 'Subtitle',
+            placeholder: 'Enter subtitle (optional)'
+        });
+
+        // Author input
+        this.authorInput = new TextInput({
+            containerId: 'author-input-container',
+            id: 'intro-author',
+            name: 'author',
+            label: 'Your Name',
+            placeholder: 'First Last',
+            required: true
+        });
+        
+        // Email input
+        this.emailInput = new TextInput({
+            containerId: 'email-input-container',
+            id: 'intro-email',
+            name: 'email',
+            label: 'Your Email Address',
+            placeholder: 'example@example.com',
+            type: 'email',
+            required: true
+        });
+
+        // Date input
+        this.dateInput = new TextInput({
+            containerId: 'date-input-container',
+            id: 'intro-date',
+            name: 'date',
+            label: 'Date',
+            type: 'date',
+            defaultValue: new Date().toISOString().split('T')[0],
+            required: true
+        });
     }
 
     /**
@@ -151,13 +207,19 @@ class IntroTab {
      * @returns {Object} Intro tab data
      */
     getData() {
-        return {
-            title: document.getElementById('intro-title')?.value || '',
-            subtitle: document.getElementById('intro-subtitle')?.value || '',
-            author: document.getElementById('intro-author')?.value || '',
-            date: document.getElementById('intro-date')?.value || '',
-            template: this.selectedTemplate || ''
+        const data = {
+            template: this.selectedTemplate || '',
+            selectedTemplate: this.selectedTemplate || '' // For storage system compatibility
         };
+
+        // Get data from TextInput components
+        if (this.titleInput) Object.assign(data, this.titleInput.getData());
+        if (this.subtitleInput) Object.assign(data, this.subtitleInput.getData());
+        if (this.authorInput) Object.assign(data, this.authorInput.getData());
+        if (this.emailInput) Object.assign(data, this.emailInput.getData());
+        if (this.dateInput) Object.assign(data, this.dateInput.getData());
+
+        return data;
     }
 
     /**
@@ -165,30 +227,22 @@ class IntroTab {
      * @param {Object} data - Data to populate the form
      */
     setData(data) {
-        if (data.title) document.getElementById('intro-title').value = data.title;
-        if (data.subtitle) document.getElementById('intro-subtitle').value = data.subtitle;
-        if (data.author) document.getElementById('intro-author').value = data.author;
-        if (data.date) document.getElementById('intro-date').value = data.date;
+        // Set data in TextInput components
+        if (this.titleInput) this.titleInput.setData(data);
+        if (this.subtitleInput) this.subtitleInput.setData(data);
+        if (this.authorInput) this.authorInput.setData(data);
+        if (this.emailInput) this.emailInput.setData(data);
+        if (this.dateInput) this.dateInput.setData(data);
 
         // Set template selection if available
-        if (data.template && this.templateCards) {
-            this.templateCards.setSelection([data.template]);
-            this.selectedTemplate = data.template;
+        const templateValue = data.template || data.selectedTemplate;
+        if (templateValue && this.templateCards) {
+            this.templateCards.setSelection([templateValue]);
+            this.selectedTemplate = templateValue;
             // Update hidden input
             const hiddenInput = document.getElementById('selectedTemplate');
             if (hiddenInput) {
-                hiddenInput.value = data.template;
-            }
-        }
-
-        // Also check for selectedTemplate field (from storage system)
-        if (data.selectedTemplate && this.templateCards) {
-            this.templateCards.setSelection([data.selectedTemplate]);
-            this.selectedTemplate = data.selectedTemplate;
-            // Update hidden input
-            const hiddenInput = document.getElementById('selectedTemplate');
-            if (hiddenInput) {
-                hiddenInput.value = data.selectedTemplate;
+                hiddenInput.value = templateValue;
             }
         }
     }
@@ -198,16 +252,23 @@ class IntroTab {
      * @returns {boolean} True if valid
      */
     validate() {
-        const data = this.getData();
-        const hasRequiredFields = data.title.trim() !== '' && data.author.trim() !== '';
-        const hasTemplate = data.template !== '';
+        let isValid = true;
 
-        // Show validation error for template if missing
-        if (hasRequiredFields && !hasTemplate && this.templateCards) {
+        // Validate TextInput components
+        if (this.titleInput && !this.titleInput.validate()) isValid = false;
+        if (this.subtitleInput && !this.subtitleInput.validate()) isValid = false;
+        if (this.authorInput && !this.authorInput.validate()) isValid = false;
+        if (this.emailInput && !this.emailInput.validate()) isValid = false;
+        if (this.dateInput && !this.dateInput.validate()) isValid = false;
+
+        // Validate template selection
+        const hasTemplate = this.selectedTemplate !== null && this.selectedTemplate !== '';
+        if (!hasTemplate && this.templateCards) {
             this.templateCards.showValidationError('Please select a template to continue');
+            isValid = false;
         }
 
-        return hasRequiredFields && hasTemplate;
+        return isValid;
     }
 }
 

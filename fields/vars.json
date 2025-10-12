@@ -1,7 +1,9 @@
 {
-  "documentTitle": "{documentTitle}",
-  "authorName": "{authorName}",
-  "documentDate": "{documentDate}",
+  "title": "{documentTitle}",
+  "subtitle": "{documentSubtitle}",
+  "author": "{authorName}",
+  "email": "{authorEmail}",
+  "date": "{documentDate}",
   "documentContent": "{documentContent}",
   "selectedTemplate": "{selectedTemplate}"
 }
