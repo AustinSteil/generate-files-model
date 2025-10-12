@@ -123,10 +123,10 @@ The toggle button shows the current mode and allows instant switching between li
 
 The project includes interactive demo pages for testing and showcasing components:
 
-- **[Color System Demo](src/color-system/color-system-demo.html)** - Interactive showcase of the entire color palette with light/dark mode
-- **[Contrast Test Tool](src/color-system/contrast-test.html)** - Accessibility testing tool for color contrast ratios
-- **[Alert Component Demo](src/components/alert/alert-example.html)** - Examples of alert notifications with different colors and configurations
-- **[Tooltip Component Demo](src/components/tooltip/tooltip-example.html)** - Interactive tooltip examples with different positions
+- **[Color System Demo](https://austinsteil.github.io/generate-files-model/src/color-system/color-system-demo.html)** - Interactive showcase of the entire color palette with light/dark mode
+- **[Contrast Test Tool](https://austinsteil.github.io/generate-files-model/src/color-system/contrast-test.html)** - Accessibility testing tool for color contrast ratios
+- **[Alert Component Demo](https://austinsteil.github.io/generate-files-model/src/components/alert/alert-example.html)** - Examples of alert notifications with different colors and configurations
+- **[Tooltip Component Demo](https://austinsteil.github.io/generate-files-model/src/components/tooltip/tooltip-example.html)** - Interactive tooltip examples with different positions
 
 These demo files can be opened directly in your browser or served through a local web server.
 
