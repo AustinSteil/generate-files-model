@@ -23,7 +23,12 @@ class DocumentGenerator {
      */
     constructor() {
         this.formData = {}; // Stores user input from the form
+
+        // varsConfig is the SINGLE SOURCE OF TRUTH for all document variables
+        // It defines: which fields to collect, save, load, and map to templates
+        // See fields/vars.json.README.md for detailed documentation
         this.varsConfig = {}; // Configuration mapping for template variables
+
         this.templatePath = 'template_1.docx'; // Default template file path
         this.secureStorage = new SecureStorage(); // Secure storage instance
         this.storageUIManager = null; // Storage UI manager instance
@@ -54,22 +59,22 @@ class DocumentGenerator {
     }
 
     /**
-     * Load variable configuration from vars.json file
+     * Load variable configuration from fields/vars.json file
      * Falls back to default configuration if file cannot be loaded
      */
     async loadVarsConfig() {
         try {
-            const response = await fetch('vars.json');
+            const response = await fetch('fields/vars.json');
             this.varsConfig = await response.json();
             console.log('Loaded vars config:', this.varsConfig);
         } catch (error) {
-            console.warn('Could not load vars.json, using default configuration');
+            console.warn('Could not load fields/vars.json, using default configuration');
             this.varsConfig = this.getDefaultVarsConfig();
         }
     }
 
     /**
-     * Get default variable configuration if vars.json cannot be loaded
+     * Get default variable configuration if fields/vars.json cannot be loaded
      * @returns {Object} Default variable mapping configuration
      */
     getDefaultVarsConfig() {
@@ -145,16 +150,23 @@ class DocumentGenerator {
 
     /**
      * Collect all form data and store it in this.formData
+     * Uses varsConfig as the single source of truth for which fields to collect
      * @returns {Object} The collected form data
      */
     collectFormData() {
-        const form = document.getElementById('documentForm');
-        const formData = new FormData(form);
-
         this.formData = {};
-        for (let [key, value] of formData.entries()) {
-            this.formData[key] = value;
-        }
+
+        // Iterate through varsConfig keys to determine which fields to collect
+        // This makes varsConfig the single source of truth for saveable fields
+        Object.keys(this.varsConfig).forEach(fieldName => {
+            const element = document.getElementById(fieldName);
+            if (element) {
+                // Collect the value from the form element
+                this.formData[fieldName] = element.value || '';
+            } else {
+                console.warn(`Field "${fieldName}" defined in fields/vars.json but not found in form`);
+            }
+        });
 
         return this.formData;
     }

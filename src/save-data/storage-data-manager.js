@@ -1,10 +1,15 @@
 /**
  * Storage Data Manager
- * 
+ *
  * Handles all storage data operations for the Document Generator.
  * This includes saving, loading, and clearing form data, as well as
  * managing user authentication and form population.
- * 
+ *
+ * IMPORTANT: This manager uses fields/vars.json as the single source of truth.
+ * It automatically adapts to changes in fields/vars.json without code modifications.
+ * When you add/remove fields in fields/vars.json, the storage system automatically
+ * handles them - no updates needed to this file!
+ *
  * @author Austin Steil
  * @version 1.0.0
  */
@@ -171,13 +176,23 @@ class StorageDataManager {
 
     /**
      * Populate form with loaded data
+     * Uses varsConfig as the single source of truth for which fields to populate
      * @param {Object} formData - Data to populate form with
      */
     populateForm(formData) {
-        Object.entries(formData).forEach(([key, value]) => {
-            const element = document.getElementById(key);
-            if (element) {
-                element.value = value;
+        // Use varsConfig to determine which fields should be populated
+        // This ensures we only populate fields that are defined in fields/vars.json
+        const varsConfig = this.documentGenerator.varsConfig;
+
+        Object.keys(varsConfig).forEach(fieldName => {
+            // Check if we have saved data for this field
+            if (formData.hasOwnProperty(fieldName)) {
+                const element = document.getElementById(fieldName);
+                if (element) {
+                    element.value = formData[fieldName];
+                } else {
+                    console.warn(`Field "${fieldName}" defined in fields/vars.json but not found in form`);
+                }
             }
         });
 

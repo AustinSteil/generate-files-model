@@ -173,9 +173,15 @@ Customizable toggle switches:
 
 ## Configuration
 
-### Template Variables
+### Template Variables (vars.json)
 
-Edit `vars.json` to customize the template variable mappings:
+**`fields/vars.json` is the single source of truth** for all document variables in the application. This file controls:
+
+- Which form fields are collected
+- Which data gets saved/loaded with "Save Data for Later"
+- How form data maps to template variables
+
+Edit `fields/vars.json` to customize the template variable mappings:
 
 ```json
 {
@@ -186,9 +192,19 @@ Edit `vars.json` to customize the template variable mappings:
 }
 ```
 
+**Adding new fields is easy:**
+
+1. Add the field to `fields/vars.json`
+2. Add the corresponding HTML form element to `index.html`
+3. Add the placeholder to your Word template
+
+The storage system automatically adapts to changes in `fields/vars.json` - no code changes needed!
+
+For detailed documentation, see [`fields/vars.json.README.md`](fields/vars.json.README.md).
+
 ### Custom Templates
 
-Replace `template_1.docx` with your own Word template file. Ensure your template uses the same placeholder variables defined in `vars.json`.
+Replace `template_1.docx` with your own Word template file. Ensure your template uses the same placeholder variables defined in `fields/vars.json`.
 
 ## Project Structure
 
@@ -197,7 +213,11 @@ generate-files-model/
 ├── index.html              # Main application interface
 ├── main.js                 # Core application logic
 ├── main.css                # Main styling and responsive design
-├── vars.json               # Template variable configuration
+├── fields/                 # Field configuration and documentation
+│   ├── vars.json           # Template variable configuration (single source of truth)
+│   ├── vars.json.README.md # Detailed vars.json documentation
+│   ├── QUICK-START-ADDING-FIELDS.md # Quick guide for adding fields
+│   └── STORAGE-SYSTEM-IMPROVEMENTS.md # Storage system architecture
 ├── template_1.docx         # Default Word template
 ├── package.json            # Project dependencies and scripts
 ├── LICENSE                 # MIT license
