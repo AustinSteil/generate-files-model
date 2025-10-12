@@ -33,6 +33,7 @@ class DocumentGenerator {
         this.secureStorage = new SecureStorage(); // Secure storage instance
         this.storageUIManager = null; // Storage UI manager instance
         this.storageDataManager = null; // Storage data manager instance
+        this.tabsManager = null; // Tabs manager instance
 
         this.init();
     }
@@ -48,11 +49,11 @@ class DocumentGenerator {
         // Load variable configuration from vars.json
         await this.loadVarsConfig();
 
+        // Initialize tabs manager
+        this.initializeTabsManager();
+
         // Set up DOM event listeners
         this.setupEventListeners();
-
-        // Set default date to today's date
-        this.setDefaultDate();
 
         // Initialize storage managers
         this.initializeStorageManagers();
@@ -87,33 +88,38 @@ class DocumentGenerator {
     }
 
     /**
-     * Set up all DOM event listeners for form interactions
+     * Initialize the tabs manager
      */
-    setupEventListeners() {
-        const form = document.getElementById('documentForm');
-
-        // Handle form submission for document generation
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            this.generateDocument();
-        });
-
-        // Real-time form validation on input changes
-        const formInputs = form.querySelectorAll('input, textarea');
-        formInputs.forEach(input => {
-            input.addEventListener('input', () => {
-                this.validateForm();
-            });
-        });
+    initializeTabsManager() {
+        if (typeof TabsManager !== 'undefined') {
+            this.tabsManager = new TabsManager();
+            this.tabsManager.init();
+            console.log('Tabs manager initialized');
+        } else {
+            // Retry if TabsManager isn't loaded yet
+            setTimeout(() => this.initializeTabsManager(), 100);
+        }
     }
 
     /**
-     * Set the date input field to today's date as default
+     * Set up all DOM event listeners for form interactions
      */
-    setDefaultDate() {
-        const dateInput = document.getElementById('documentDate');
-        const today = new Date().toISOString().split('T')[0];
-        dateInput.value = today;
+    setupEventListeners() {
+        // Wait for the generate button to be created by the preview tab
+        const setupGenerateButton = () => {
+            const generateBtn = document.getElementById('generateBtn');
+            if (generateBtn) {
+                generateBtn.addEventListener('click', () => {
+                    this.generateDocument();
+                });
+                console.log('Generate button event listener attached');
+            } else {
+                // Retry if button isn't created yet
+                setTimeout(setupGenerateButton, 100);
+            }
+        };
+
+        setupGenerateButton();
     }
 
     /**
@@ -150,36 +156,48 @@ class DocumentGenerator {
 
     /**
      * Collect all form data and store it in this.formData
-     * Uses varsConfig as the single source of truth for which fields to collect
+     * Gets data from tabs manager instead of form elements
      * @returns {Object} The collected form data
      */
     collectFormData() {
-        this.formData = {};
+        if (!this.tabsManager) {
+            console.error('Tabs manager not initialized');
+            return {};
+        }
 
-        // Iterate through varsConfig keys to determine which fields to collect
-        // This makes varsConfig the single source of truth for saveable fields
-        Object.keys(this.varsConfig).forEach(fieldName => {
-            const element = document.getElementById(fieldName);
-            if (element) {
-                // Collect the value from the form element
-                this.formData[fieldName] = element.value || '';
-            } else {
-                console.warn(`Field "${fieldName}" defined in fields/vars.json but not found in form`);
-            }
-        });
+        // Get all data from tabs
+        const allTabData = this.tabsManager.getAllData();
 
+        // Flatten the tab data structure into formData
+        this.formData = {
+            ...allTabData.intro,
+            ...allTabData.demographics,
+            ...allTabData.summary,
+            // Jobs data is an array, so we'll handle it separately if needed
+            jobs: allTabData.jobs
+        };
+
+        console.log('Collected form data from tabs:', this.formData);
         return this.formData;
     }
 
 
 
     validateForm() {
-        const form = document.getElementById('documentForm');
-        const generateBtn = document.getElementById('generateBtn');
-        const isValid = form.checkValidity();
+        if (!this.tabsManager) {
+            return false;
+        }
 
-        generateBtn.disabled = !isValid;
-        return isValid;
+        // Use tabs manager validation
+        const validation = this.tabsManager.validateAll();
+
+        // Update generate button state
+        const generateBtn = document.getElementById('generateBtn');
+        if (generateBtn) {
+            generateBtn.disabled = !validation.isValid;
+        }
+
+        return validation.isValid;
     }
 
     async generateDocument() {

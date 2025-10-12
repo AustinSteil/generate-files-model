@@ -1,0 +1,208 @@
+/**
+ * Preview Tab
+ *
+ * Displays a preview of all collected data before document generation.
+ * Dynamically generates and manages the preview tab content.
+ *
+ * @author Austin Steil
+ */
+
+class PreviewTab {
+    constructor(containerId, tabsManager) {
+        this.container = document.getElementById(containerId);
+        if (!this.container) {
+            console.error(`Preview tab container with ID "${containerId}" not found`);
+            return;
+        }
+        this.tabsManager = tabsManager;
+        this.render();
+        this.init();
+    }
+
+    /**
+     * Render the preview tab content
+     */
+    render() {
+        this.container.innerHTML = `
+            <div class="preview-content">
+                <h2>Preview</h2>
+                <p>This section will show a preview of all collected information before generating the document.</p>
+
+                <div class="preview-section">
+                    <h3>Cover Page</h3>
+                    <div id="preview-intro" class="preview-data">
+                        <p><em>No data entered yet</em></p>
+                    </div>
+                </div>
+
+                <div class="preview-section">
+                    <h3>Demographics</h3>
+                    <div id="preview-demographics" class="preview-data">
+                        <p><em>No data entered yet</em></p>
+                    </div>
+                </div>
+
+                <div class="preview-section">
+                    <h3>Employment History</h3>
+                    <div id="preview-jobs" class="preview-data">
+                        <p><em>No data entered yet</em></p>
+                    </div>
+                </div>
+
+                <div class="preview-section">
+                    <h3>Summary</h3>
+                    <div id="preview-summary" class="preview-data">
+                        <p><em>No data entered yet</em></p>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-primary" id="generateBtn">Generate Document</button>
+                </div>
+            </div>
+        `;
+    }
+
+    init() {
+        console.log('Preview tab initialized');
+
+        // Wire up the generate document button
+        // Note: The actual handler will be set up by DocumentGenerator in main.js
+        const generateBtn = document.getElementById('generateBtn');
+        if (generateBtn) {
+            console.log('Generate button found in preview tab');
+        }
+    }
+    
+    /**
+     * Update the preview with current data from all tabs
+     */
+    updatePreview() {
+        if (!this.tabsManager) {
+            console.warn('Tabs manager not available for preview');
+            return;
+        }
+        
+        // Get data from all tabs
+        const introData = this.tabsManager.introTab?.getData() || {};
+        const demoData = this.tabsManager.demographicsTab?.getData() || {};
+        const jobsData = this.tabsManager.jobsTab?.getData() || [];
+        const summaryData = this.tabsManager.summaryTab?.getData() || {};
+        
+        // Update intro preview
+        this.updateIntroPreview(introData);
+        
+        // Update demographics preview
+        this.updateDemographicsPreview(demoData);
+        
+        // Update jobs preview
+        this.updateJobsPreview(jobsData);
+        
+        // Update summary preview
+        this.updateSummaryPreview(summaryData);
+    }
+    
+    /**
+     * Update intro section preview
+     */
+    updateIntroPreview(data) {
+        const previewDiv = document.getElementById('preview-intro');
+        if (!previewDiv) return;
+        
+        if (!data.title && !data.author) {
+            previewDiv.innerHTML = '<p><em>No data entered yet</em></p>';
+            return;
+        }
+        
+        previewDiv.innerHTML = `
+            ${data.title ? `<p><strong>Title:</strong> ${data.title}</p>` : ''}
+            ${data.subtitle ? `<p><strong>Subtitle:</strong> ${data.subtitle}</p>` : ''}
+            ${data.author ? `<p><strong>Author:</strong> ${data.author}</p>` : ''}
+            ${data.date ? `<p><strong>Date:</strong> ${data.date}</p>` : ''}
+        `;
+    }
+    
+    /**
+     * Update demographics section preview
+     */
+    updateDemographicsPreview(data) {
+        const previewDiv = document.getElementById('preview-demographics');
+        if (!previewDiv) return;
+        
+        if (!data.name) {
+            previewDiv.innerHTML = '<p><em>No data entered yet</em></p>';
+            return;
+        }
+        
+        previewDiv.innerHTML = `
+            ${data.name ? `<p><strong>Name:</strong> ${data.name}</p>` : ''}
+            ${data.age ? `<p><strong>Age:</strong> ${data.age}</p>` : ''}
+            ${data.location ? `<p><strong>Location:</strong> ${data.location}</p>` : ''}
+        `;
+    }
+    
+    /**
+     * Update jobs section preview
+     */
+    updateJobsPreview(jobs) {
+        const previewDiv = document.getElementById('preview-jobs');
+        if (!previewDiv) return;
+        
+        if (!jobs || jobs.length === 0) {
+            previewDiv.innerHTML = '<p><em>No data entered yet</em></p>';
+            return;
+        }
+        
+        let html = '';
+        jobs.forEach((job, index) => {
+            html += `
+                <div class="job-preview-item">
+                    <h4>Job ${index + 1}</h4>
+                    ${job.title ? `<p><strong>Title:</strong> ${job.title}</p>` : ''}
+                    ${job.company ? `<p><strong>Company:</strong> ${job.company}</p>` : ''}
+                    ${job.duration ? `<p><strong>Duration:</strong> ${job.duration}</p>` : ''}
+                    ${job.description ? `<p><strong>Description:</strong> ${job.description}</p>` : ''}
+                </div>
+            `;
+        });
+        
+        previewDiv.innerHTML = html;
+    }
+    
+    /**
+     * Update summary section preview
+     */
+    updateSummaryPreview(data) {
+        const previewDiv = document.getElementById('preview-summary');
+        if (!previewDiv) return;
+        
+        if (!data.text && !data.keywords) {
+            previewDiv.innerHTML = '<p><em>No data entered yet</em></p>';
+            return;
+        }
+        
+        previewDiv.innerHTML = `
+            ${data.text ? `<p><strong>Summary:</strong> ${data.text}</p>` : ''}
+            ${data.keywords ? `<p><strong>Keywords:</strong> ${data.keywords}</p>` : ''}
+        `;
+    }
+    
+    /**
+     * Get all data for document generation
+     * @returns {Object} All collected data
+     */
+    getData() {
+        return {
+            intro: this.tabsManager.introTab?.getData() || {},
+            demographics: this.tabsManager.demographicsTab?.getData() || {},
+            jobs: this.tabsManager.jobsTab?.getData() || [],
+            summary: this.tabsManager.summaryTab?.getData() || {}
+        };
+    }
+}
+
+// Export for use in other modules
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = PreviewTab;
+}
+
