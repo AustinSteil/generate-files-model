@@ -17,7 +17,8 @@ class IntroTab {
         this.templateCards = null;
         this.selectedTemplate = null;
         this.titleInput = null;
-        this.subtitleInput = null;
+        this.companyNameInput = null;
+        this.companyAddress = null;
         this.authorInput = null;
         this.emailInput = null;
         this.dateInput = null;
@@ -42,11 +43,19 @@ class IntroTab {
 
                 <p>This section will collect information for the document cover page.</p>
 
-                <div id="title-input-container"></div>
-                <div id="subtitle-input-container"></div>
-                <div id="author-input-container"></div>
-                <div id="email-input-container"></div>
-                <div id="date-input-container"></div>
+                <!-- Two-column layout for form fields -->
+                <div class="intro-form-columns">
+                    <div class="intro-column-left">
+                        <div id="title-input-container"></div>
+                        <div id="company-name-input-container"></div>
+                        <div id="company-address-container"></div>
+                    </div>
+                    <div class="intro-column-right">
+                        <div id="author-input-container"></div>
+                        <div id="email-input-container"></div>
+                        <div id="date-input-container"></div>
+                    </div>
+                </div>
 
                 <!-- Next button container -->
                 <div class="form-actions-right">
@@ -59,6 +68,7 @@ class IntroTab {
     init() {
         console.log('Intro tab initialized');
         this.initializeTextInputs();
+        this.initializeAddressComponent();
         this.initializeTemplateSelection();
     }
 
@@ -83,25 +93,26 @@ class IntroTab {
             required: true
         });
 
-        // Subtitle input
-        this.subtitleInput = new TextInput({
-            containerId: 'subtitle-input-container',
-            id: 'intro-subtitle',
-            name: 'subtitle',
-            label: 'Subtitle',
-            placeholder: 'Enter subtitle (optional)'
+        // Company Name input
+        this.companyNameInput = new TextInput({
+            containerId: 'company-name-input-container',
+            id: 'intro-company-name',
+            name: 'companyName',
+            label: 'Company Name',
+            placeholder: 'Enter company name',
+            required: true
         });
 
-        // Author input
+        // Author input (Your Name)
         this.authorInput = new TextInput({
             containerId: 'author-input-container',
             id: 'intro-author',
             name: 'author',
-            label: 'Your Name',
+            label: 'Your Name (Author)',
             placeholder: 'First Last',
             required: true
         });
-        
+
         // Email input
         this.emailInput = new TextInput({
             containerId: 'email-input-container',
@@ -113,15 +124,33 @@ class IntroTab {
             required: true
         });
 
-        // Date input
+        // Date input - Today's Date
         this.dateInput = new TextInput({
             containerId: 'date-input-container',
             id: 'intro-date',
             name: 'date',
-            label: 'Date',
+            label: 'Today\'s Date',
             type: 'date',
             defaultValue: new Date().toISOString().split('T')[0],
             required: true
+        });
+    }
+
+    /**
+     * Initialize the address component
+     */
+    initializeAddressComponent() {
+        // Wait for Address component to be available
+        if (typeof Address === 'undefined') {
+            setTimeout(() => this.initializeAddressComponent(), 100);
+            return;
+        }
+
+        this.companyAddress = new Address({
+            containerId: 'company-address-container',
+            compact: false,
+            required: true,
+            showLabel: false
         });
     }
 
@@ -219,10 +248,20 @@ class IntroTab {
 
         // Get data from TextInput components
         if (this.titleInput) Object.assign(data, this.titleInput.getData());
-        if (this.subtitleInput) Object.assign(data, this.subtitleInput.getData());
+        if (this.companyNameInput) Object.assign(data, this.companyNameInput.getData());
         if (this.authorInput) Object.assign(data, this.authorInput.getData());
         if (this.emailInput) Object.assign(data, this.emailInput.getData());
         if (this.dateInput) Object.assign(data, this.dateInput.getData());
+
+        // Get data from Address component
+        if (this.companyAddress) {
+            const addressData = this.companyAddress.getData();
+            // Prefix address fields with 'company' for clarity
+            data.companyStreet = addressData.street;
+            data.companyCity = addressData.city;
+            data.companyState = addressData.state;
+            data.companyZip = addressData.zip;
+        }
 
         return data;
     }
@@ -234,10 +273,21 @@ class IntroTab {
     setData(data) {
         // Set data in TextInput components
         if (this.titleInput) this.titleInput.setData(data);
-        if (this.subtitleInput) this.subtitleInput.setData(data);
+        if (this.companyNameInput) this.companyNameInput.setData(data);
         if (this.authorInput) this.authorInput.setData(data);
         if (this.emailInput) this.emailInput.setData(data);
         if (this.dateInput) this.dateInput.setData(data);
+
+        // Set data in Address component
+        if (this.companyAddress) {
+            const addressData = {
+                street: data.companyStreet || '',
+                city: data.companyCity || '',
+                state: data.companyState || '',
+                zip: data.companyZip || ''
+            };
+            this.companyAddress.setData(addressData);
+        }
 
         // Set template selection if available
         const templateValue = data.template || data.selectedTemplate;
@@ -261,10 +311,13 @@ class IntroTab {
 
         // Validate TextInput components
         if (this.titleInput && !this.titleInput.validate()) isValid = false;
-        if (this.subtitleInput && !this.subtitleInput.validate()) isValid = false;
+        if (this.companyNameInput && !this.companyNameInput.validate()) isValid = false;
         if (this.authorInput && !this.authorInput.validate()) isValid = false;
         if (this.emailInput && !this.emailInput.validate()) isValid = false;
         if (this.dateInput && !this.dateInput.validate()) isValid = false;
+
+        // Validate Address component
+        if (this.companyAddress && !this.companyAddress.validate()) isValid = false;
 
         // Validate template selection
         const hasTemplate = this.selectedTemplate !== null && this.selectedTemplate !== '';

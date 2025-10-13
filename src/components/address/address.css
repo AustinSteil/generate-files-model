@@ -1,0 +1,238 @@
+/**
+ * Address Component Styles - Simplified Version
+ *
+ * Clean, functional styling for the reusable address component including:
+ * - Responsive grid layout for address fields
+ * - Compact mode for tighter spacing
+ * - Dark/light mode support
+ * - Integration with existing form components
+ * - Mobile-responsive design
+ *
+ * NOTE: This component uses the centralized color management system from src/color-system/colors.css
+ * All colors are referenced using CSS custom properties (variables) for consistency.
+ *
+ * @author Austin Steil
+ * @version 3.0.0 - Simplified Design
+ */
+
+/* ============================================
+   ADDRESS COMPONENT BASE
+   ============================================ */
+
+.address-component {
+    margin-bottom: var(--spacing-2xl);
+}
+
+.address-component.address-compact {
+    margin-bottom: var(--spacing-lg);
+}
+
+/* Address Label */
+.address-label {
+    display: block;
+    margin-bottom: var(--spacing-lg);
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--color-text-primary);
+}
+
+.address-compact .address-label {
+    font-size: 14px;
+    margin-bottom: var(--spacing-md);
+}
+
+/* ============================================
+   ADDRESS FIELDS CONTAINER
+   ============================================ */
+
+.address-fields {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg); /* Increased spacing between field rows */
+}
+
+.address-compact .address-fields {
+    gap: var(--spacing-md); /* Moderate spacing for compact mode */
+}
+
+/* Address Rows */
+.address-row {
+    display: flex;
+    gap: var(--spacing-lg);
+    width: 100%;
+}
+
+.address-compact .address-row {
+    gap: var(--spacing-md);
+}
+
+/* Street Address Row */
+.address-street {
+    flex-direction: column;
+}
+
+.address-street > div {
+    width: 100%;
+}
+
+/* City, State, ZIP Row - Responsive Grid */
+.address-city-state-zip {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: var(--spacing-lg);
+    align-items: start;
+}
+
+.address-compact .address-city-state-zip {
+    gap: var(--spacing-md);
+}
+
+/* Individual Field Containers */
+.address-city {
+    min-width: 0;
+}
+
+.address-state {
+    min-width: 120px;
+}
+
+.address-zip {
+    min-width: 100px;
+}
+
+/* ============================================
+   COMPONENT INTEGRATION
+   ============================================ */
+
+/* Text Input Integration - Simplified */
+.address-component .text-input-component {
+    margin-bottom: var(--spacing-lg) !important; /* Consistent spacing between fields */
+}
+
+.address-compact .address-component .text-input-component {
+    margin-bottom: var(--spacing-md) !important; /* Tighter spacing for compact mode */
+}
+
+/* Simplified error positioning - let errors flow naturally below inputs */
+.address-component .text-input-error {
+    position: static; /* Remove absolute positioning */
+    margin-top: var(--spacing-xs); /* Small gap between input and error */
+    margin-bottom: 0;
+}
+
+/* Dropdown Integration */
+.address-component .dropdown-container {
+    width: 100%;
+}
+
+.address-component .dropdown-trigger:not(.split-button) {
+    width: 100%;
+    min-width: auto;
+    justify-content: space-between;
+}
+
+/* Dropdown Integration - Simplified */
+.address-component .form-group {
+    margin-bottom: var(--spacing-lg) !important; /* Consistent spacing between fields */
+}
+
+.address-compact .address-component .form-group {
+    margin-bottom: var(--spacing-md) !important; /* Tighter spacing for compact mode */
+}
+
+/* Simplified dropdown error positioning */
+.address-component .dropdown-error {
+    position: static; /* Remove absolute positioning */
+    margin-top: var(--spacing-xs); /* Small gap between dropdown and error */
+    margin-bottom: 0;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+/* Tablet and smaller screens */
+@media (max-width: 768px) {
+    .address-city-state-zip {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
+    }
+
+    .address-state,
+    .address-zip {
+        min-width: 100%;
+    }
+
+    .address-compact .address-city-state-zip {
+        gap: var(--spacing-md);
+    }
+}
+
+/* Small mobile screens */
+@media (max-width: 480px) {
+    .address-component {
+        margin-bottom: var(--spacing-xl);
+    }
+
+    .address-fields {
+        gap: var(--spacing-sm); /* Keep consistent with desktop */
+    }
+
+    .address-compact .address-fields {
+        gap: var(--spacing-xs); /* Keep consistent with desktop */
+    }
+
+    .address-row {
+        gap: var(--spacing-md);
+    }
+
+    .address-compact .address-row {
+        gap: var(--spacing-sm);
+    }
+
+    .address-label {
+        font-size: 16px;
+    }
+
+    .address-compact .address-label {
+        font-size: 14px;
+    }
+}
+
+/* ============================================
+   DARK MODE SUPPORT
+   ============================================ */
+
+/* Dark mode is handled by the individual components (text-input, dropdown)
+   No additional dark mode styles needed for the address container */
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .address-component * {
+        transition: none;
+        animation: none;
+    }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+    .address-component {
+        break-inside: avoid;
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .address-fields {
+        gap: var(--spacing-sm);
+    }
+
+    .address-city-state-zip {
+        grid-template-columns: 2fr 1fr 1fr;
+    }
+}

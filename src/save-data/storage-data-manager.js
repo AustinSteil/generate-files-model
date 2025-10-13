@@ -196,7 +196,7 @@ class StorageDataManager {
             Object.keys(varsConfig).forEach(fieldName => {
                 if (formData.hasOwnProperty(fieldName)) {
                     // Map fields to appropriate tabs based on field names
-                    if (['title', 'subtitle', 'author', 'email', 'date', 'selectedTemplate', 'template'].includes(fieldName)) {
+                    if (['title', 'companyName', 'companyStreet', 'companyCity', 'companyState', 'companyZip', 'author', 'email', 'date', 'selectedTemplate', 'template'].includes(fieldName)) {
                         tabData.intro[fieldName] = formData[fieldName];
                     } else if (['name', 'age', 'location'].includes(fieldName)) {
                         tabData.demographics[fieldName] = formData[fieldName];

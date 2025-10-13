@@ -150,7 +150,7 @@ class PreviewTab {
         
         previewDiv.innerHTML = `
             ${data.title ? `<p><strong>Title:</strong> ${data.title}</p>` : ''}
-            ${data.subtitle ? `<p><strong>Subtitle:</strong> ${data.subtitle}</p>` : ''}
+            ${data.companyName ? `<p><strong>Company Name:</strong> ${data.companyName}</p>` : ''}
             ${data.author ? `<p><strong>Author:</strong> ${data.author}</p>` : ''}
             ${data.date ? `<p><strong>Date:</strong> ${data.date}</p>` : ''}
         `;

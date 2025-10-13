@@ -96,6 +96,12 @@
     animation: slideDown 0.3s ease-out;
 }
 
+/* When used in address component, use simplified positioning */
+.address-component .text-input-error {
+    /* Inherit the static positioning from address.css */
+    box-shadow: 0 2px 8px rgba(var(--color-error-rgb), 0.15);
+}
+
 @keyframes slideDown {
     from {
         opacity: 0;

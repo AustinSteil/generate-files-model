@@ -1,6 +1,10 @@
 {
   "title": "{documentTitle}",
-  "subtitle": "{documentSubtitle}",
+  "companyName": "{documentCompanyName}",
+  "companyStreet": "{companyStreet}",
+  "companyCity": "{companyCity}",
+  "companyState": "{companyState}",
+  "companyZip": "{companyZip}",
   "author": "{authorName}",
   "email": "{authorEmail}",
   "date": "{documentDate}",

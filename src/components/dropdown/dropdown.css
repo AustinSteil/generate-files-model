@@ -46,6 +46,68 @@
     box-shadow: var(--shadow-md);
 }
 
+/* Form Field Dropdown Styling - matches text inputs */
+.text-input-component .dropdown-trigger:not(.split-button),
+.form-group .dropdown-trigger:not(.split-button) {
+    background: linear-gradient(to bottom,
+        var(--color-bg-primary) 0%,
+        var(--color-gray-50) 100%);
+    color: var(--color-text-primary);
+    border: 2px solid var(--color-border-medium);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-md) var(--spacing-lg);
+    font-size: 16px;
+    font-weight: 400;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06),
+                inset 0 1px 2px rgba(0, 0, 0, 0.08);
+    transition: all var(--transition-cubic);
+}
+
+.text-input-component .dropdown-trigger:not(.split-button):hover,
+.form-group .dropdown-trigger:not(.split-button):hover {
+    border-color: var(--color-border-dark);
+    background: var(--color-bg-primary);
+    transform: none;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.text-input-component .dropdown-trigger:not(.split-button):focus,
+.form-group .dropdown-trigger:not(.split-button):focus {
+    outline: none;
+    border-color: var(--color-primary);
+    background: var(--color-bg-primary);
+    box-shadow: 0 0 0 4px rgba(var(--color-primary-rgb), 0.12),
+                0 2px 8px rgba(var(--color-primary-rgb), 0.15),
+                inset 0 1px 2px rgba(0, 0, 0, 0.05);
+    transform: translateY(-2px);
+}
+
+/* Form field dropdown text styling */
+.text-input-component .dropdown-text,
+.form-group .dropdown-text {
+    color: var(--color-text-primary);
+    font-weight: 400;
+}
+
+/* Placeholder text styling when no selection */
+.text-input-component .dropdown-trigger:not(.split-button):not(.has-selection) .dropdown-text,
+.form-group .dropdown-trigger:not(.split-button):not(.has-selection) .dropdown-text {
+    color: var(--color-text-tertiary);
+    opacity: 0.7;
+}
+
+/* Form field dropdown arrow styling */
+.text-input-component .dropdown-arrow,
+.form-group .dropdown-arrow {
+    color: var(--color-text-tertiary);
+    font-size: 12px;
+}
+
+.text-input-component .dropdown-trigger:not(.split-button):focus .dropdown-arrow,
+.form-group .dropdown-trigger:not(.split-button):focus .dropdown-arrow {
+    color: var(--color-primary);
+}
+
 /* Dropdown Arrow */
 .dropdown-arrow {
     font-size: 10px;
@@ -66,8 +128,25 @@
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-md);
     min-width: 160px;
-    z-index: 1000;
+    z-index: 9999;
     margin-top: 4px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* Form field dropdown menu styling */
+.text-input-component .dropdown-menu,
+.form-group .dropdown-menu {
+    border: 2px solid var(--color-border-medium);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15),
+                0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 8px;
+    left: 0;
+    right: auto;
+    min-width: 100%;
+    max-height: 300px;
+    overflow-y: auto;
 }
 
 /* Dropdown Items */
@@ -91,6 +170,82 @@
     background: var(--gradient-info);
     color: var(--color-info);
     font-weight: 500;
+}
+
+/* Form field dropdown items styling */
+.text-input-component .dropdown-item,
+.form-group .dropdown-item {
+    padding: var(--spacing-md) var(--spacing-lg);
+    font-size: 16px;
+    border-bottom: 1px solid var(--color-border-light);
+    transition: all var(--transition-base);
+}
+
+.text-input-component .dropdown-item:hover,
+.form-group .dropdown-item:hover {
+    background: linear-gradient(to right,
+        var(--color-bg-tertiary) 0%,
+        var(--color-gray-50) 100%);
+    border-left: 3px solid var(--color-primary);
+    padding-left: calc(var(--spacing-lg) - 3px);
+}
+
+.text-input-component .dropdown-item.selected,
+.form-group .dropdown-item.selected {
+    background: linear-gradient(135deg,
+        var(--color-primary-light) 0%,
+        var(--color-bg-primary) 100%);
+    color: var(--color-primary);
+    font-weight: 500;
+    border-left: 3px solid var(--color-primary);
+    padding-left: calc(var(--spacing-lg) - 3px);
+}
+
+/* Error States for Form Field Dropdowns */
+.text-input-component .dropdown-trigger.error:not(.split-button),
+.form-group .dropdown-trigger.error:not(.split-button) {
+    border-color: var(--color-error);
+    background: linear-gradient(to bottom,
+        rgba(var(--color-error-rgb), 0.05) 0%,
+        rgba(var(--color-error-rgb), 0.02) 100%);
+}
+
+.text-input-component .dropdown-trigger.error:not(.split-button):focus,
+.form-group .dropdown-trigger.error:not(.split-button):focus {
+    border-color: var(--color-error);
+    box-shadow: 0 0 0 4px rgba(var(--color-error-rgb), 0.12),
+                0 2px 8px rgba(var(--color-error-rgb), 0.15),
+                inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Dropdown Error Message */
+.dropdown-error {
+    margin-top: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: rgba(var(--color-error-rgb), 0.1);
+    border: 1px solid rgba(var(--color-error-rgb), 0.2);
+    border-radius: var(--radius-md);
+    color: var(--color-error);
+    font-size: 14px;
+    font-weight: 500;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* When used in address component, use simplified positioning */
+.address-component .dropdown-error {
+    /* Inherit the static positioning from address.css */
+    box-shadow: 0 2px 8px rgba(var(--color-error-rgb), 0.15);
 }
 
 /* Unlocked State - Standard Dropdown */
@@ -213,6 +368,24 @@
         padding: 8px 10px;
     }
 
+    /* Form field dropdown mobile adjustments */
+    .text-input-component .dropdown-trigger:not(.split-button),
+    .form-group .dropdown-trigger:not(.split-button) {
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: 16px; /* Prevent zoom on iOS */
+    }
+
+    .text-input-component .dropdown-menu,
+    .form-group .dropdown-menu {
+        margin-top: 4px;
+    }
+
+    .text-input-component .dropdown-item,
+    .form-group .dropdown-item {
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: 16px; /* Prevent zoom on iOS */
+    }
+
     /* Split button mobile adjustments */
     .dropdown-main-button {
         padding: 8px 10px;
@@ -228,6 +401,46 @@
         right: -10px;
         min-width: 140px;
     }
+}
+
+/* Dark Mode Support for Form Field Dropdowns */
+.dark-mode .text-input-component .dropdown-trigger:not(.split-button),
+.dark-mode .form-group .dropdown-trigger:not(.split-button) {
+    background: linear-gradient(to bottom,
+        var(--color-bg-primary) 0%,
+        var(--color-gray-800) 100%);
+    border-color: var(--color-border-medium);
+    color: var(--color-text-primary);
+}
+
+.dark-mode .text-input-component .dropdown-trigger:not(.split-button):hover,
+.dark-mode .form-group .dropdown-trigger:not(.split-button):hover {
+    border-color: var(--color-border-dark);
+    background: var(--color-bg-primary);
+}
+
+.dark-mode .text-input-component .dropdown-trigger:not(.split-button):focus,
+.dark-mode .form-group .dropdown-trigger:not(.split-button):focus {
+    border-color: var(--color-primary);
+    background: var(--color-bg-primary);
+}
+
+.dark-mode .text-input-component .dropdown-menu,
+.dark-mode .form-group .dropdown-menu {
+    background: var(--color-bg-primary);
+    border-color: var(--color-border-medium);
+}
+
+.dark-mode .text-input-component .dropdown-item,
+.dark-mode .form-group .dropdown-item {
+    border-bottom-color: var(--color-border-light);
+}
+
+.dark-mode .text-input-component .dropdown-item:hover,
+.dark-mode .form-group .dropdown-item:hover {
+    background: linear-gradient(to right,
+        var(--color-bg-tertiary) 0%,
+        var(--color-gray-800) 100%);
 }
 
 /* High contrast mode support */

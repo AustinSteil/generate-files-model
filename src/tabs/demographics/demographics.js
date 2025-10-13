@@ -1,7 +1,7 @@
 /**
  * Demographics Tab
  *
- * Handles demographic information collection.
+ * Handles basic demographic information collection.
  * Dynamically generates and manages the demographics tab content.
  *
  * @author Austin Steil
@@ -24,7 +24,7 @@ class DemographicsTab {
     render() {
         this.container.innerHTML = `
             <div class="demographics-content">
-                <h2>Demographics Information</h2>
+                <h2>Demographics</h2>
                 <p>This section will collect demographic information.</p>
 
                 <div class="form-group">

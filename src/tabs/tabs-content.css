@@ -61,6 +61,33 @@
 }
 
 /* ============================================
+   INTRO TAB TWO-COLUMN LAYOUT
+   ============================================ */
+
+.intro-form-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-3xl);
+    margin-top: var(--spacing-2xl);
+    margin-bottom: var(--spacing-3xl);
+}
+
+.intro-column-left,
+.intro-column-right {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+/* Responsive behavior for intro columns */
+@media (max-width: 768px) {
+    .intro-form-columns {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-xl);
+    }
+}
+
+/* ============================================
    FORM STYLING WITHIN TABS
    ============================================ */
 .tab-panel .form-group {

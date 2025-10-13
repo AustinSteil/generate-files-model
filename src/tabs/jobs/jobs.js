@@ -1,9 +1,9 @@
 /**
- * Jobs Tab - Employment History
+ * Job Tab
  *
- * Handles complex job history collection with dynamic job entries.
- * This is the most complex tab with ability to add/remove job entries.
- * Dynamically generates and manages the jobs tab content.
+ * Handles job data collection for the job demands analysis.
+ * This is the most complex tab with ability to add/remove different analysis methods.
+ * Dynamically generates and manages the job tab content.
  *
  * @author Austin Steil
  */

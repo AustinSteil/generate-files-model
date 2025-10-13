@@ -17,11 +17,15 @@ class Dropdown {
      * Create a dropdown instance
      * @param {HTMLElement} container - Container element for the dropdown
      * @param {Object} options - Configuration options
-     * @param {Array} options.items - Array of dropdown items {text: string, action?: string}
+     * @param {Array} options.items - Array of dropdown items {text: string, value?: string, action?: string}
      * @param {string} options.defaultText - Default text to display (default: 'Select...')
      * @param {Function} options.onSelect - Callback when item is selected (item, index)
      * @param {Function} options.onDefaultAction - Callback for split-button default action
      * @param {boolean} options.splitButton - Enable split-button mode (default: false)
+     * @param {boolean} options.required - Whether selection is required (default: false)
+     * @param {string} options.label - Label for the dropdown (for form integration)
+     * @param {string} options.name - Name attribute for form data
+     * @param {string} options.id - ID for the dropdown
      */
     constructor(container, options = {}) {
         this.container = container;
@@ -31,11 +35,23 @@ class Dropdown {
             onSelect: () => {},
             onDefaultAction: null,
             splitButton: false,
+            required: false,
+            label: '',
+            name: '',
+            id: options.id || this.generateId(),
             ...options
         };
         this.isOpen = false;
-        this.selectedIndex = 0;
+        this.selectedIndex = -1; // Start with no selection
+        this.isValid = true;
         this.init();
+    }
+
+    /**
+     * Generate a unique ID for the dropdown
+     */
+    generateId() {
+        return 'dropdown-' + Math.random().toString(36).substring(2, 11);
     }
 
     /**
@@ -51,7 +67,10 @@ class Dropdown {
         }
 
         this.setupEventListeners();
-        this.selectItem(0, false); // Select first item by default without triggering callback
+        // Don't auto-select first item for form dropdowns
+        if (this.options.items.length > 0 && !this.options.required) {
+            this.selectItem(0, false);
+        }
     }
 
     /**
@@ -96,12 +115,14 @@ class Dropdown {
                     `<div class="dropdown-item" data-index="${index}">${item.text}</div>`
                 ).join('')}
             </div>
+            <div class="dropdown-error" style="display: none;"></div>
         `;
 
         this.trigger = this.container.querySelector('.dropdown-trigger');
         this.menu = this.container.querySelector('.dropdown-menu');
         this.text = this.container.querySelector('.dropdown-text');
         this.arrow = this.container.querySelector('.dropdown-arrow');
+        this.errorElement = this.container.querySelector('.dropdown-error');
     }
 
     /**
@@ -164,6 +185,11 @@ class Dropdown {
         this.menu.style.display = 'block';
         this.arrow.textContent = '▲';
         this.container.classList.add('dropdown-open');
+
+        // Call onOpen callback if provided
+        if (this.options.onOpen) {
+            this.options.onOpen();
+        }
     }
 
     /**
@@ -174,6 +200,11 @@ class Dropdown {
         this.menu.style.display = 'none';
         this.arrow.textContent = '▼';
         this.container.classList.remove('dropdown-open');
+
+        // Call onClose callback if provided
+        if (this.options.onClose) {
+            this.options.onClose();
+        }
     }
 
     /**
@@ -186,6 +217,12 @@ class Dropdown {
             this.selectedIndex = index;
             const item = this.options.items[index];
             this.text.textContent = item.text;
+
+            // Add has-selection class for styling
+            this.trigger.classList.add('has-selection');
+
+            // Clear any error state since we now have a valid selection
+            this.showError(null);
 
             // Update visual selection
             this.menu.querySelectorAll('.dropdown-item').forEach((el, i) => {
@@ -208,7 +245,8 @@ class Dropdown {
         this.menu.innerHTML = items.map((item, index) =>
             `<div class="dropdown-item" data-index="${index}">${item.text}</div>`
         ).join('');
-        this.selectItem(0, false); // Don't trigger callback when updating items
+        // Clear selection when updating items
+        this.clearSelection();
     }
 
     /**
@@ -225,6 +263,99 @@ class Dropdown {
      */
     getSelectedIndex() {
         return this.selectedIndex;
+    }
+
+    /**
+     * Clear the current selection
+     */
+    clearSelection() {
+        this.selectedIndex = -1;
+        this.text.textContent = this.options.defaultText;
+        this.trigger.classList.remove('has-selection');
+
+        // Clear visual selection
+        this.menu.querySelectorAll('.dropdown-item').forEach(el => {
+            el.classList.remove('selected');
+        });
+    }
+
+    /**
+     * Get the selected value (for form integration)
+     * @returns {string} Selected value or empty string
+     */
+    getValue() {
+        if (this.selectedIndex >= 0 && this.selectedIndex < this.options.items.length) {
+            const item = this.options.items[this.selectedIndex];
+            return item.value || item.text || '';
+        }
+        return '';
+    }
+
+    /**
+     * Set the selected value (for form integration)
+     * @param {string} value - Value to select
+     */
+    setValue(value) {
+        const index = this.options.items.findIndex(item =>
+            (item.value && item.value === value) || item.text === value
+        );
+        if (index >= 0) {
+            this.selectItem(index, false);
+        }
+    }
+
+    /**
+     * Validate the dropdown selection
+     * @returns {boolean} True if valid
+     */
+    validate() {
+        if (this.options.required && this.selectedIndex < 0) {
+            this.isValid = false;
+            this.showError('Please select an option');
+            return false;
+        }
+        this.isValid = true;
+        this.showError(null); // Clear any existing error
+        return true;
+    }
+
+    /**
+     * Show or hide error message
+     * @param {string|null} message - Error message to show, or null to hide
+     */
+    showError(message) {
+        if (!this.errorElement) return;
+
+        if (message) {
+            this.errorElement.textContent = message;
+            this.errorElement.style.display = 'block';
+            this.trigger.classList.add('error');
+        } else {
+            this.errorElement.style.display = 'none';
+            this.trigger.classList.remove('error');
+        }
+    }
+
+    /**
+     * Get form data (for form integration)
+     * @returns {Object} Form data object
+     */
+    getData() {
+        const data = {};
+        if (this.options.name) {
+            data[this.options.name] = this.getValue();
+        }
+        return data;
+    }
+
+    /**
+     * Set form data (for form integration)
+     * @param {Object} data - Data object
+     */
+    setData(data) {
+        if (this.options.name && data[this.options.name]) {
+            this.setValue(data[this.options.name]);
+        }
     }
 
     /**
