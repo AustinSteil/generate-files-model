@@ -187,6 +187,18 @@ Interactive card-based selection system with advanced preview capabilities:
 - **Validation integration** - Required/optional validation with alert system
 - **Choice feedback** - Visual selection indicators and hover effects
 
+### Button Component
+
+Customizable button component with gradient backgrounds:
+
+- **Gradient backgrounds** - Beautiful subtle gradients for visual appeal
+- **Multiple variants** - Primary, secondary, success, info, warning, error
+- **Size options** - Small, medium (default), large
+- **State management** - Disabled, loading with spinner
+- **Accessibility** - Proper ARIA labels and focus states
+- **Dark mode** - Full dark mode support
+- **Responsive** - Mobile-friendly sizing
+
 ## Configuration
 
 ### Template Variables (vars.json)

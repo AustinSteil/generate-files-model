@@ -1,0 +1,406 @@
+/**
+ * Button Component Styles
+ * 
+ * Extends the base .btn styles from main.css with additional variants and features.
+ * Uses the centralized color system for consistency.
+ * 
+ * Features:
+ * - Size variants (small, medium, large)
+ * - Additional color variants (info, warning, error)
+ * - Loading state with spinner
+ * - Icon support
+ * - Full width option
+ * - Enhanced accessibility
+ * - Dark mode support
+ * 
+ * @author Austin Steil
+ */
+
+/* ============================================
+   SIZE VARIANTS
+   ============================================ */
+.btn-small {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: 14px;
+    min-width: 100px;
+}
+
+.btn-large {
+    padding: var(--spacing-lg) var(--spacing-3xl);
+    font-size: 18px;
+    min-width: 180px;
+}
+
+/* ============================================
+   GRADIENT BUTTON VARIANTS
+   ============================================ */
+
+/* Primary Button with Gradient */
+.btn-primary {
+    background: var(--gradient-primary-solid);
+    color: var(--color-text-white);
+    border: 1px solid var(--color-primary);
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), var(--shadow-sm);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #004499 0%, #003366 100%);
+    transform: translateY(-2px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), var(--shadow-lg);
+    border-color: var(--color-primary-darker);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), var(--shadow-sm);
+}
+
+/* Secondary Button with Gradient */
+.btn-secondary {
+    background: var(--gradient-secondary-solid);
+    color: var(--color-text-white);
+    border: 1px solid var(--color-secondary);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), var(--shadow-sm);
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, #5a6268 0%, #495057 100%);
+    transform: translateY(-2px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), var(--shadow-lg);
+}
+
+/* Success Button with Gradient */
+.btn-success {
+    background: var(--gradient-success-solid);
+    color: var(--color-text-white);
+    border: 1px solid var(--color-success);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), var(--shadow-sm);
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    transform: translateY(-2px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), var(--shadow-lg);
+}
+
+/* Info Button with Gradient */
+.btn-info {
+    background: var(--gradient-info-solid);
+    color: var(--color-text-white);
+    border: 1px solid var(--color-info);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), var(--shadow-sm);
+}
+
+.btn-info:hover {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    transform: translateY(-2px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), var(--shadow-lg);
+}
+
+/* Warning Button with Gradient */
+.btn-warning {
+    background: var(--gradient-warning-solid);
+    color: var(--color-text-white);
+    border: 1px solid var(--color-warning);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), var(--shadow-sm);
+}
+
+.btn-warning:hover {
+    background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+    transform: translateY(-2px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), var(--shadow-lg);
+}
+
+/* Error Button with Gradient */
+.btn-error {
+    background: var(--gradient-error-solid);
+    color: var(--color-text-white);
+    border: 1px solid var(--color-error);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), var(--shadow-sm);
+}
+
+.btn-error:hover {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    transform: translateY(-2px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), var(--shadow-lg);
+}
+
+/* ============================================
+   FULL WIDTH VARIANT
+   ============================================ */
+.btn-full-width {
+    width: 100%;
+    min-width: auto;
+}
+
+/* ============================================
+   LOADING STATE
+   ============================================ */
+.btn-loading {
+    position: relative;
+    pointer-events: none;
+}
+
+.btn-loading .button-text {
+    opacity: 0.7;
+}
+
+.btn-loading .loading {
+    margin-right: var(--spacing-sm);
+}
+
+
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0; /* Remove gap since we handle spacing with margins */
+}
+
+.button-text {
+    display: inline-block;
+}
+
+/* ============================================
+   GRADIENT BUTTON ENHANCEMENTS
+   ============================================ */
+
+/* Add subtle shine effect on all gradient buttons */
+.btn-primary::before,
+.btn-secondary::before,
+.btn-success::before,
+.btn-info::before,
+.btn-warning::before,
+.btn-error::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left var(--transition-slow);
+}
+
+.btn-primary:hover::before,
+.btn-secondary:hover::before,
+.btn-success:hover::before,
+.btn-info:hover::before,
+.btn-warning:hover::before,
+.btn-error:hover::before {
+    left: 100%;
+}
+
+/* Enhanced button base styles for gradients */
+.btn {
+    position: relative;
+    overflow: hidden;
+    transition: all var(--transition-cubic);
+}
+
+/* ============================================
+   ENHANCED DISABLED STATE
+   ============================================ */
+.btn:disabled {
+    cursor: not-allowed;
+    transform: none;
+    pointer-events: none;
+    background: var(--color-gray-200) !important;
+    border-color: var(--color-gray-300) !important;
+    color: var(--color-gray-600) !important;
+    box-shadow: none !important;
+    opacity: 1; /* Remove opacity to have full control over colors */
+}
+
+.btn:disabled:hover {
+    transform: none;
+    box-shadow: none !important;
+    background: var(--color-gray-200) !important;
+    color: var(--color-gray-600) !important;
+}
+
+.btn:disabled::before {
+    display: none;
+}
+
+/* Ensure disabled text is always readable */
+.btn:disabled .button-text {
+    color: var(--color-gray-600) !important;
+}
+
+/* ============================================
+   ENHANCED FOCUS STATES FOR ACCESSIBILITY
+   ============================================ */
+.btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), var(--opacity-30));
+    z-index: 1;
+}
+
+.btn-primary:focus {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), var(--shadow-sm), 0 0 0 3px rgba(var(--color-primary-rgb), var(--opacity-30));
+}
+
+.btn-success:focus {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), var(--shadow-sm), 0 0 0 3px rgba(var(--color-success-rgb), var(--opacity-30));
+}
+
+.btn-warning:focus {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), var(--shadow-sm), 0 0 0 3px rgba(var(--color-warning-rgb), var(--opacity-30));
+}
+
+.btn-error:focus {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), var(--shadow-sm), 0 0 0 3px rgba(var(--color-error-rgb), var(--opacity-30));
+}
+
+.btn-info:focus {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), var(--shadow-sm), 0 0 0 3px rgba(var(--color-info-rgb), var(--opacity-30));
+}
+
+.btn-secondary:focus {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), var(--shadow-sm), 0 0 0 3px rgba(var(--color-secondary-rgb), var(--opacity-30));
+}
+
+/* ============================================
+   BUTTON PRESSED STATES
+   ============================================ */
+.btn:active {
+    transform: translateY(1px);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn:disabled:active {
+    transform: none;
+}
+
+/* ============================================
+   DARK MODE DISABLED STATE
+   ============================================ */
+.dark-mode .btn:disabled {
+    background: var(--color-gray-700) !important;
+    border-color: var(--color-gray-600) !important;
+    color: var(--color-gray-400) !important;
+}
+
+.dark-mode .btn:disabled:hover {
+    background: var(--color-gray-700) !important;
+    color: var(--color-gray-400) !important;
+}
+
+.dark-mode .btn:disabled .button-text {
+    color: var(--color-gray-400) !important;
+}
+
+/* System preference fallback for dark mode */
+@media (prefers-color-scheme: dark) {
+    html:not(.dark-mode) .btn:disabled {
+        background: var(--color-gray-700) !important;
+        border-color: var(--color-gray-600) !important;
+        color: var(--color-gray-400) !important;
+    }
+
+    html:not(.dark-mode) .btn:disabled:hover {
+        background: var(--color-gray-700) !important;
+        color: var(--color-gray-400) !important;
+    }
+
+    html:not(.dark-mode) .btn:disabled .button-text {
+        color: var(--color-gray-400) !important;
+    }
+}
+
+.btn-primary:focus {
+    box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), var(--opacity-30));
+}
+
+.btn-secondary:focus {
+    box-shadow: 0 0 0 3px rgba(var(--color-secondary-rgb), var(--opacity-30));
+}
+
+.btn-success:focus {
+    box-shadow: 0 0 0 3px rgba(var(--color-success-rgb), var(--opacity-30));
+}
+
+.btn-info:focus {
+    box-shadow: 0 0 0 3px rgba(var(--color-info-rgb), var(--opacity-30));
+}
+
+.btn-warning:focus {
+    box-shadow: 0 0 0 3px rgba(var(--color-warning-rgb), var(--opacity-30));
+}
+
+.btn-error:focus {
+    box-shadow: 0 0 0 3px rgba(var(--color-error-rgb), var(--opacity-30));
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+@media (max-width: 768px) {
+    .btn-large {
+        padding: var(--spacing-md) var(--spacing-2xl);
+        font-size: 16px;
+        min-width: 140px;
+    }
+    
+    .btn-small {
+        padding: var(--spacing-xs) var(--spacing-md);
+        font-size: 13px;
+        min-width: 80px;
+    }
+}
+
+/* ============================================
+   DARK MODE ADJUSTMENTS
+   ============================================ */
+@media (prefers-color-scheme: dark) {
+    .btn:focus {
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+    }
+    
+    .btn-primary:focus {
+        box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.5);
+    }
+    
+    .btn-secondary:focus {
+        box-shadow: 0 0 0 3px rgba(var(--color-secondary-rgb), 0.5);
+    }
+    
+    .btn-success:focus {
+        box-shadow: 0 0 0 3px rgba(var(--color-success-rgb), 0.5);
+    }
+    
+    .btn-info:focus {
+        box-shadow: 0 0 0 3px rgba(var(--color-info-rgb), 0.5);
+    }
+    
+    .btn-warning:focus {
+        box-shadow: 0 0 0 3px rgba(var(--color-warning-rgb), 0.5);
+    }
+    
+    .btn-error:focus {
+        box-shadow: 0 0 0 3px rgba(var(--color-error-rgb), 0.5);
+    }
+}
+
+/* ============================================
+   SPECIAL BUTTON LAYOUTS
+   ============================================ */
+.btn-right-aligned {
+    margin-left: auto;
+    display: block;
+}
+
+.form-actions-right {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-2xl);
+}
+
+.form-actions-right .btn {
+    margin-left: 0;
+}

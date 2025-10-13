@@ -41,6 +41,11 @@ class DemographicsTab {
                     <label for="demo-location">Location:</label>
                     <input type="text" id="demo-location" placeholder="Enter location">
                 </div>
+
+                <!-- Next button container -->
+                <div class="form-actions-right">
+                    <div id="demographics-next-button-container"></div>
+                </div>
             </div>
         `;
     }

@@ -25,10 +25,16 @@
     /* ============================================
        PRIMARY BRAND COLORS
        ============================================ */
-    --color-primary: #007bff;
-    --color-primary-dark: #0056b3;
-    --color-primary-light: #e7f3ff;
-    --color-primary-rgb: 0, 123, 255; /* For rgba() usage */
+    --color-primary: #0066cc;          /* Darkened from #007bff for better contrast */
+    --color-primary-dark: #004499;     /* Darker variant for hover states */
+    --color-primary-darker: #003366;   /* Even darker for pressed states */
+    --color-primary-light: #e6f2ff;    /* Light variant for backgrounds */
+    --color-primary-rgb: 0, 102, 204;  /* For rgba() usage - updated to match new primary */
+
+    /* Primary Gradients (inspired by alert component) */
+    --gradient-primary: linear-gradient(135deg, #e6f2ff 0%, #ffffff 100%);
+    --gradient-primary-solid: linear-gradient(135deg, #0066cc 0%, #004499 100%);
+    --gradient-primary-subtle: linear-gradient(135deg, #e6f2ff 0%, #f0f8ff 100%);
 
     /* ============================================
        SUCCESS COLORS (Green Theme)

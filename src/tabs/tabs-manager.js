@@ -15,6 +15,7 @@ class TabsManager {
         this.jobsTab = null;
         this.summaryTab = null;
         this.previewTab = null;
+        this.nextButtonManager = null;
     }
     
     /**
@@ -40,6 +41,31 @@ class TabsManager {
         }
 
         console.log('Tabs Manager initialized');
+
+        // Initialize Next button manager after tabs are set up
+        this.initializeNextButtons();
+    }
+
+    /**
+     * Initialize Next button manager and add Next buttons to tabs
+     */
+    initializeNextButtons() {
+        // Wait for NextButtonManager to be available
+        if (typeof NextButtonManager === 'undefined') {
+            setTimeout(() => this.initializeNextButtons(), 100);
+            return;
+        }
+
+        // Create Next button manager
+        this.nextButtonManager = new NextButtonManager(this);
+
+        // Add Next buttons to each tab (except preview)
+        this.nextButtonManager.addNextButton('intro', 'intro-next-button-container');
+        this.nextButtonManager.addNextButton('demographics', 'demographics-next-button-container');
+        this.nextButtonManager.addNextButton('jobs', 'jobs-next-button-container');
+        this.nextButtonManager.addNextButton('summary', 'summary-next-button-container');
+
+        console.log('Next buttons initialized');
     }
     
     /**

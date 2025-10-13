@@ -47,6 +47,11 @@ class IntroTab {
                 <div id="author-input-container"></div>
                 <div id="email-input-container"></div>
                 <div id="date-input-container"></div>
+
+                <!-- Next button container -->
+                <div class="form-actions-right">
+                    <div id="intro-next-button-container"></div>
+                </div>
             </div>
         `;
     }

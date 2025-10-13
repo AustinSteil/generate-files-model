@@ -58,6 +58,11 @@ class JobsTab {
                 <div class="form-actions">
                     <button type="button" class="btn btn-secondary" id="add-job-btn">+ Add Another Job</button>
                 </div>
+
+                <!-- Next button container -->
+                <div class="form-actions-right">
+                    <div id="jobs-next-button-container"></div>
+                </div>
             </div>
         `;
     }

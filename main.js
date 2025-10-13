@@ -105,17 +105,27 @@ class DocumentGenerator {
      * Set up all DOM event listeners for form interactions
      */
     setupEventListeners() {
-        // Wait for the generate button to be created by the preview tab
+        // Wait for the preview tab and its generate button to be created
         const setupGenerateButton = () => {
-            const generateBtn = document.getElementById('generateBtn');
-            if (generateBtn) {
-                generateBtn.addEventListener('click', () => {
+            // Try to access the preview tab through the tabs manager
+            if (this.tabsManager && this.tabsManager.previewTab) {
+                // Use the new method to set the button handler
+                this.tabsManager.previewTab.setGenerateButtonHandler(() => {
                     this.generateDocument();
                 });
-                console.log('Generate button event listener attached');
+                console.log('Generate button handler attached via Button component');
             } else {
-                // Retry if button isn't created yet
-                setTimeout(setupGenerateButton, 100);
+                // Fallback to the old method if the new approach isn't available
+                const generateBtn = document.getElementById('generateBtn');
+                if (generateBtn) {
+                    generateBtn.addEventListener('click', () => {
+                        this.generateDocument();
+                    });
+                    console.log('Generate button event listener attached (fallback method)');
+                } else {
+                    // Retry if button isn't created yet
+                    setTimeout(setupGenerateButton, 100);
+                }
             }
         };
 
@@ -190,20 +200,62 @@ class DocumentGenerator {
 
         // Use tabs manager validation
         const validation = this.tabsManager.validateAll();
+        return validation.isValid;
+    }
 
-        // Update generate button state
-        const generateBtn = document.getElementById('generateBtn');
-        if (generateBtn) {
-            generateBtn.disabled = !validation.isValid;
+    /**
+     * Temporarily disable the generate button for a few seconds
+     */
+    temporarilyDisableButton() {
+        const button = this.getGenerateButton();
+        if (!button) return;
+
+        // Disable for 3 seconds
+        button.setDisabled(true);
+
+        setTimeout(() => {
+            button.setDisabled(false);
+        }, 3000);
+    }
+
+    /**
+     * Get the generate button (Button component or fallback)
+     */
+    getGenerateButton() {
+        // Try Button component first
+        if (this.tabsManager?.previewTab?.generateButton) {
+            return this.tabsManager.previewTab.generateButton;
         }
 
-        return validation.isValid;
+        // Fallback to DOM element
+        const domButton = document.getElementById('generateBtn');
+        if (domButton) {
+            return {
+                setDisabled: (disabled) => { domButton.disabled = disabled; },
+                setLoading: (loading) => {
+                    domButton.disabled = loading;
+                    domButton.textContent = loading ? 'Generating...' : 'Generate Document';
+                },
+                setText: (text) => { domButton.textContent = text; }
+            };
+        }
+
+        return null;
     }
 
     async generateDocument() {
         if (!this.validateForm()) {
             showError('Please fill in all required fields');
+            this.temporarilyDisableButton();
             return;
+        }
+
+        const button = this.getGenerateButton();
+
+        // Set button to loading state
+        if (button) {
+            button.setLoading(true);
+            button.setText('Generating...');
         }
 
         this.collectFormData();
@@ -224,6 +276,13 @@ class DocumentGenerator {
         } catch (error) {
             console.error('Document generation failed:', error);
             showError(`Failed to generate document: ${error.message}`);
+            this.temporarilyDisableButton();
+        } finally {
+            // Reset button to normal state
+            if (button) {
+                button.setLoading(false);
+                button.setText('Generate Document');
+            }
         }
     }
 
@@ -386,5 +445,5 @@ class DocumentGenerator {
 
 // Initialize the application when the DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    new DocumentGenerator();
+    window.documentGenerator = new DocumentGenerator();
 });

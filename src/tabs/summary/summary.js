@@ -36,6 +36,11 @@ class SummaryTab {
                     <label for="summary-keywords">Keywords:</label>
                     <input type="text" id="summary-keywords" placeholder="Enter keywords separated by commas">
                 </div>
+
+                <!-- Next button container -->
+                <div class="form-actions-right">
+                    <div id="summary-next-button-container"></div>
+                </div>
             </div>
         `;
     }

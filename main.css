@@ -108,38 +108,8 @@ body {
     min-width: 140px;
 }
 
-.btn-primary {
-    background-color: var(--color-primary);
-    color: var(--color-text-white);
-}
-
-.btn-primary:hover {
-    background-color: var(--color-primary-dark);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-}
-
-.btn-secondary {
-    background-color: var(--color-secondary);
-    color: var(--color-text-white);
-}
-
-.btn-secondary:hover {
-    background-color: var(--color-secondary-dark);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-}
-
-.btn-success {
-    background-color: var(--color-success);
-    color: var(--color-text-white);
-}
-
-.btn-success:hover {
-    background-color: var(--color-success-dark);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-}
+/* Button variant styles are now handled in src/components/button/button.css
+   with gradient support. Base .btn styles remain here for compatibility. */
 
 .btn:disabled {
     opacity: var(--opacity-60);

@@ -56,8 +56,8 @@ class PreviewTab {
                     </div>
                 </div>
 
-                <div class="form-actions">
-                    <button type="button" class="btn btn-primary" id="generateBtn">Generate Document</button>
+                <div class="form-actions" id="generate-button-container">
+                    <!-- Generate button will be created here by the Button component -->
                 </div>
             </div>
         `;
@@ -65,12 +65,46 @@ class PreviewTab {
 
     init() {
         console.log('Preview tab initialized');
+        this.createGenerateButton();
+    }
 
-        // Wire up the generate document button
-        // Note: The actual handler will be set up by DocumentGenerator in main.js
-        const generateBtn = document.getElementById('generateBtn');
-        if (generateBtn) {
-            console.log('Generate button found in preview tab');
+    /**
+     * Create the generate document button using the reusable Button component
+     */
+    createGenerateButton() {
+        // Check if Button class is available
+        if (typeof Button === 'undefined') {
+            console.error('Button component not loaded. Make sure to include button.js');
+            return;
+        }
+
+        // Create the generate button with success variant (green)
+        this.generateButton = new Button({
+            containerId: 'generate-button-container',
+            id: 'generateBtn', // Keep the same ID for compatibility with main.js
+            text: 'Generate Document',
+            variant: 'success', // Green button instead of primary blue
+            size: 'medium',
+            onClick: (e, button) => {
+                // The click handler will be set up by main.js
+                // This is just a placeholder that will be overridden
+                console.log('Generate button clicked - waiting for main.js to attach handler');
+            }
+        });
+
+        console.log('Generate button created with Button component (success variant - green)');
+    }
+
+    /**
+     * Set the click handler for the generate button
+     * This method can be called by main.js to set the actual handler
+     */
+    setGenerateButtonHandler(handler) {
+        if (this.generateButton && typeof handler === 'function') {
+            this.generateButton.options.onClick = (e, button) => {
+                handler(e, button);
+            };
+            console.log('Generate button handler updated');
         }
     }
     
@@ -82,22 +116,22 @@ class PreviewTab {
             console.warn('Tabs manager not available for preview');
             return;
         }
-        
+
         // Get data from all tabs
         const introData = this.tabsManager.introTab?.getData() || {};
         const demoData = this.tabsManager.demographicsTab?.getData() || {};
         const jobsData = this.tabsManager.jobsTab?.getData() || [];
         const summaryData = this.tabsManager.summaryTab?.getData() || {};
-        
+
         // Update intro preview
         this.updateIntroPreview(introData);
-        
+
         // Update demographics preview
         this.updateDemographicsPreview(demoData);
-        
+
         // Update jobs preview
         this.updateJobsPreview(jobsData);
-        
+
         // Update summary preview
         this.updateSummaryPreview(summaryData);
     }
