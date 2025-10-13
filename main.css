@@ -2,7 +2,7 @@
  * Document Generator Styles
  *
  * Main stylesheet for the document generation web application.
- * This file contains global styles, button variants, modal styles, and component-specific styles.
+ * This file contains global styles, form elements, and button variants.
  *
  * Structure:
  * - Reset and base styles
@@ -11,13 +11,18 @@
  * - Button styles and variants
  * - Loading animations
  * - Footer styles
- * - Modal styles (phrase modal, saved data alert)
  * - Tooltip cursor overrides
  * - Floating storage button
  * - Responsive adjustments
  *
  * NOTE: This file uses the centralized color management system from src/color-system/colors.css
  * All colors are referenced using CSS custom properties (variables) for consistency.
+ *
+ * Component-specific styles are located in their respective component directories:
+ * - Modal styles: src/components/modal/modal.css
+ * - Alert styles: src/components/alert/alert.css
+ * - Button styles: src/components/button/button.css
+ * - Card styles: src/components/cards/cards.css
  *
  * @author Austin Steil
  * @version 2.0.0
@@ -200,202 +205,11 @@ body {
     box-shadow: var(--shadow-md);
 }
 
-/* Modal styles for password input */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, var(--opacity-50));
-}
+/* Modal styles have been moved to src/components/modal/modal.css */
 
-.modal-content {
-    background-color: var(--color-bg-primary);
-    margin: 15% auto;
-    padding: 30px;
-    border-radius: var(--radius-lg);
-    width: 90%;
-    max-width: 500px;
-    box-shadow: var(--shadow-xl);
-}
 
-.modal-header {
-    margin-bottom: var(--spacing-xl);
-}
 
-.modal-header h3 {
-    color: var(--color-text-primary);
-    margin-bottom: 10px;
-}
 
-.modal-body {
-    margin-bottom: 25px;
-}
-
-.modal-body p {
-    margin-bottom: var(--spacing-lg);
-    color: var(--color-text-secondary);
-    line-height: 1.5;
-}
-
-.modal-footer {
-    display: flex;
-    gap: 10px;
-    justify-content: flex-end;
-}
-
-.close {
-    color: var(--color-gray-400);
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-    line-height: 1;
-}
-
-.close:hover {
-    color: var(--color-text-primary);
-}
-
-/* Phrase Modal Specific Styles */
-.phrase-error {
-    background: var(--gradient-error-subtle);
-    color: var(--color-error-darker);
-    padding: var(--spacing-sm) var(--spacing-md);
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--color-error-border);
-    font-size: 14px;
-    margin-top: 10px;
-}
-
-#securityPhrase {
-    transition: border-color var(--transition-slow), box-shadow var(--transition-slow);
-}
-
-#securityPhrase.valid {
-    border-color: var(--color-success);
-    box-shadow: 0 0 0 2px rgba(var(--color-success-rgb), var(--opacity-10));
-}
-
-#securityPhrase.invalid {
-    border-color: var(--color-error);
-    box-shadow: 0 0 0 2px rgba(var(--color-error-rgb), var(--opacity-10));
-}
-
-#securityPhrase.error {
-    border-color: var(--color-error);
-    background-color: var(--color-error-light);
-}
-
-#modalConfirm:disabled {
-    opacity: var(--opacity-60);
-    cursor: not-allowed;
-    background-color: var(--color-secondary);
-}
-
-#modalConfirm:disabled:hover {
-    background-color: var(--color-secondary);
-    transform: none;
-    box-shadow: none;
-}
-
-/* Saved Data Alert Modal */
-.saved-data-alert {
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-    padding: var(--spacing-xl);
-}
-
-.saved-data-alert .modal-content {
-    max-width: 500px;
-    width: 100%;
-    text-align: center;
-    margin: 0 !important;
-    position: relative;
-}
-
-.saved-data-alert .modal-header h3 {
-    color: var(--color-primary);
-    margin: 0;
-    font-size: 1.5rem;
-}
-
-.saved-data-alert .modal-body {
-    padding: 25px 30px;
-}
-
-.alert-icon {
-    font-size: 3rem;
-    margin-bottom: var(--spacing-lg);
-}
-
-.saved-data-alert .modal-body p {
-    margin-bottom: var(--spacing-lg);
-    line-height: 1.6;
-}
-
-.saved-data-alert .modal-body p:first-of-type {
-    font-size: 1.1rem;
-    color: var(--color-text-primary);
-}
-
-.alert-benefits {
-    background: var(--color-bg-tertiary);
-    border-radius: var(--radius-lg);
-    padding: var(--spacing-xl);
-    margin: var(--spacing-xl) 0;
-    text-align: left;
-}
-
-.benefit-item {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-    margin-bottom: var(--spacing-md);
-    font-size: 14px;
-    color: var(--color-text-secondary);
-}
-
-.benefit-item:last-child {
-    margin-bottom: 0;
-}
-
-.benefit-icon {
-    font-size: 16px;
-    width: 20px;
-    text-align: center;
-}
-
-.saved-data-alert .modal-footer {
-    gap: var(--spacing-lg);
-    padding: var(--spacing-xl) 30px;
-    justify-content: center;
-}
-
-.saved-data-alert .btn {
-    min-width: 120px;
-    padding: 10px var(--spacing-xl);
-}
-
-/* Animation for saved data alert */
-.saved-data-alert {
-    animation: alertSlideIn 0.3s ease-out;
-}
-
-@keyframes alertSlideIn {
-    from {
-        opacity: 0;
-        transform: scale(0.9) translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-    }
-}
 
 /* Tooltip Styles - Removed duplicates, now using only src/components/tooltip/tooltip.css */
 /* Keeping only the cursor override for buttons */
@@ -519,38 +333,5 @@ button.has-tooltip,
         border-bottom: none !important;
     }
 
-    /* Saved data alert responsive */
-    .saved-data-alert {
-        padding: 10px !important;
-    }
 
-    .saved-data-alert .modal-content {
-        margin: 0 !important;
-        max-width: 95%;
-        width: 95%;
-    }
-
-    .saved-data-alert .modal-body {
-        padding: 20px 15px;
-    }
-
-    .alert-benefits {
-        padding: 15px;
-        margin: 15px 0;
-    }
-
-    .saved-data-alert .modal-footer {
-        flex-direction: column;
-        padding: 15px;
-        align-items: center;
-    }
-
-    .saved-data-alert .btn {
-        width: 100%;
-        margin-bottom: 10px;
-    }
-
-    .saved-data-alert .btn:last-child {
-        margin-bottom: 0;
-    }
 }

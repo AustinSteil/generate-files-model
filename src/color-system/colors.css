@@ -233,7 +233,9 @@
     /* Info colors for dark mode */
     --color-info: #3b82f6;
     --color-info-light: #1e3a8a;
+    --color-info-border: #3b82f6;
     --gradient-info: linear-gradient(135deg, #1e3a8a 0%, #1f2937 100%);
+    --gradient-info-subtle: linear-gradient(135deg, #1e3a8a 0%, #374151 100%);
 
     /* Text colors for dark mode */
     --color-text-primary: #f9fafb;        /* Improved contrast: 15.5:1 on #1f2937 */

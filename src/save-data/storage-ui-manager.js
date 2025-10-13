@@ -78,93 +78,63 @@ class StorageUIManager {
      * @returns {Promise<boolean>} True if user wants to load data
      */
     async showSavedDataAlert() {
-        return new Promise((resolve) => {
-            // Create custom alert modal
-            const alertModal = document.createElement('div');
-            alertModal.className = 'modal saved-data-alert';
-            alertModal.innerHTML = `
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3>Previous Session Data Discovered</h3>
-                    </div>
-                    <div class="modal-body">
-                        <p>Saved data will expire in ${this.documentGenerator.storageDataManager ?
-                            (this.documentGenerator.storageDataManager.getRemainingDays() || this.documentGenerator.storageDataManager.getExpirationDays()) :
-                            (this.secureStorage.getRemainingDays() || this.secureStorage.getExpirationDays())} days.</p>
-                            <div class="alert-benefits">
-                            <div class="benefit-item">
-                                <span class="benefit-icon">⚡</span>
-                                <span>Quick access to your saved data</span>
-                            </div>
-                            <div class="benefit-item">
-                                <span class="benefit-icon">🔐</span>
-                                <span>Your information is encrypted and secure</span>
-                            </div>
-                            <div class="benefit-item">
-                                <span class="benefit-icon">✏️</span>
-                                <span>Continue where you left off</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" id="alertDismiss">Close</button>
-                        <button type="button" class="btn btn-warning" id="alertClear">Clear Data</button>
-                        <button type="button" class="btn btn-primary" id="alertLoad">Load Data</button>
-                    </div>
+        // Get expiration days
+        const expirationDays = this.documentGenerator.storageDataManager ?
+            (this.documentGenerator.storageDataManager.getRemainingDays() || this.documentGenerator.storageDataManager.getExpirationDays()) :
+            (this.secureStorage.getRemainingDays() || this.secureStorage.getExpirationDays());
+
+        // Create content with benefits
+        const content = `
+            <p>Saved data will expire in ${expirationDays} days.</p>
+            <div class="alert-benefits" style="background: var(--gradient-info-subtle); padding: var(--spacing-lg); border-radius: var(--radius-md); margin: var(--spacing-lg) 0; border-left: 4px solid var(--color-info-border);">
+                <div class="benefit-item" style="display: flex; align-items: center; gap: var(--spacing-md); margin-bottom: var(--spacing-md);">
+                    <span class="benefit-icon" style="font-size: 1.2rem; width: 20px; text-align: center;">⚡</span>
+                    <span>Quick access to your saved data</span>
                 </div>
-            `;
+                <div class="benefit-item" style="display: flex; align-items: center; gap: var(--spacing-md); margin-bottom: var(--spacing-md);">
+                    <span class="benefit-icon" style="font-size: 1.2rem; width: 20px; text-align: center;">🔐</span>
+                    <span>Your information is encrypted and secure</span>
+                </div>
+                <div class="benefit-item" style="display: flex; align-items: center; gap: var(--spacing-md);">
+                    <span class="benefit-icon" style="font-size: 1.2rem; width: 20px; text-align: center;">✏️</span>
+                    <span>Continue where you left off</span>
+                </div>
+            </div>
+        `;
 
-            document.body.appendChild(alertModal);
-
-            // Show modal
-            alertModal.style.display = 'block';
-            document.body.style.overflow = 'hidden';
-
-            // Handle button clicks
-            const loadBtn = alertModal.querySelector('#alertLoad');
-            const dismissBtn = alertModal.querySelector('#alertDismiss');
-            const clearBtn = alertModal.querySelector('#alertClear');
-
-            const cleanup = () => {
-                alertModal.remove();
-                document.body.style.overflow = '';
-            };
-
-            loadBtn.addEventListener('click', () => {
-                cleanup();
-                resolve(true);
-            });
-
-            dismissBtn.addEventListener('click', () => {
-                cleanup();
-                resolve(false);
-            });
-
-            clearBtn.addEventListener('click', async () => {
-                cleanup();
-                // Call the clear data function
-                await this.documentGenerator.handleClearData();
-                resolve(false); // Don't load data after clearing
-            });
-
-            // Close on outside click
-            alertModal.addEventListener('click', (e) => {
-                if (e.target === alertModal) {
-                    cleanup();
-                    resolve(false);
+        // Create modal with reusable Modal component
+        const modal = new Modal({
+            title: 'Previous Session Data Discovered',
+            content: content,
+            size: 'medium',
+            buttons: [
+                {
+                    text: 'Close',
+                    action: 'dismiss',
+                    variant: 'secondary'
+                },
+                {
+                    text: 'Clear Data',
+                    action: 'clear',
+                    variant: 'warning',
+                    handler: async (modal) => {
+                        // Call the clear data function
+                        await this.documentGenerator.handleClearData();
+                        return true; // Allow modal to close
+                    }
+                },
+                {
+                    text: 'Load Data',
+                    action: 'load',
+                    variant: 'primary'
                 }
-            });
-
-            // Handle Escape key
-            const handleKeyPress = (e) => {
-                if (e.key === 'Escape') {
-                    cleanup();
-                    resolve(false);
-                    document.removeEventListener('keydown', handleKeyPress);
-                }
-            };
-            document.addEventListener('keydown', handleKeyPress);
+            ]
         });
+
+        const result = await modal.show();
+
+        // Return true only if user chose to load data
+        return result === 'load';
     }
 
     /**

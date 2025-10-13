@@ -635,25 +635,27 @@
     }
 }
 
-/* Mobile adjustments for modal */
+/* Mobile adjustments for card-specific modals */
 @media (max-width: 768px) {
-    .modal-content {
+    .card-image-modal .modal-content,
+    .card-pdf-modal .modal-content {
         max-width: 95vw;
         max-height: 95vh;
     }
 
-    .modal-close {
+    .card-image-modal .modal-close,
+    .card-pdf-modal .modal-close {
         top: -40px;
         width: 36px;
         height: 36px;
         font-size: 18px;
     }
 
-    .modal-image {
+    .card-image-modal .modal-image {
         max-height: calc(95vh - 50px);
     }
 
-    .modal-pdf {
+    .card-pdf-modal .modal-pdf {
         width: 90vw;
         height: 100vh;
         border-radius: 0;
@@ -668,7 +670,8 @@
         border-width: 1px;
     }
 
-    .modal-title {
+    .card-image-modal .modal-title,
+    .card-pdf-modal .modal-title {
         font-size: 16px;
         margin-top: var(--spacing-md);
     }
