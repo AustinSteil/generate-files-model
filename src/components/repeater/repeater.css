@@ -1,0 +1,413 @@
+/**
+ * Repeater Component Styles
+ * 
+ * Slim, elegant styling for the dynamic repeater component.
+ * Uses the centralized color management system for consistency.
+ * Full light/dark mode support.
+ * 
+ * @author Austin Steil
+ * @version 1.0.0
+ */
+
+/* ============================================
+   REPEATER COMPONENT BASE
+   ============================================ */
+
+.repeater-component {
+    margin-bottom: var(--spacing-2xl);
+    position: relative;
+}
+
+/* ============================================
+   REPEATER HEADER
+   ============================================ */
+
+.repeater-header {
+    margin-bottom: var(--spacing-lg);
+}
+
+.repeater-label {
+    display: block;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    font-size: 16px;
+    letter-spacing: 0.2px;
+    margin: 0;
+}
+
+/* ============================================
+   TABLE STRUCTURE
+   ============================================ */
+
+.repeater-table {
+    margin-bottom: var(--spacing-md);
+}
+
+/* ============================================
+   COLUMN HEADERS
+   ============================================ */
+
+.repeater-column-headers {
+    display: grid;
+    gap: var(--spacing-md);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border-light);
+    border-radius: 8px 8px 0 0;
+    align-items: center;
+}
+
+.repeater-row-number-header {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    text-align: center;
+    width: 40px;
+}
+
+.repeater-column-header {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.repeater-actions-header {
+    width: 40px;
+}
+
+/* Column header grid layouts based on field count */
+.repeater-component[data-field-count="1"] .repeater-column-headers,
+.repeater-component[data-field-count="1"] .repeater-row {
+    grid-template-columns: 40px 1fr 40px;
+}
+
+.repeater-component[data-field-count="2"] .repeater-column-headers,
+.repeater-component[data-field-count="2"] .repeater-row {
+    grid-template-columns: 40px 1fr 1fr 40px;
+}
+
+.repeater-component[data-field-count="3"] .repeater-column-headers,
+.repeater-component[data-field-count="3"] .repeater-row {
+    grid-template-columns: 40px 1fr 1fr 1fr 40px;
+}
+
+.repeater-component[data-field-count="4"] .repeater-column-headers,
+.repeater-component[data-field-count="4"] .repeater-row {
+    grid-template-columns: 40px 1fr 1fr 1fr 1fr 40px;
+}
+
+/* ============================================
+   ADD BUTTON (Bottom)
+   ============================================ */
+
+.repeater-add-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-lg);
+    background: var(--color-bg-primary);
+    border: 1px dashed var(--color-border-medium);
+    border-radius: 6px;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    font-size: 14px;
+    font-weight: 500;
+    width: 100%;
+}
+
+.repeater-add-btn:hover {
+    background: var(--color-bg-secondary);
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    border-style: solid;
+}
+
+.repeater-add-btn:active {
+    transform: scale(0.98);
+}
+
+.repeater-add-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.repeater-add-btn svg {
+    display: block;
+    flex-shrink: 0;
+}
+
+/* ============================================
+   ROWS CONTAINER
+   ============================================ */
+
+.repeater-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding-bottom: 20px; /* Space for absolutely positioned character counters */
+}
+
+/* ============================================
+   INDIVIDUAL ROW
+   ============================================ */
+
+.repeater-row {
+    display: grid;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    padding-bottom: calc(var(--spacing-md) + 20px); /* Extra space for character counter */
+    background: var(--color-bg-primary);
+    border: 1px solid var(--color-border-light);
+    border-top: none;
+    transition: all var(--transition-base);
+    align-items: center;
+}
+
+.repeater-row:last-child {
+    border-radius: 0 0 8px 8px;
+}
+
+.repeater-row:hover {
+    background: var(--color-bg-secondary);
+}
+
+.repeater-row:hover .repeater-remove-btn {
+    opacity: 1;
+}
+
+/* ============================================
+   ROW NUMBER
+   ============================================ */
+
+.repeater-row-number {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text-tertiary);
+    text-align: center;
+    width: 40px;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+/* Stack fields on smaller screens */
+@media (max-width: 768px) {
+    .repeater-component[data-field-count] .repeater-column-headers,
+    .repeater-component[data-field-count] .repeater-row {
+        grid-template-columns: 40px 1fr 40px !important;
+    }
+
+    .repeater-column-header:not(:first-of-type):not(:last-of-type) {
+        display: none;
+    }
+
+    .repeater-field:not(:first-of-type) {
+        display: none;
+    }
+}
+
+/* ============================================
+   FIELD WRAPPER
+   ============================================ */
+
+.repeater-field {
+    position: relative;
+}
+
+/* Compact styling for nested components */
+.repeater-field .text-input-component,
+.repeater-field .dropdown-component,
+.repeater-field .area-input-component {
+    margin: 0 !important;
+}
+
+/* Also target the form-group class that text-input adds */
+.repeater-field .form-group {
+    margin: 0 !important;
+}
+
+.repeater-field .text-input-field,
+.repeater-field .dropdown-select {
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 14px;
+}
+
+.repeater-field .area-input-field {
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 14px;
+    min-height: auto !important;
+    line-height: 1.5;
+}
+
+/* Ensure area input wrapper doesn't add extra space */
+.repeater-field .area-input-wrapper {
+    width: 100%;
+}
+
+/* Hide field labels when showFieldLabels is false */
+.repeater-component.hide-field-labels .repeater-field .text-input-component label,
+.repeater-component.hide-field-labels .repeater-field .dropdown-component label,
+.repeater-component.hide-field-labels .repeater-field .area-input-component label {
+    display: none;
+}
+
+/* When labels are shown, ensure proper alignment */
+.repeater-field .text-input-component label,
+.repeater-field .dropdown-component label,
+.repeater-field .area-input-component label {
+    margin-bottom: var(--spacing-xs);
+}
+
+/* Character counter in repeater - position absolutely to not affect alignment */
+.repeater-field .area-input-component {
+    position: relative;
+}
+
+.repeater-field .area-input-char-counter {
+    position: absolute;
+    bottom: -18px;
+    right: 0;
+    font-size: 11px;
+    margin-top: 0;
+}
+
+/* ============================================
+   REMOVE BUTTON
+   ============================================ */
+
+.repeater-remove-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    min-height: 40px;
+    padding: 0;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: var(--color-text-tertiary);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    flex-shrink: 0;
+    opacity: 0;
+}
+
+.repeater-remove-btn:hover:not(:disabled) {
+    background: var(--color-error-light);
+    border-color: var(--color-error);
+    color: var(--color-error);
+    opacity: 1;
+}
+
+.repeater-remove-btn:active:not(:disabled) {
+    transform: scale(0.95);
+}
+
+.repeater-remove-btn:disabled {
+    opacity: 0;
+    cursor: not-allowed;
+}
+
+.repeater-remove-btn svg {
+    display: block;
+}
+
+/* ============================================
+   DARK MODE ADJUSTMENTS
+   ============================================ */
+
+.dark-mode .repeater-column-headers {
+    background: var(--color-bg-tertiary);
+}
+
+.dark-mode .repeater-row {
+    background: var(--color-bg-secondary);
+    border-color: var(--color-border-light);
+}
+
+.dark-mode .repeater-row:hover {
+    background: var(--color-bg-tertiary);
+}
+
+.dark-mode .repeater-add-btn:hover {
+    background: var(--color-bg-tertiary);
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.repeater-row {
+    animation: slideIn 0.15s ease-out;
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+.repeater-add-btn:focus,
+.repeater-remove-btn:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* ============================================
+   COMPACT VARIANT
+   ============================================ */
+
+.repeater-component.compact .repeater-row {
+    padding: var(--spacing-sm);
+}
+
+.repeater-component.compact .repeater-column-headers {
+    padding: var(--spacing-xs) var(--spacing-sm);
+}
+
+.repeater-component.compact .repeater-remove-btn {
+    width: 28px;
+    height: 28px;
+}
+
+.repeater-component.compact .repeater-remove-btn svg {
+    width: 12px;
+    height: 12px;
+}
+
+/* ============================================
+   ERROR STATE
+   ============================================ */
+
+.repeater-component.error .repeater-row {
+    border-color: var(--color-error);
+}
+
+.repeater-component.error .repeater-label {
+    background: linear-gradient(135deg, var(--color-error), var(--color-error-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+

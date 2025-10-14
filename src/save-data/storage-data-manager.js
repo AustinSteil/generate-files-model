@@ -198,7 +198,7 @@ class StorageDataManager {
                     // Map fields to appropriate tabs based on field names
                     if (['title', 'companyName', 'companyStreet', 'companyCity', 'companyState', 'companyZip', 'author', 'email', 'date', 'selectedTemplate', 'template'].includes(fieldName)) {
                         tabData.intro[fieldName] = formData[fieldName];
-                    } else if (['name', 'age', 'location'].includes(fieldName)) {
+                    } else if (['jobTitle', 'jobPurpose', 'essentialFunctions', 'marginalFunctions', 'workSchedule', 'breaks', 'otherShiftInfo'].includes(fieldName)) {
                         tabData.demographics[fieldName] = formData[fieldName];
                     } else if (['documentContent'].includes(fieldName)) {
                         tabData.summary[fieldName] = formData[fieldName];

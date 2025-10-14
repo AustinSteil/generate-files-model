@@ -1,0 +1,415 @@
+/**
+ * AreaInput Component Styles
+ *
+ * Comprehensive styling for the reusable area input/rich text editor component.
+ * Uses the centralized color management system for consistency.
+ *
+ * @author Austin Steil
+ * @version 1.1.0
+ *
+ * Recent improvements:
+ * - Deduplicated dark mode rules using CSS custom properties
+ * - Enhanced resize handle visibility and touch-friendliness
+ * - Improved error states with solid backgrounds
+ * - Added universal scrollbar styling for Firefox/other browsers
+ * - Faster animations for better mobile performance
+ */
+
+/* ============================================
+   CSS CUSTOM PROPERTIES
+   ============================================ */
+
+:root {
+    /* Shadow variables for light/dark mode */
+    --area-input-shadow-light: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --area-input-shadow-dark: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --area-input-focus-ring-light: rgba(var(--color-primary-rgb), 0.1);
+    --area-input-focus-ring-dark: rgba(var(--color-primary-rgb), 0.2);
+}
+
+/* ============================================
+   AREA INPUT COMPONENT BASE
+   ============================================ */
+
+.area-input-component {
+    margin-bottom: var(--spacing-2xl);
+    position: relative;
+}
+
+.area-input-component label {
+    display: block;
+    margin-bottom: var(--spacing-sm);
+    font-weight: 600;
+    background: linear-gradient(135deg, var(--color-text-primary), var(--color-text-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+}
+
+/* ============================================
+   TEXTAREA WRAPPER (for custom resize handle)
+   ============================================ */
+
+.area-input-wrapper {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+/* ============================================
+   TEXTAREA FIELD
+   ============================================ */
+
+.area-input-field {
+    width: 100%;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border: 2px solid var(--color-border-medium);
+    border-radius: var(--radius-lg);
+    font-size: 16px;
+    font-family: inherit;
+    line-height: 1.6;
+    color: var(--color-text-primary);
+    background: var(--color-bg-primary);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    display: block;
+    box-sizing: border-box;
+}
+
+.area-input-field:hover {
+    border-color: var(--color-border-dark);
+}
+
+.area-input-field:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+}
+
+.area-input-field::placeholder {
+    color: var(--color-text-tertiary);
+    opacity: 0.7;
+}
+
+/* Simple scrollbar */
+.area-input-field::-webkit-scrollbar {
+    width: 8px;
+}
+
+.area-input-field::-webkit-scrollbar-thumb {
+    background: var(--color-border-medium);
+    border-radius: 4px;
+}
+
+/* ============================================
+   RESIZE HANDLE
+   ============================================ */
+
+/* Just use the browser's native resize handle - simple and performant */
+.area-input-resize-handle {
+    display: none;
+}
+
+/* ============================================
+   RICH TEXT EDITOR (QUILL.JS)
+   ============================================ */
+
+.area-input-rich-text {
+    border: 2px solid var(--color-border-medium);
+    border-radius: var(--radius-lg);
+    background: var(--color-bg-primary);
+    transition: border-color var(--transition-base), box-shadow var(--transition-base);
+    overflow: hidden;
+    box-shadow: var(--area-input-shadow-light);
+}
+
+.area-input-rich-text:hover {
+    border-color: var(--color-border-dark);
+}
+
+.area-input-rich-text:focus-within {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--area-input-focus-ring-light),
+                var(--area-input-shadow-light);
+}
+
+/* Quill toolbar styling */
+.area-input-rich-text .ql-toolbar {
+    border: none;
+    border-bottom: 1px solid var(--color-border-light);
+    background: var(--color-bg-secondary);
+    padding: var(--spacing-sm) var(--spacing-md);
+}
+
+.area-input-rich-text .ql-toolbar button {
+    width: 28px;
+    height: 28px;
+    padding: 4px;
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-base);
+}
+
+.area-input-rich-text .ql-toolbar button:hover {
+    background: rgba(var(--color-primary-rgb), 0.1);
+}
+
+.area-input-rich-text .ql-toolbar button.ql-active {
+    background: rgba(var(--color-primary-rgb), 0.15);
+}
+
+.area-input-rich-text .ql-toolbar .ql-stroke {
+    stroke: var(--color-text-secondary);
+    transition: stroke var(--transition-base);
+}
+
+.area-input-rich-text .ql-toolbar button:hover .ql-stroke,
+.area-input-rich-text .ql-toolbar button.ql-active .ql-stroke {
+    stroke: var(--color-primary);
+}
+
+.area-input-rich-text .ql-toolbar .ql-fill {
+    fill: var(--color-text-secondary);
+    transition: fill var(--transition-base);
+}
+
+.area-input-rich-text .ql-toolbar button:hover .ql-fill,
+.area-input-rich-text .ql-toolbar button.ql-active .ql-fill {
+    fill: var(--color-primary);
+}
+
+/* Quill picker (dropdowns) */
+.area-input-rich-text .ql-toolbar .ql-picker {
+    color: var(--color-text-primary);
+}
+
+.area-input-rich-text .ql-toolbar .ql-picker-label {
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    padding: 4px 8px;
+    transition: all var(--transition-base);
+}
+
+.area-input-rich-text .ql-toolbar .ql-picker-label:hover {
+    background: rgba(var(--color-primary-rgb), 0.1);
+    border-color: var(--color-border-medium);
+}
+
+.area-input-rich-text .ql-toolbar .ql-picker.ql-expanded .ql-picker-label {
+    background: rgba(var(--color-primary-rgb), 0.15);
+    border-color: var(--color-primary);
+}
+
+.area-input-rich-text .ql-toolbar .ql-picker-options {
+    background: var(--color-bg-primary);
+    border: 1px solid var(--color-border-medium);
+    border-radius: var(--radius-md);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: var(--spacing-xs);
+    margin-top: 4px;
+}
+
+.area-input-rich-text .ql-toolbar .ql-picker-item {
+    color: var(--color-text-primary);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+}
+
+.area-input-rich-text .ql-toolbar .ql-picker-item:hover {
+    background: rgba(var(--color-primary-rgb), 0.1);
+}
+
+.area-input-rich-text .ql-toolbar .ql-picker-item.ql-selected {
+    background: rgba(var(--color-primary-rgb), 0.15);
+    color: var(--color-primary);
+}
+
+/* Quill editor content area */
+.area-input-rich-text .ql-container {
+    font-family: inherit;
+    font-size: 16px;
+    border: none;
+    background: var(--color-bg-primary);
+}
+
+.area-input-rich-text .ql-editor {
+    min-height: 100px;
+    max-height: 500px;
+    overflow-y: auto;
+    padding: var(--spacing-md) var(--spacing-lg);
+    color: var(--color-text-primary);
+    line-height: 1.6;
+}
+
+.area-input-rich-text .ql-editor.ql-blank::before {
+    color: var(--color-text-tertiary);
+    opacity: 0.7;
+    font-style: normal;
+    left: var(--spacing-lg);
+}
+
+/* Universal scrollbar styling for editor */
+.area-input-rich-text .ql-editor {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border-dark) var(--color-bg-secondary);
+}
+
+.area-input-rich-text .ql-editor::-webkit-scrollbar {
+    width: 8px;
+}
+
+.area-input-rich-text .ql-editor::-webkit-scrollbar-track {
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-sm);
+}
+
+.area-input-rich-text .ql-editor::-webkit-scrollbar-thumb {
+    background: var(--color-border-dark);
+    border-radius: var(--radius-sm);
+}
+
+.area-input-rich-text .ql-editor::-webkit-scrollbar-thumb:hover {
+    background: var(--color-text-tertiary);
+}
+
+/* ============================================
+   ERROR STATES & VALIDATION FEEDBACK
+   ============================================ */
+
+.area-input-field.error,
+.area-input-rich-text.error {
+    border-color: var(--color-error);
+    background: rgba(var(--color-error-rgb), 0.03); /* Solid tint instead of gradient - less distracting */
+}
+
+.area-input-field.error:focus,
+.area-input-rich-text.error:focus-within {
+    box-shadow: 0 0 0 4px rgba(var(--color-error-rgb), 0.12),
+                0 2px 8px rgba(var(--color-error-rgb), 0.15);
+}
+
+.area-input-error {
+    margin-top: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: rgba(var(--color-error-rgb), 0.08); /* Solid background instead of gradient */
+    border-left: 4px solid var(--color-error);
+    border-radius: var(--radius-md);
+    color: var(--color-error);
+    font-size: 14px;
+    font-weight: 500;
+    animation: slideDown 0.2s ease-out; /* Faster animation for mobile */
+    will-change: transform; /* Performance optimization */
+}
+
+/* Character counter for live validation feedback */
+.area-input-char-counter {
+    margin-top: var(--spacing-xs);
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+    text-align: right;
+    transition: color var(--transition-base);
+}
+
+.area-input-char-counter.warning {
+    color: var(--color-warning);
+}
+
+.area-input-char-counter.error {
+    color: var(--color-error);
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================
+   DISABLED STATE
+   ============================================ */
+
+.area-input-field:disabled {
+    background: var(--color-gray-100);
+    color: var(--color-text-tertiary);
+    cursor: not-allowed;
+    opacity: 0.6;
+    resize: none;
+}
+
+.area-input-field:disabled::placeholder {
+    color: var(--color-text-tertiary);
+    opacity: 0.5;
+}
+
+.area-input-rich-text .ql-container.ql-disabled {
+    background: var(--color-gray-100);
+    opacity: 0.6;
+}
+
+.area-input-rich-text .ql-toolbar.ql-disabled {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+    .area-input-field {
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: 16px; /* Prevent zoom on iOS */
+    }
+
+    .area-input-component label {
+        font-size: 13px;
+    }
+
+    .area-input-rich-text .ql-editor {
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: 16px;
+    }
+
+    .area-input-rich-text .ql-toolbar {
+        padding: var(--spacing-xs) var(--spacing-sm);
+    }
+
+    .area-input-rich-text .ql-toolbar button {
+        width: 32px;
+        height: 32px;
+    }
+}
+
+/* ============================================
+   DARK MODE ADJUSTMENTS
+   Consolidated dark mode rules using CSS custom properties
+   ============================================ */
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --area-input-shadow-light: var(--area-input-shadow-dark);
+        --area-input-focus-ring-light: var(--area-input-focus-ring-dark);
+    }
+
+    .area-input-field.error {
+        background: rgba(var(--color-error-rgb), 0.05);
+    }
+}
+
+/* Manual dark mode class support */
+.dark-mode {
+    --area-input-shadow-light: var(--area-input-shadow-dark);
+    --area-input-focus-ring-light: var(--area-input-focus-ring-dark);
+}
+
+.dark-mode .area-input-field.error {
+    background: rgba(var(--color-error-rgb), 0.05);
+}
+

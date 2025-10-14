@@ -3,6 +3,7 @@
  *
  * Handles summary and additional information collection.
  * Dynamically generates and manages the summary tab content.
+ * Uses AreaInput component with rich text editor for summary field.
  *
  * @author Austin Steil
  */
@@ -14,6 +15,10 @@ class SummaryTab {
             console.error(`Summary tab container with ID "${containerId}" not found`);
             return;
         }
+
+        // Component references
+        this.summaryInput = null;
+
         this.render();
         this.init();
     }
@@ -27,10 +32,8 @@ class SummaryTab {
                 <h2>Summary</h2>
                 <p>This section will provide a summary or additional information.</p>
 
-                <div class="form-group">
-                    <label for="summary-text">Summary:</label>
-                    <textarea id="summary-text" rows="8" placeholder="Enter a summary or additional notes"></textarea>
-                </div>
+                <!-- Summary rich text area -->
+                <div id="summary-text-container"></div>
 
                 <div class="form-group">
                     <label for="summary-keywords">Keywords:</label>
@@ -47,7 +50,33 @@ class SummaryTab {
 
     init() {
         console.log('Summary tab initialized');
-        // Add any summary-specific initialization here
+
+        // Initialize rich text editor for summary
+        this.summaryInput = new AreaInput({
+            containerId: 'summary-text-container',
+            id: 'summary-text',
+            name: 'text',
+            label: 'Summary',
+            placeholder: 'Enter a summary or additional notes...',
+            useRichText: true,
+            resize: 'vertical',
+            minHeight: '250px',
+            maxHeight: '600px',
+            required: false,
+            quillConfig: {
+                theme: 'snow',
+                modules: {
+                    toolbar: [
+                        [{ 'header': [1, 2, 3, false] }],
+                        ['bold', 'italic', 'underline'],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        ['link'],
+                        ['clean']
+                    ]
+                },
+                placeholder: 'Enter a summary or additional notes...'
+            }
+        });
     }
 
     /**
@@ -56,7 +85,7 @@ class SummaryTab {
      */
     getData() {
         return {
-            text: document.getElementById('summary-text')?.value || '',
+            text: this.summaryInput ? this.summaryInput.getValue() : '',
             keywords: document.getElementById('summary-keywords')?.value || ''
         };
     }
@@ -66,8 +95,12 @@ class SummaryTab {
      * @param {Object} data - Data to populate the form
      */
     setData(data) {
-        if (data.text) document.getElementById('summary-text').value = data.text;
-        if (data.keywords) document.getElementById('summary-keywords').value = data.keywords;
+        if (data.text && this.summaryInput) {
+            this.summaryInput.setValue(data.text);
+        }
+        if (data.keywords) {
+            document.getElementById('summary-keywords').value = data.keywords;
+        }
     }
 
     /**
@@ -75,7 +108,18 @@ class SummaryTab {
      * @returns {boolean} True if valid (summary is optional)
      */
     validate() {
-        return true; // Summary is optional
+        // Summary is optional, so always return true
+        return true;
+    }
+
+    /**
+     * Destroy the summary tab and clean up resources
+     */
+    destroy() {
+        if (this.summaryInput) {
+            this.summaryInput.destroy();
+            this.summaryInput = null;
+        }
     }
 }
 

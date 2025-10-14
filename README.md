@@ -129,6 +129,8 @@ The project includes interactive demo pages for testing and showcasing component
 - **[Alert Component Demo](https://austinsteil.github.io/generate-files-model/src/components/alert/alert-example.html)** - Examples of alert notifications with different colors and configurations
 - **[Cards Component Demo](https://austinsteil.github.io/generate-files-model/src/components/cards/cards-example.html)** - Interactive card selection examples with responsive layouts, PDF preview, and validation
 - **[Tooltip Component Demo](https://austinsteil.github.io/generate-files-model/src/components/tooltip/tooltip-example.html)** - Interactive tooltip examples with different positions
+- **[Area Input Demo](https://austinsteil.github.io/generate-files-model/src/components/area-input/area-input-example.html)** - Multi-line text input with auto-grow, character counter, and rich text editor options
+- **[Work Week Calculator Demo](https://austinsteil.github.io/generate-files-model/src/components/work-week-calculator/work-week-calculator-example.html)** - Interactive work schedule calculator with auto-calculating fields
 
 These demo files can be opened directly in your browser or served through a local web server.
 
@@ -198,6 +200,41 @@ Customizable button component with gradient backgrounds:
 - **Accessibility** - Proper ARIA labels and focus states
 - **Dark mode** - Full dark mode support
 - **Responsive** - Mobile-friendly sizing
+
+### Area Input Component
+
+Multi-line text input with advanced features:
+
+- **Auto-grow/shrink** - Textarea automatically adjusts height based on content
+- **Character counter** - Optional character count display with max length enforcement
+- **Rich text editor** - Optional QuillJS integration for formatted text
+- **Configurable resize** - Vertical, horizontal, or both resize options
+- **Validation support** - Built-in validation with custom rules
+- **Dark mode** - Full light/dark mode support with proper contrast
+
+### Work Week Calculator Component
+
+Interactive work schedule calculator with interdependent fields:
+
+- **Auto-calculating fields** - Three fields that automatically update each other (weekly hours, shift length, shifts per week)
+- **Increment buttons** - Plus/minus buttons for easy value adjustment
+- **Configurable defaults** - Set default values (40hrs/week, 8hrs/day, 5 days/week)
+- **Single-row layout** - Compact horizontal layout for space efficiency
+- **Validation support** - Ensures valid numeric inputs
+- **Dark mode** - Full light/dark mode support
+
+### Repeater Component
+
+Dynamic array input system for collecting multiple rows of data:
+
+- **Flexible fields** - Support for 1-4 input fields per row (TextInput, AreaInput, or Dropdown)
+- **Add/Remove rows** - Elegant add (+) and remove (×) buttons with smooth animations
+- **Minimum enforcement** - Maintains at least 1 row, optional maximum limit
+- **Responsive grid** - Auto-adjusting columns that stack on mobile
+- **Validation support** - Validates all fields across all rows
+- **Storage integration** - Seamlessly works with save-data system
+- **Slim design** - Compact, elegant UI with proper spacing
+- **Dark mode** - Full light/dark mode support with proper contrast
 
 ## Configuration
 
@@ -310,10 +347,37 @@ generate-files-model/
     │   ├── dropdown/       # Dropdown component
     │   │   ├── dropdown.js         # Dropdown functionality
     │   │   └── dropdown.css        # Dropdown styling
-    │   └── toggle/         # Toggle switch component
-    │       ├── toggle.js           # Toggle functionality
-    │       ├── toggle.css          # Toggle styling
-    │       └── README.md           # Toggle documentation
+    │   ├── toggle/         # Toggle switch component
+    │   │   ├── toggle.js           # Toggle functionality
+    │   │   ├── toggle.css          # Toggle styling
+    │   │   └── README.md           # Toggle documentation
+    │   ├── repeater/       # Dynamic array input component
+    │   │   ├── repeater.js         # Repeater functionality
+    │   │   ├── repeater.css        # Repeater styling
+    │   │   └── README.md           # Repeater documentation
+    │   ├── text-input/     # Text input component
+    │   │   ├── text-input.js       # Text input functionality
+    │   │   ├── text-input.css      # Text input styling
+    │   │   └── README.md           # Text input documentation
+    │   ├── address/        # Address input component
+    │   │   ├── address.js          # Address functionality
+    │   │   ├── address.css         # Address styling
+    │   │   └── README.md           # Address documentation
+    │   ├── area-input/     # Multi-line text input component
+    │   │   ├── area-input.js       # Area input functionality
+    │   │   ├── area-input.css      # Area input styling
+    │   │   ├── area-input-example.html # Area input demo page
+    │   │   ├── README.md           # Area input documentation
+    │   │   └── QUICK-START.md      # Quick start guide
+    │   ├── work-week-calculator/ # Work schedule calculator component
+    │   │   ├── work-week-calculator.js # Calculator functionality
+    │   │   ├── work-week-calculator.css # Calculator styling
+    │   │   ├── work-week-calculator-example.html # Calculator demo page
+    │   │   └── README.md           # Calculator documentation
+    │   └── button/         # Button component
+    │       ├── button.js           # Button functionality
+    │       ├── button.css          # Button styling
+    │       └── README.md           # Button documentation
     ├── tabs/               # Tab-based application structure
     │   ├── tabs.js                 # Tab management and navigation
     │   ├── tabs.css                # Tab styling and layout
@@ -357,8 +421,8 @@ generate-files-model/
 
 ### Code Organization
 
-- **Reusable components** → `src/components/` (alert, cards, tooltip, dropdown, toggle)
-- **Application-specific features** → `src/` (dark-mode-toggle, save-data)
+- **Reusable components** → `src/components/` (alert, cards, tooltip, dropdown, toggle, button, text-input, address, area-input, work-week-calculator, repeater)
+- **Application-specific features** → `src/` (dark-mode-toggle, save-data, tabs)
 - **Shared utilities** → `src/color-system/`
 
 ## Browser Support

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work Week Calculator - Component Example</title>
+    
+    <!-- Color System -->
+    <link rel="stylesheet" href="../../color-system/colors.css">
+    
+    <!-- Component Styles -->
+    <link rel="stylesheet" href="work-week-calculator.css">
+    
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            padding: 40px;
+            background: var(--color-bg-primary);
+            color: var(--color-text-primary);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: var(--color-text-primary);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--color-text-secondary);
+            margin-bottom: 40px;
+        }
+
+        .example-section {
+            margin-bottom: 60px;
+            padding: 30px;
+            background: var(--color-bg-secondary);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .example-section h2 {
+            margin-top: 0;
+            color: var(--color-primary);
+        }
+
+        .output {
+            margin-top: 20px;
+            padding: 20px;
+            background: var(--color-bg-primary);
+            border-radius: var(--radius-md);
+            border-left: 4px solid var(--color-success);
+        }
+
+        .output h3 {
+            margin-top: 0;
+            font-size: 14px;
+            text-transform: uppercase;
+            color: var(--color-text-secondary);
+        }
+
+        .output pre {
+            background: var(--color-bg-tertiary);
+            padding: 15px;
+            border-radius: var(--radius-sm);
+            overflow-x: auto;
+            color: var(--color-text-primary);
+        }
+
+        .dark-mode-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: var(--gradient-primary-solid);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: var(--shadow-md);
+        }
+
+        .dark-mode-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+    </style>
+</head>
+<body>
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+
+    <h1>Work Week Calculator Component</h1>
+    <p class="subtitle">Interactive examples of the work week calculator component</p>
+
+    <!-- Example 1: Default Configuration -->
+    <div class="example-section">
+        <h2>Example 1: Default Configuration (40 hrs/week, 8 hrs/shift, 5 shifts/week)</h2>
+        <div id="example1-container"></div>
+        <div class="output">
+            <h3>Current Values:</h3>
+            <pre id="example1-output">Loading...</pre>
+        </div>
+    </div>
+
+    <!-- Example 2: Part-Time Schedule -->
+    <div class="example-section">
+        <h2>Example 2: Part-Time Schedule (20 hrs/week, 4 hrs/shift, 5 shifts/week)</h2>
+        <div id="example2-container"></div>
+        <div class="output">
+            <h3>Current Values:</h3>
+            <pre id="example2-output">Loading...</pre>
+        </div>
+    </div>
+
+    <!-- Example 3: Custom Schedule -->
+    <div class="example-section">
+        <h2>Example 3: Custom Schedule (35 hrs/week, 7 hrs/shift, 5 shifts/week)</h2>
+        <div id="example3-container"></div>
+        <div class="output">
+            <h3>Current Values:</h3>
+            <pre id="example3-output">Loading...</pre>
+        </div>
+    </div>
+
+    <!-- Component Script -->
+    <script src="work-week-calculator.js"></script>
+
+    <script>
+        // Example 1: Default Configuration
+        const example1 = new WorkWeekCalculator({
+            containerId: 'example1-container',
+            id: 'example1-calc',
+            name: 'workSchedule1',
+            label: 'Full-Time Work Schedule',
+            onChange: (data) => {
+                document.getElementById('example1-output').textContent = 
+                    JSON.stringify(data, null, 2);
+            }
+        });
+
+        // Initial display
+        document.getElementById('example1-output').textContent = 
+            JSON.stringify(example1.getData(), null, 2);
+
+        // Example 2: Part-Time Schedule
+        const example2 = new WorkWeekCalculator({
+            containerId: 'example2-container',
+            id: 'example2-calc',
+            name: 'workSchedule2',
+            label: 'Part-Time Work Schedule',
+            defaultWeeklyHours: 20,
+            defaultShiftLength: 4,
+            defaultShiftsPerWeek: 5,
+            onChange: (data) => {
+                document.getElementById('example2-output').textContent = 
+                    JSON.stringify(data, null, 2);
+            }
+        });
+
+        // Initial display
+        document.getElementById('example2-output').textContent = 
+            JSON.stringify(example2.getData(), null, 2);
+
+        // Example 3: Custom Schedule
+        const example3 = new WorkWeekCalculator({
+            containerId: 'example3-container',
+            id: 'example3-calc',
+            name: 'workSchedule3',
+            label: 'Custom Work Schedule',
+            defaultWeeklyHours: 35,
+            defaultShiftLength: 7,
+            defaultShiftsPerWeek: 5,
+            required: true,
+            onChange: (data) => {
+                document.getElementById('example3-output').textContent = 
+                    JSON.stringify(data, null, 2);
+            }
+        });
+
+        // Initial display
+        document.getElementById('example3-output').textContent = 
+            JSON.stringify(example3.getData(), null, 2);
+
+        // Dark mode toggle
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark-mode');
+        }
+
+        // Test validation
+        console.log('Example 1 valid:', example1.validate());
+        console.log('Example 2 valid:', example2.validate());
+        console.log('Example 3 valid:', example3.validate());
+    </script>
+</body>
+</html>
+

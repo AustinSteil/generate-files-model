@@ -1,0 +1,285 @@
+/**
+ * Work Week Calculator Component Styles
+ *
+ * Compact, single-row component for calculating work week parameters.
+ * Features plus/minus buttons for easy value adjustment.
+ * Full light and dark mode support using the centralized color system.
+ *
+ * @author Austin Steil
+ * @version 1.0.0
+ */
+
+/* ============================================
+   COMPONENT CONTAINER
+   ============================================ */
+
+.work-week-calculator {
+    margin-bottom: var(--spacing-2xl);
+    position: relative;
+}
+
+.work-week-label {
+    display: block;
+    margin-bottom: var(--spacing-md);
+    font-weight: 600;
+    background: linear-gradient(135deg, var(--color-text-primary), var(--color-text-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+}
+
+/* ============================================
+   INPUTS CONTAINER (SINGLE ROW)
+   ============================================ */
+
+.work-week-inputs {
+    display: flex;
+    gap: var(--spacing-lg);
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+/* ============================================
+   INPUT GROUP
+   ============================================ */
+
+.work-week-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    flex: 1;
+    min-width: 180px;
+}
+
+.work-week-input-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ============================================
+   CONTROL (BUTTONS + INPUT)
+   ============================================ */
+
+.work-week-control {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: linear-gradient(to bottom,
+        var(--color-bg-primary) 0%,
+        var(--color-gray-50) 100%);
+    border: 2px solid var(--color-border-medium);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: all var(--transition-cubic);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06),
+                inset 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.work-week-control:hover {
+    border-color: var(--color-primary);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06),
+                inset 0 1px 2px rgba(0, 0, 0, 0.08),
+                0 0 0 3px rgba(var(--color-primary-rgb), var(--opacity-10));
+}
+
+.work-week-control:focus-within {
+    border-color: var(--color-primary);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06),
+                inset 0 1px 2px rgba(0, 0, 0, 0.08),
+                0 0 0 3px rgba(var(--color-primary-rgb), var(--opacity-20));
+}
+
+/* ============================================
+   INPUT FIELD
+   ============================================ */
+
+.work-week-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    text-align: center;
+    outline: none;
+    min-width: 70px;
+    -moz-appearance: textfield; /* Remove spinner in Firefox */
+    /* Use monospace font for consistent digit width to prevent bouncing */
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    /* Tabular numbers for consistent spacing */
+    font-variant-numeric: tabular-nums;
+    /* Prevent layout shift during value changes */
+    letter-spacing: 0.5px;
+}
+
+/* Remove spinner in Chrome, Safari, Edge */
+.work-week-input::-webkit-outer-spin-button,
+.work-week-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.work-week-input::placeholder {
+    color: var(--color-text-tertiary);
+}
+
+/* ============================================
+   PLUS/MINUS BUTTONS
+   ============================================ */
+
+.work-week-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: var(--gradient-secondary);
+    color: var(--color-text-primary);
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    user-select: none;
+    flex-shrink: 0;
+}
+
+.work-week-btn:hover {
+    background: var(--gradient-primary-solid);
+    color: var(--color-text-white);
+    transform: scale(1.05);
+}
+
+.work-week-btn:active {
+    transform: scale(0.95);
+}
+
+.work-week-btn:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: -2px;
+}
+
+.work-week-btn-minus {
+    border-right: 1px solid var(--color-border-light);
+}
+
+.work-week-btn-plus {
+    border-left: 1px solid var(--color-border-light);
+}
+
+/* ============================================
+   UNIT LABEL
+   ============================================ */
+
+.work-week-unit {
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    text-align: center;
+    font-weight: 500;
+    text-transform: lowercase;
+}
+
+/* ============================================
+   DARK MODE SUPPORT
+   ============================================ */
+
+.dark-mode .work-week-control {
+    background: linear-gradient(to bottom,
+        var(--color-bg-primary) 0%,
+        var(--color-bg-tertiary) 100%);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3),
+                inset 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.dark-mode .work-week-control:hover {
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3),
+                inset 0 1px 2px rgba(0, 0, 0, 0.4),
+                0 0 0 3px rgba(var(--color-primary-rgb), var(--opacity-20));
+}
+
+.dark-mode .work-week-btn {
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-primary);
+}
+
+.dark-mode .work-week-btn:hover {
+    background: var(--gradient-primary-solid);
+    color: var(--color-text-white);
+}
+
+.dark-mode .work-week-btn-minus {
+    border-right-color: var(--color-border-light);
+}
+
+.dark-mode .work-week-btn-plus {
+    border-left-color: var(--color-border-light);
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+    .work-week-inputs {
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+
+    .work-week-input-group {
+        min-width: 100%;
+    }
+
+    .work-week-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+
+    .work-week-input {
+        font-size: 18px;
+        padding: var(--spacing-md);
+    }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .work-week-control,
+    .work-week-btn,
+    .work-week-input {
+        transition: none;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .work-week-control {
+        border-width: 3px;
+    }
+
+    .work-week-btn {
+        border-width: 2px;
+    }
+}
+
+/* Focus visible for keyboard navigation */
+.work-week-btn:focus-visible {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+.work-week-input:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+

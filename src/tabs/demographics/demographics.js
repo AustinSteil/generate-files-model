@@ -14,6 +14,20 @@ class DemographicsTab {
             console.error(`Demographics tab container with ID "${containerId}" not found`);
             return;
         }
+
+        // Initialize text input instances
+        this.jobTitleInput = null;
+        this.jobPurposeInput = null;
+        this.otherShiftInfoInput = null;
+
+        // Initialize work week calculator
+        this.workWeekCalculator = null;
+
+        // Initialize repeater instances
+        this.essentialFunctionsRepeater = null;
+        this.marginalFunctionsRepeater = null;
+        this.breaksRepeater = null;
+
         this.render();
         this.init();
     }
@@ -27,20 +41,18 @@ class DemographicsTab {
                 <h2>Demographics</h2>
                 <p>This section will collect demographic information.</p>
 
-                <div class="form-group">
-                    <label for="demo-name">Full Name:</label>
-                    <input type="text" id="demo-name" placeholder="Enter full name">
-                </div>
+                <div id="job-title-container"></div>
+                <div id="job-purpose-container"></div>
 
-                <div class="form-group">
-                    <label for="demo-age">Age:</label>
-                    <input type="number" id="demo-age" placeholder="Enter age">
-                </div>
+                <!-- Essential Functions Repeater -->
+                <div id="essential-functions-repeater-container"></div>
 
-                <div class="form-group">
-                    <label for="demo-location">Location:</label>
-                    <input type="text" id="demo-location" placeholder="Enter location">
-                </div>
+                <!-- Marginal Functions Repeater -->
+                <div id="marginal-functions-repeater-container"></div>
+
+                <div id="work-week-calculator-container"></div>
+                <div id="breaks-container"></div>
+                <div id="other-shift-info-container"></div>
 
                 <!-- Next button container -->
                 <div class="form-actions-right">
@@ -52,7 +64,201 @@ class DemographicsTab {
 
     init() {
         console.log('Demographics tab initialized');
-        // Add any demographics-specific initialization here
+        this.initializeComponents();
+    }
+
+    /**
+     * Initialize all components (text inputs, work week calculator, and repeaters)
+     */
+    initializeComponents() {
+        // Wait for components to be available
+        if (typeof TextInput === 'undefined' || typeof Repeater === 'undefined' || typeof WorkWeekCalculator === 'undefined' || typeof AreaInput === 'undefined') {
+            setTimeout(() => this.initializeComponents(), 100);
+            return;
+        }
+
+        this.initializeTextInputs();
+        this.initializeWorkWeekCalculator();
+        this.initializeRepeaters();
+    }
+
+    /**
+     * Initialize all text input components
+     */
+    initializeTextInputs() {
+        // Job Title input
+        this.jobTitleInput = new TextInput({
+            containerId: 'job-title-container',
+            id: 'demo-job-title',
+            name: 'jobTitle',
+            label: 'Job Title',
+            placeholder: 'Enter job title',
+            required: true
+        });
+
+        // Job Purpose input
+        this.jobPurposeInput = new TextInput({
+            containerId: 'job-purpose-container',
+            id: 'demo-job-purpose',
+            name: 'jobPurpose',
+            label: 'Job Purpose',
+            placeholder: 'Enter job purpose',
+            required: false
+        });
+
+        // Other Shift Information input
+        this.otherShiftInfoInput = new TextInput({
+            containerId: 'other-shift-info-container',
+            id: 'demo-other-shift-info',
+            name: 'otherShiftInfo',
+            label: 'Other Shift Information',
+            placeholder: 'Enter other shift information',
+            required: false
+        });
+    }
+
+    /**
+     * Initialize work week calculator component
+     */
+    initializeWorkWeekCalculator() {
+        this.workWeekCalculator = new WorkWeekCalculator({
+            containerId: 'work-week-calculator-container',
+            id: 'demo-work-week',
+            name: 'workSchedule',
+            label: 'Work Schedule',
+            defaultWeeklyHours: 40,
+            defaultShiftLength: 8,
+            defaultShiftsPerWeek: 5,
+            required: false
+        });
+    }
+
+    /**
+     * Initialize repeater components
+     */
+    initializeRepeaters() {
+        // Essential Functions Repeater
+        this.essentialFunctionsRepeater = new Repeater({
+            containerId: 'essential-functions-repeater-container',
+            id: 'essential-functions-repeater',
+            name: 'essentialFunctions',
+            label: 'Essential Functions',
+            fields: [
+                {
+                    name: 'essentialFunction',
+                    label: 'Essential Functions',
+                    type: 'text',
+                    placeholder: 'Primary Tasks',
+                    required: true
+                },
+                {
+                    name: 'essentialFunctionDescription',
+                    label: 'Short Description',
+                    type: 'area',
+                    placeholder: 'Task description',
+                    required: true,
+                    autoGrow: true,
+                    rows: 1,
+                    maxLength: 150,
+                    showCharCounter: true,
+                    minHeight: '52px',
+                    maxHeight: '150px',
+                    validation: (value) => {
+                        if (value.length < 10) {
+                            return 'Description must be at least 10 characters';
+                        }
+                        if (value.length > 150) {
+                            return 'Description must be 150 characters or less';
+                        }
+                        return true;
+                    }
+                }
+            ],
+            required: true,
+            defaultRows: 1,
+            showFieldLabels: false
+        });
+
+        // Marginal Functions Repeater
+        this.marginalFunctionsRepeater = new Repeater({
+            containerId: 'marginal-functions-repeater-container',
+            id: 'marginal-functions-repeater',
+            name: 'marginalFunctions',
+            label: 'Marginal Functions',
+            fields: [
+                {
+                    name: 'marginalFunction',
+                    label: 'Marginal Functions',
+                    type: 'text',
+                    placeholder: 'Secondary Tasks',
+                    required: true
+                },
+                {
+                    name: 'marginalFunctionDescription',
+                    label: 'Short Description',
+                    type: 'area',
+                    placeholder: 'Task description',
+                    required: true,
+                    autoGrow: true,
+                    rows: 1,
+                    maxLength: 150,
+                    showCharCounter: true,
+                    minHeight: '52px',
+                    maxHeight: '150px',
+                    validation: (value) => {
+                        if (value.length < 10) {
+                            return 'Description must be at least 10 characters';
+                        }
+                        if (value.length > 150) {
+                            return 'Description must be 150 characters or less';
+                        }
+                        return true;
+                    }
+                }
+            ],
+            required: true,
+            defaultRows: 1,
+            showFieldLabels: false
+        });
+
+        // Breaks Repeater
+        this.breaksRepeater = new Repeater({
+            containerId: 'breaks-container',
+            id: 'breaks-repeater',
+            name: 'breaks',
+            label: 'Breaks',
+            fields: [
+                {
+                    name: 'breakDescription',
+                    label: 'Break Description',
+                    type: 'text',
+                    placeholder: 'Enter break information',
+                    required: false
+                }
+            ],
+            required: false,
+            defaultRows: 1,
+            showFieldLabels: false
+        });
+
+        // Set default break values after initialization
+        // Use setTimeout to ensure the repeater is fully initialized
+        setTimeout(() => this.setDefaultBreaks(), 0);
+    }
+
+    /**
+     * Set default break values
+     */
+    setDefaultBreaks() {
+        if (this.breaksRepeater) {
+            this.breaksRepeater.setData({
+                breaks: [
+                    { breakDescription: 'One 15-minute break at about 10am' },
+                    { breakDescription: 'One 30-minute break at about 12pm' },
+                    { breakDescription: 'One 15-minute break at about 2pm' }
+                ]
+            });
+        }
     }
 
     /**
@@ -61,9 +267,13 @@ class DemographicsTab {
      */
     getData() {
         return {
-            name: document.getElementById('demo-name')?.value || '',
-            age: document.getElementById('demo-age')?.value || '',
-            location: document.getElementById('demo-location')?.value || ''
+            ...this.jobTitleInput?.getData(),
+            ...this.jobPurposeInput?.getData(),
+            ...this.essentialFunctionsRepeater?.getData(),
+            ...this.marginalFunctionsRepeater?.getData(),
+            ...this.workWeekCalculator?.getData(),
+            ...this.breaksRepeater?.getData(),
+            ...this.otherShiftInfoInput?.getData()
         };
     }
 
@@ -72,9 +282,13 @@ class DemographicsTab {
      * @param {Object} data - Data to populate the form
      */
     setData(data) {
-        if (data.name) document.getElementById('demo-name').value = data.name;
-        if (data.age) document.getElementById('demo-age').value = data.age;
-        if (data.location) document.getElementById('demo-location').value = data.location;
+        this.jobTitleInput?.setData(data);
+        this.jobPurposeInput?.setData(data);
+        this.essentialFunctionsRepeater?.setData(data);
+        this.marginalFunctionsRepeater?.setData(data);
+        this.workWeekCalculator?.setData(data);
+        this.breaksRepeater?.setData(data);
+        this.otherShiftInfoInput?.setData(data);
     }
 
     /**
@@ -82,8 +296,23 @@ class DemographicsTab {
      * @returns {boolean} True if valid
      */
     validate() {
-        const data = this.getData();
-        return data.name.trim() !== '';
+        let isValid = true;
+
+        // Validate required text inputs
+        if (this.jobTitleInput && !this.jobTitleInput.validate()) {
+            isValid = false;
+        }
+
+        // Validate repeaters
+        if (this.essentialFunctionsRepeater && !this.essentialFunctionsRepeater.validate()) {
+            isValid = false;
+        }
+
+        if (this.marginalFunctionsRepeater && !this.marginalFunctionsRepeater.validate()) {
+            isValid = false;
+        }
+
+        return isValid;
     }
 }
 

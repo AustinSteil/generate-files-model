@@ -9,5 +9,12 @@
   "email": "{authorEmail}",
   "date": "{documentDate}",
   "documentContent": "{documentContent}",
-  "selectedTemplate": "{selectedTemplate}"
+  "selectedTemplate": "{selectedTemplate}",
+  "jobTitle": "{jobTitle}",
+  "jobPurpose": "{jobPurpose}",
+  "essentialFunctions": "{essentialFunctions}",
+  "marginalFunctions": "{marginalFunctions}",
+  "workSchedule": "{workSchedule}",
+  "breaks": "{breaks}",
+  "otherShiftInfo": "{otherShiftInfo}"
 }

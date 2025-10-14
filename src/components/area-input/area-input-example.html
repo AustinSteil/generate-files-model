@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AreaInput Component - Examples</title>
+    
+    <!-- Color System -->
+    <link rel="stylesheet" href="../../color-system/colors.css">
+    
+    <!-- AreaInput Component -->
+    <link rel="stylesheet" href="area-input.css">
+    
+    <!-- Quill.js for Rich Text Editor -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    
+    <style>
+        /* Demo page styles only - component styles are in area-input.css */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+            background: var(--color-bg-secondary);
+            color: var(--color-text-primary);
+        }
+
+        h1 {
+            color: var(--color-primary);
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: var(--color-text-primary);
+            margin-top: 32px;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--color-border-medium);
+        }
+
+        h3 {
+            color: var(--color-text-primary);
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+
+        .example-section {
+            background: var(--color-bg-primary);
+            padding: 24px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .example-section.new-features {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(16, 185, 129, 0.02));
+            border-left: 4px solid var(--color-success);
+        }
+
+        .example-section.how-to-use {
+            background: linear-gradient(135deg, rgba(0, 102, 204, 0.05), rgba(0, 102, 204, 0.02));
+        }
+
+        .example-description {
+            color: var(--color-text-secondary);
+            margin-bottom: 20px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .demo-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .demo-button {
+            padding: 8px 16px;
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .demo-button:hover {
+            background: var(--color-primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .demo-button:active {
+            transform: translateY(0);
+        }
+
+        .demo-button.secondary {
+            background: var(--color-secondary);
+        }
+
+        .demo-button.secondary:hover {
+            background: var(--color-secondary-dark);
+        }
+
+        .output-box {
+            margin-top: 16px;
+            padding: 12px;
+            background: var(--color-bg-secondary);
+            border: 2px solid var(--color-border-medium);
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: var(--color-text-primary);
+            max-height: 200px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 16px;
+            }
+
+            .example-section {
+                padding: 16px;
+            }
+
+            .grid-2col {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>📝 AreaInput Component Examples</h1>
+
+    <div class="example-section new-features">
+        <h2 style="margin-top: 0; color: var(--color-success);">✨ New in v1.1.0</h2>
+        <p class="example-description">
+            <strong>📊 Built-in Character Counter:</strong> Set <code>showCharCounter: true</code> to display live character counts with visual feedback at 80% (warning) and 100% (error).
+        </p>
+        <p class="example-description">
+            <strong>⚡ Debounced onChange:</strong> All onChange callbacks are automatically debounced by 300ms for better performance during typing.
+        </p>
+        <p class="example-description">
+            <strong>♿ Enhanced Accessibility:</strong> ARIA attributes, auto-focus on errors, and smooth scroll to validation issues.
+        </p>
+        <p class="example-description" style="margin-bottom: 0;">
+            <strong>🎨 Improved UX:</strong> Better resize handle visibility, faster animations, larger touch targets on mobile, and deduplicated dark mode CSS.
+        </p>
+    </div>
+
+    <div class="example-section how-to-use">
+        <h2 style="margin-top: 0;">💡 How to Use</h2>
+        <p class="example-description">
+            <strong>Resizing:</strong> Look for the small diagonal lines in the bottom-right corner of each textarea.
+            Hover over them and drag to resize. The cursor will change to indicate the resize direction.
+        </p>
+        <p class="example-description" style="margin-bottom: 0;">
+            <strong>Rich Text:</strong> Use the toolbar buttons to format your text. The editor supports headers,
+            bold, italic, lists, colors, and links.
+        </p>
+    </div>
+
+    <!-- Example 1: Basic Textarea with Built-in Character Counter -->
+    <div class="example-section">
+        <h2>1. Basic Textarea with Character Counter (NEW)</h2>
+        <p class="example-description">
+            A simple textarea with vertical resizing and built-in character counter. The counter changes color at 80% (warning) and 100% (error) of max length.
+        </p>
+        <div id="basic-container"></div>
+    </div>
+    
+    <!-- Example 2: Required Field with Validation & Debounced onChange -->
+    <div class="example-section">
+        <h2>2. Required Field with Validation & Debounced onChange (NEW)</h2>
+        <p class="example-description">
+            This field is required and must be between 10 and 200 characters. The onChange callback is debounced by 300ms for better performance.
+            Try typing quickly and watch the "Last onChange" timestamp update only after you stop typing.
+        </p>
+        <div id="validation-container"></div>
+        <div class="output-box" id="validation-output">
+            <strong>Last onChange:</strong> <span id="onChange-time">Never</span><br>
+            <strong>Character count:</strong> <span id="onChange-count">0</span>
+        </div>
+        <div class="demo-buttons">
+            <button class="demo-button" onclick="validateExample2()">Validate</button>
+            <button class="demo-button secondary" onclick="clearExample2()">Clear</button>
+        </div>
+    </div>
+    
+    <!-- Example 3: Rich Text Editor -->
+    <div class="example-section">
+        <h2>3. Rich Text Editor (Quill.js)</h2>
+        <p class="example-description">
+            A full-featured rich text editor with formatting options.
+        </p>
+        <div id="richtext-container"></div>
+        <div class="demo-buttons">
+            <button class="demo-button" onclick="getRichTextValue()">Get HTML Value</button>
+            <button class="demo-button" onclick="getPlainTextValue()">Get Plain Text</button>
+            <button class="demo-button secondary" onclick="clearRichText()">Clear</button>
+        </div>
+        <div class="output-box" id="richtext-output" style="display: none;"></div>
+    </div>
+    
+    <!-- Example 4: Minimal Rich Text Editor -->
+    <div class="example-section">
+        <h2>4. Minimal Rich Text Editor</h2>
+        <p class="example-description">
+            A simplified rich text editor with only basic formatting options.
+        </p>
+        <div id="minimal-richtext-container"></div>
+    </div>
+    
+    <!-- Example 5: Side-by-Side Comparison -->
+    <div class="example-section">
+        <h2>5. Resize Options Comparison</h2>
+        <p class="example-description">
+            Compare different resize behaviors. Notice how the resize handle appears/disappears and the cursor changes based on the resize mode.
+        </p>
+        <div class="grid-2col">
+            <div>
+                <h3>No Resize (Fixed Size)</h3>
+                <div id="no-resize-container"></div>
+            </div>
+            <div>
+                <h3>Both Directions</h3>
+                <div id="both-resize-container"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Example 6: Custom Dimensions -->
+    <div class="example-section">
+        <h2>6. Custom Dimensions</h2>
+        <p class="example-description">
+            Textarea with custom min/max height constraints.
+        </p>
+        <div id="custom-dimensions-container"></div>
+    </div>
+    
+    <!-- Quill.js -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    
+    <!-- AreaInput Component -->
+    <script src="area-input.js"></script>
+    
+    <script>
+        // Example 1: Basic Textarea with Built-in Character Counter
+        const basicInput = new AreaInput({
+            containerId: 'basic-container',
+            id: 'basic-textarea',
+            name: 'basicText',
+            label: 'Description (max 500 characters)',
+            placeholder: 'Enter your description here...',
+            resize: 'vertical',
+            rows: 4,
+            showCharCounter: true,  // NEW: Built-in character counter
+            maxLength: 500          // NEW: Maximum length with visual feedback
+        });
+        
+        // Example 2: Required Field with Validation & Debounced onChange
+        const validationInput = new AreaInput({
+            containerId: 'validation-container',
+            id: 'validation-textarea',
+            name: 'validatedText',
+            label: 'Comments (10-200 characters)',
+            placeholder: 'Enter your comments...',
+            required: true,
+            resize: 'vertical',
+            rows: 3,
+            showCharCounter: true,  // NEW: Show character counter
+            maxLength: 200,         // NEW: Enforce max length
+            onChange: (value) => {  // NEW: Debounced by 300ms automatically
+                const now = new Date().toLocaleTimeString();
+                document.getElementById('onChange-time').textContent = now;
+                document.getElementById('onChange-count').textContent = value.length;
+            },
+            validation: (value) => {
+                if (value.length < 10) {
+                    return 'Must be at least 10 characters';
+                }
+                if (value.length > 200) {
+                    return 'Must be less than 200 characters';
+                }
+                return true;
+            }
+        });
+        
+        function validateExample2() {
+            const isValid = validationInput.validate();
+            alert(isValid ? 'Valid!' : 'Please fix the errors');
+        }
+        
+        function clearExample2() {
+            validationInput.clear();
+        }
+        
+        // Example 3: Rich Text Editor
+        const richTextInput = new AreaInput({
+            containerId: 'richtext-container',
+            id: 'richtext-editor',
+            name: 'richText',
+            label: 'Article Content',
+            useRichText: true,
+            minHeight: '250px',
+            maxHeight: '500px',
+            quillConfig: {
+                theme: 'snow',
+                modules: {
+                    toolbar: [
+                        [{ 'header': [1, 2, 3, false] }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        [{ 'color': [] }, { 'background': [] }],
+                        ['link'],
+                        ['clean']
+                    ]
+                },
+                placeholder: 'Start writing your article...'
+            }
+        });
+        
+        function getRichTextValue() {
+            const value = richTextInput.getValue();
+            const output = document.getElementById('richtext-output');
+            output.style.display = 'block';
+            output.textContent = value;
+        }
+        
+        function getPlainTextValue() {
+            const value = richTextInput.getPlainText();
+            const output = document.getElementById('richtext-output');
+            output.style.display = 'block';
+            output.textContent = value;
+        }
+        
+        function clearRichText() {
+            richTextInput.clear();
+            document.getElementById('richtext-output').style.display = 'none';
+        }
+        
+        // Example 4: Minimal Rich Text Editor
+        const minimalRichText = new AreaInput({
+            containerId: 'minimal-richtext-container',
+            id: 'minimal-editor',
+            name: 'minimalRichText',
+            label: 'Quick Note',
+            useRichText: true,
+            minHeight: '150px',
+            quillConfig: {
+                theme: 'snow',
+                modules: {
+                    toolbar: [
+                        ['bold', 'italic', 'underline'],
+                        ['link']
+                    ]
+                },
+                placeholder: 'Enter a quick note...'
+            }
+        });
+        
+        // Example 5: Resize Options
+        const noResizeInput = new AreaInput({
+            containerId: 'no-resize-container',
+            id: 'no-resize',
+            name: 'noResize',
+            label: 'Fixed Size',
+            placeholder: 'This textarea cannot be resized - notice no resize handle',
+            resize: 'none',
+            rows: 4
+        });
+
+        const bothResizeInput = new AreaInput({
+            containerId: 'both-resize-container',
+            id: 'both-resize',
+            name: 'bothResize',
+            label: 'Both Directions',
+            placeholder: 'Resize both vertically and horizontally',
+            resize: 'both',
+            rows: 4
+        });
+        
+        // Example 6: Custom Dimensions
+        const customDimensionsInput = new AreaInput({
+            containerId: 'custom-dimensions-container',
+            id: 'custom-dimensions',
+            name: 'customDimensions',
+            label: 'Custom Size Constraints',
+            placeholder: 'Min height: 200px, Max height: 400px',
+            resize: 'vertical',
+            minHeight: '200px',
+            maxHeight: '400px',
+            rows: 6
+        });
+    </script>
+</body>
+</html>
+

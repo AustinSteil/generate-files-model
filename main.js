@@ -362,7 +362,19 @@ class DocumentGenerator {
             // Remove the curly braces from the variable name in varsConfig
             const templateKey = this.varsConfig[key] ?
                 this.varsConfig[key].replace(/[{}]/g, '') : key;
-            templateData[templateKey] = value;
+
+            // Handle nested objects (like workSchedule) by flattening them
+            if (key === 'workSchedule' && value && typeof value === 'object' && !Array.isArray(value)) {
+                // Flatten workSchedule object for easier template access
+                templateData.weeklyHours = value.weeklyHours || 0;
+                templateData.shiftLength = value.shiftLength || 0;
+                templateData.shiftsPerWeek = value.shiftsPerWeek || 0;
+                // Also keep the original nested structure for advanced templates
+                templateData[templateKey] = value;
+            } else {
+                // For arrays and simple values, pass them directly
+                templateData[templateKey] = value;
+            }
         });
 
         // Add some additional useful data
