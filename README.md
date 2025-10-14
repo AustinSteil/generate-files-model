@@ -29,7 +29,7 @@ The Save for Later feature uses industry-standard security practices to protect 
 
 **How it works:**
 
-1. Enter your form data and click "Save Data for Later"
+1. Enter your form data and click "Save Data for Later" 
 2. Create a secure passphrase (never stored anywhere)
 3. Data is encrypted using AES-256-GCM and saved as a browser cookie
 4. To retrieve: Click "Load Saved Data" and enter your passphrase
