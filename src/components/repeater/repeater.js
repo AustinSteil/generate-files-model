@@ -410,6 +410,7 @@ class Repeater {
     validate() {
         let isValid = true;
 
+        // Validate individual fields in each row
         this.rows.forEach(row => {
             row.inputs.forEach(input => {
                 if (input.component.validate && !input.component.validate()) {

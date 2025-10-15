@@ -103,7 +103,7 @@ class DemographicsTab {
             name: 'jobPurpose',
             label: 'Job Purpose',
             placeholder: 'Enter job purpose',
-            required: false
+            required: true
         });
 
         // Other Shift Information input
@@ -112,8 +112,9 @@ class DemographicsTab {
             id: 'demo-other-shift-info',
             name: 'otherShiftInfo',
             label: 'Other Shift Information',
-            placeholder: 'Enter other shift information',
-            required: false
+            placeholder: 'Any additional shift information...',
+            required: false,
+            helpText: 'Seasonal changes, weekend volume demands, holiday schedules, etc.'
         });
     }
 
@@ -230,13 +231,13 @@ class DemographicsTab {
             fields: [
                 {
                     name: 'breakDescription',
-                    label: 'Break Description',
+                    label: 'Description',
                     type: 'text',
-                    placeholder: 'Enter break information',
-                    required: false
+                    placeholder: 'Break information',
+                    required: true
                 }
             ],
-            required: false,
+            required: true,
             defaultRows: 1,
             showFieldLabels: false
         });
@@ -303,12 +304,20 @@ class DemographicsTab {
             isValid = false;
         }
 
+        if (this.jobPurposeInput && !this.jobPurposeInput.validate()) {
+            isValid = false;
+        }
+
         // Validate repeaters
         if (this.essentialFunctionsRepeater && !this.essentialFunctionsRepeater.validate()) {
             isValid = false;
         }
 
         if (this.marginalFunctionsRepeater && !this.marginalFunctionsRepeater.validate()) {
+            isValid = false;
+        }
+
+        if (this.breaksRepeater && !this.breaksRepeater.validate()) {
             isValid = false;
         }
 

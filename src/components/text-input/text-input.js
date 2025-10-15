@@ -27,6 +27,7 @@ class TextInput {
             validation: options.validation || null,
             onChange: options.onChange || null,
             className: options.className || '',
+            helpText: options.helpText || null,
             ...options
         };
 
@@ -34,6 +35,7 @@ class TextInput {
         this.inputElement = null;
         this.labelElement = null;
         this.errorElement = null;
+        this.helpTextElement = null;
         this.isValid = true;
 
         this.init();
@@ -67,19 +69,20 @@ class TextInput {
         if (!this.container) return;
 
         const formGroupClass = `form-group text-input-component ${this.options.className}`.trim();
-        
+
         this.container.innerHTML = `
             <div class="${formGroupClass}">
                 <label for="${this.options.id}">${this.options.label}${this.options.required ? ' *' : ''}</label>
-                <input 
-                    type="${this.options.type}" 
-                    id="${this.options.id}" 
+                <input
+                    type="${this.options.type}"
+                    id="${this.options.id}"
                     name="${this.options.name}"
                     placeholder="${this.options.placeholder}"
                     value="${this.options.defaultValue}"
                     ${this.options.required ? 'required' : ''}
                     class="text-input-field"
                 />
+                ${this.options.helpText ? `<div class="text-input-help-text">${this.options.helpText}</div>` : ''}
                 <div class="text-input-error" style="display: none;"></div>
             </div>
         `;
@@ -87,6 +90,7 @@ class TextInput {
         this.inputElement = this.container.querySelector(`#${this.options.id}`);
         this.labelElement = this.container.querySelector('label');
         this.errorElement = this.container.querySelector('.text-input-error');
+        this.helpTextElement = this.container.querySelector('.text-input-help-text');
 
         this.attachEventListeners();
     }
@@ -233,6 +237,7 @@ class TextInput {
         this.inputElement = null;
         this.labelElement = null;
         this.errorElement = null;
+        this.helpTextElement = null;
         this.container = null;
     }
 }

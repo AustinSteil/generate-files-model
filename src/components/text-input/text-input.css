@@ -67,6 +67,17 @@
 }
 
 /* ============================================
+   HELP TEXT
+   ============================================ */
+
+.text-input-help-text {
+    margin-top: var(--spacing-xs);
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+    text-align: left;
+}
+
+/* ============================================
    ERROR STATES
    ============================================ */
 
