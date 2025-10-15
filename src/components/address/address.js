@@ -250,7 +250,8 @@ class Address {
      * Handle change events from sub-components
      */
     handleChange() {
-        this.validate();
+        // Don't validate on change - let individual fields handle their own validation
+        // Only validate when explicitly calling validate() (e.g., on form submit)
         if (this.options.onChange) {
             this.options.onChange(this.getData(), this);
         }
@@ -263,16 +264,16 @@ class Address {
     validate() {
         let isValid = true;
 
-        if (this.streetInput && !this.streetInput.validateInput()) {
+        if (this.streetInput && !this.streetInput.validate()) {
             isValid = false;
         }
-        if (this.cityInput && !this.cityInput.validateInput()) {
+        if (this.cityInput && !this.cityInput.validate()) {
             isValid = false;
         }
         if (this.stateDropdown && !this.stateDropdown.validate()) {
             isValid = false;
         }
-        if (this.zipInput && !this.zipInput.validateInput()) {
+        if (this.zipInput && !this.zipInput.validate()) {
             isValid = false;
         }
 

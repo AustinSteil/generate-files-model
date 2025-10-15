@@ -99,15 +99,15 @@ class TextInput {
 
         // Input change event
         this.inputElement.addEventListener('input', (e) => {
-            this.validateInput();
+            // Clear any existing errors when user starts typing
+            if (this.errorElement && this.errorElement.style.display !== 'none') {
+                this.showError('');
+            }
+
+            // Trigger onChange callback
             if (this.options.onChange) {
                 this.options.onChange(e.target.value, this);
             }
-        });
-
-        // Blur event for validation
-        this.inputElement.addEventListener('blur', () => {
-            this.validateInput();
         });
     }
 
@@ -169,7 +169,7 @@ class TextInput {
     setValue(value) {
         if (this.inputElement) {
             this.inputElement.value = value || '';
-            this.validateInput();
+            // Don't validate when programmatically setting value
         }
     }
 

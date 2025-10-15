@@ -258,7 +258,12 @@ class AreaInput {
 
         // Bind event handlers for proper cleanup
         this.handleInput = (e) => {
-            this.validateInput();
+            // Clear any existing errors when user starts typing
+            if (this.errorElement && this.errorElement.style.display !== 'none') {
+                this.showError('');
+            }
+
+            // Update counter
             this.updateCharCounter();
 
             // Auto-grow the textarea if enabled
@@ -271,13 +276,8 @@ class AreaInput {
             }
         };
 
-        this.handleBlur = () => {
-            this.validateInput();
-        };
-
         // Attach event listeners
         this.textareaElement.addEventListener('input', this.handleInput);
-        this.textareaElement.addEventListener('blur', this.handleBlur);
     }
 
     /**
@@ -315,22 +315,20 @@ class AreaInput {
 
         // Bind event handlers for proper cleanup
         this.handleTextChange = () => {
-            this.validateInput();
+            // Clear any existing errors when user starts typing
+            if (this.errorElement && this.errorElement.style.display !== 'none') {
+                this.showError('');
+            }
+
+            // Update counter and trigger onChange
             this.updateCharCounter();
             if (debouncedOnChange) {
                 debouncedOnChange(this.getValue());
             }
         };
 
-        this.handleSelectionChange = (range) => {
-            if (!range) {
-                this.validateInput();
-            }
-        };
-
         // Attach event listeners
         this.quillEditor.on('text-change', this.handleTextChange);
-        this.quillEditor.on('selection-change', this.handleSelectionChange);
     }
 
     /**
@@ -358,7 +356,7 @@ class AreaInput {
 
         this.isValid = isValid;
         this.showError(isValid ? '' : errorMessage);
-        
+
         return isValid;
     }
 
@@ -374,14 +372,8 @@ class AreaInput {
 
             if (this.textareaElement) {
                 this.textareaElement.classList.add('error');
-                // Auto-focus and scroll to error
-                this.textareaElement.focus();
-                this.textareaElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
             } else if (this.quillEditor) {
                 this.quillEditor.root.parentElement.classList.add('error');
-                // Auto-focus and scroll to error
-                this.quillEditor.focus();
-                this.quillEditor.root.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
         } else {
             this.errorElement.style.display = 'none';
@@ -458,7 +450,7 @@ class AreaInput {
         } else if (this.textareaElement) {
             this.textareaElement.value = value || '';
         }
-        this.validateInput();
+        // Don't validate when programmatically setting value
     }
 
     /**

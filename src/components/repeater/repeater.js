@@ -356,7 +356,7 @@ class Repeater {
      * Handle field change events
      */
     handleFieldChange() {
-        this.validate();
+        // Don't validate on change - only validate when explicitly called
         if (this.options.onChange) {
             this.options.onChange(this.getData(), this);
         }

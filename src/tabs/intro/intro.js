@@ -32,7 +32,7 @@ class IntroTab {
     render() {
         this.container.innerHTML = `
             <div class="intro-content">
-                <h2>Pick a Template</h2>
+                <h2>Pick a Template *</h2>
 
                 <div class="form-group">
                     <label for="template-selection"></label>
