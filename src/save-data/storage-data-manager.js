@@ -34,6 +34,11 @@ class StorageDataManager {
         // Collect current form data
         this.documentGenerator.collectFormData();
 
+        console.log('=== SAVE DATA DEBUG ===');
+        console.log('Form data to save:', this.documentGenerator.formData);
+        console.log('Jobs data:', this.documentGenerator.formData.jobsData);
+        console.log('Physical demands:', this.documentGenerator.formData.physicalDemands);
+
         if (Object.keys(this.documentGenerator.formData).length === 0) {
             showError('Please fill in some information before saving');
             return false;
@@ -95,6 +100,12 @@ class StorageDataManager {
 
         try {
             const formData = await this.secureStorage.loadFormData(userPhrase);
+
+            console.log('=== LOAD DATA DEBUG ===');
+            console.log('Loaded form data:', formData);
+            console.log('Jobs data:', formData?.jobsData);
+            console.log('Physical demands:', formData?.physicalDemands);
+
             if (formData) {
                 this.populateForm(formData);
                 showSuccess('Information loaded successfully!');
@@ -108,11 +119,14 @@ class StorageDataManager {
                 }
                 return true;
             } else {
-                showWarning('No saved information found.');
+                console.warn('loadFormData returned null - either no cookie or decryption failed');
+                showWarning('No saved information found or incorrect passphrase.');
                 return false;
             }
         } catch (error) {
-            console.error('Load error:', error);
+            console.error('Load error (exception thrown):', error);
+            console.error('Error message:', error.message);
+            console.error('Error stack:', error.stack);
             showError('Failed to load information. Please check your phrase and try again.');
             return false;
         }
@@ -187,9 +201,28 @@ class StorageDataManager {
             const tabData = {
                 intro: {},
                 demographics: {},
-                jobs: formData.jobs || [],
+                jobs: {},
                 summary: {}
             };
+
+            // Handle jobs data structure - it can be stored as a nested object or flat
+            if (formData.jobsData && typeof formData.jobsData === 'object') {
+                // New format: jobs data is stored as a nested object
+                tabData.jobs = formData.jobsData;
+            } else if (formData.jobs && typeof formData.jobs === 'object') {
+                // Alternative format: jobs is already structured
+                tabData.jobs = formData.jobs;
+            } else {
+                // Build jobs data from individual demand fields
+                tabData.jobs = {
+                    physicalDemands: formData.physicalDemands || {},
+                    mobilityDemands: formData.mobilityDemands || {},
+                    cognitiveSensoryDemands: formData.cognitiveSensoryDemands || {},
+                    environmentalDemands: formData.environmentalDemands || {},
+                    liftingPushingPulling: formData.liftingPushingPulling || {},
+                    classificationOfWork: formData.classificationOfWork || {}
+                };
+            }
 
             // Distribute the flat formData into tab-specific data
             const varsConfig = this.documentGenerator.varsConfig;
@@ -203,6 +236,7 @@ class StorageDataManager {
                     } else if (['documentContent'].includes(fieldName)) {
                         tabData.summary[fieldName] = formData[fieldName];
                     }
+                    // Jobs-related fields are handled separately above
                 }
             });
 

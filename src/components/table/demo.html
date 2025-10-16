@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Table Component Demo</title>
+    <meta name="description" content="Demo of the reusable table component for physical demands analysis">
+    <meta name="author" content="Austin Steil">
+    
+    <!-- Color Management System - Must be loaded first -->
+    <link rel="stylesheet" href="../../../src/color-system/colors.css">
+
+    <!-- Table Component Styles -->
+    <link rel="stylesheet" href="table.css">
+
+    <!-- Dark Mode Toggle Styles -->
+    <link rel="stylesheet" href="../../../src/dark-mode-toggle/dark-mode-toggle.css">
+    <link rel="stylesheet" href="../../../src/components/toggle/toggle.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--color-bg-secondary);
+            color: var(--color-text-primary);
+            padding: 40px 20px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--color-bg-primary);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        h1 {
+            color: var(--color-text-primary);
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+
+        .subtitle {
+            color: var(--color-text-secondary);
+            margin-bottom: 40px;
+            font-size: 16px;
+        }
+
+        .demo-section {
+            margin-bottom: 60px;
+        }
+
+        .demo-section h2 {
+            color: var(--color-text-primary);
+            margin-bottom: 20px;
+            font-size: 24px;
+            border-bottom: 2px solid var(--color-border-light);
+            padding-bottom: 10px;
+        }
+
+        .controls {
+            margin: 20px 0;
+            padding: 20px;
+            background: var(--color-bg-secondary);
+            border-radius: 8px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .controls button {
+            padding: 10px 20px;
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .controls button:hover {
+            background: var(--color-primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .controls button:active {
+            transform: translateY(0);
+        }
+
+        .data-output {
+            margin-top: 20px;
+            padding: 20px;
+            background: var(--color-bg-tertiary);
+            border-radius: 8px;
+            border-left: 4px solid var(--color-primary);
+        }
+
+        .data-output h3 {
+            color: var(--color-text-primary);
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .data-output pre {
+            background: var(--color-bg-primary);
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            color: var(--color-text-primary);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .info-box {
+            background: var(--gradient-info);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 4px solid var(--color-info);
+        }
+
+        .info-box h3 {
+            color: var(--color-text-primary);
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .info-box p {
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+        }
+
+        .demo-description {
+            margin-bottom: 20px;
+            color: var(--color-text-secondary);
+        }
+
+        .data-output.hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <h1>Table Component Demo</h1>
+        <p class="subtitle">Reusable table component for physical demands analysis and data collection</p>
+
+        <div class="info-box">
+            <h3>About This Component</h3>
+            <p>
+                This table component is designed for physical demands analysis forms. It supports configurable 
+                rows and columns, selectable cells (like checkboxes), and text input cells. The component 
+                fully integrates with the project's color system and supports light/dark mode.
+            </p>
+        </div>
+
+        <!-- Demo 1: Physical Demands Table (Selectable) -->
+        <div class="demo-section">
+            <h2>Demo 1: Physical Demands Analysis (Selectable Cells)</h2>
+            <p class="demo-description">
+                Click on cells to select frequency. Single selection per row (like radio buttons).
+            </p>
+            <div id="table-demo-1"></div>
+
+            <div class="controls">
+                <button onclick="getTableData1()">Get Data</button>
+                <button onclick="clearTable1()">Clear All</button>
+            </div>
+
+            <div id="data-output-1" class="data-output hidden">
+                <h3>Current Data:</h3>
+                <pre id="data-display-1"></pre>
+            </div>
+        </div>
+
+        <!-- Demo 2: Comments Table (Input Cells) -->
+        <div class="demo-section">
+            <h2>Demo 2: Comments Table (Text Input Cells)</h2>
+            <p class="demo-description">
+                Type comments or notes in each cell.
+            </p>
+            <div id="table-demo-2"></div>
+
+            <div class="controls">
+                <button onclick="getTableData2()">Get Data</button>
+                <button onclick="clearTable2()">Clear All</button>
+            </div>
+
+            <div id="data-output-2" class="data-output hidden">
+                <h3>Current Data:</h3>
+                <pre id="data-display-2"></pre>
+            </div>
+        </div>
+
+        <!-- Demo 3: Compact Table -->
+        <div class="demo-section">
+            <h2>Demo 3: Compact Style (Multiple Selection)</h2>
+            <p class="demo-description">
+                Multiple selections allowed per row (like checkboxes). Compact styling for space efficiency.
+            </p>
+            <div id="table-demo-3"></div>
+
+            <div class="controls">
+                <button onclick="getTableData3()">Get Data</button>
+                <button onclick="clearTable3()">Clear All</button>
+            </div>
+
+            <div id="data-output-3" class="data-output hidden">
+                <h3>Current Data:</h3>
+                <pre id="data-display-3"></pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Components -->
+    <script src="../../../src/components/toggle/toggle.js"></script>
+    <script src="../../../src/dark-mode-toggle/dark-mode-toggle.js"></script>
+    <script src="table.js"></script>
+
+    <script>
+        // Initialize Dark Mode Toggle
+        const darkModeToggle = new DarkModeToggle();
+
+        // Demo 1: Physical Demands Table (Selectable, Single Selection)
+        const table1 = new Table({
+            containerId: 'table-demo-1',
+            title: 'Physical Demands',
+            description: 'Select the frequency for each physical demand (hover over cells to see row/column highlighting)',
+            headerColumns: ['Never', 'Rare', 'Occasional', 'Frequent', 'Constant'],
+            headerRows: [
+                'Lifting - Floor to Knuckle',
+                'Lifting - Knuckle to Waist',
+                'Lifting - Over Head',
+                'Carrying - with Handles',
+                'Carrying - without Handles',
+                'Pushing - Upper Extremity',
+                'Pulling - Upper Extremity',
+                'Reaching - Shoulder or Above',
+                'Reaching - Below Shoulder',
+                'Handling',
+                'Fine Finger Movements'
+            ],
+            cellType: 'selectable',
+            selectionMode: 'single',
+            striped: false,
+            hoverable: true,
+            onChange: (data) => {
+                console.log('Table 1 data changed:', data);
+            }
+        });
+
+        function getTableData1() {
+            const data = table1.getData();
+            document.getElementById('data-display-1').textContent = JSON.stringify(data, null, 2);
+            document.getElementById('data-output-1').classList.remove('hidden');
+        }
+
+        function clearTable1() {
+            table1.clear();
+            document.getElementById('data-output-1').classList.add('hidden');
+        }
+
+        // Demo 2: Comments Table (Input Cells)
+        const table2 = new Table({
+            containerId: 'table-demo-2',
+            title: 'Activity Comments',
+            description: 'Add comments or notes for each activity (hover to see row/column highlighting)',
+            headerColumns: ['Weight (kg)', 'Max (kg)', 'Comments'],
+            headerRows: [
+                'Lifting - Floor to Knuckle',
+                'Lifting - Knuckle to Waist',
+                'Carrying - with Handles',
+                'Pushing - Upper Extremity',
+                'Pulling - Upper Extremity'
+            ],
+            cellType: 'input',
+            inputType: 'text',
+            striped: false,
+            hoverable: true,
+            onChange: (data) => {
+                console.log('Table 2 data changed:', data);
+            }
+        });
+
+        function getTableData2() {
+            const data = table2.getData();
+            document.getElementById('data-display-2').textContent = JSON.stringify(data, null, 2);
+            document.getElementById('data-output-2').classList.remove('hidden');
+        }
+
+        function clearTable2() {
+            table2.clear();
+            document.getElementById('data-output-2').classList.add('hidden');
+        }
+
+        // Demo 3: Compact Table (Multiple Selection)
+        const table3 = new Table({
+            containerId: 'table-demo-3',
+            title: 'Environmental Conditions',
+            description: 'Select all applicable conditions (multiple selections allowed, hover to see row/column highlighting)',
+            headerColumns: ['Indoor', 'Outdoor', 'Hot', 'Cold', 'Wet', 'Noisy'],
+            headerRows: [
+                'Morning Shift',
+                'Afternoon Shift',
+                'Night Shift',
+                'Weekend'
+            ],
+            cellType: 'selectable',
+            selectionMode: 'multiple',
+            striped: false,
+            hoverable: true,
+            compact: true,
+            bordered: true,
+            onChange: (data) => {
+                console.log('Table 3 data changed:', data);
+            }
+        });
+
+        function getTableData3() {
+            const data = table3.getData();
+            document.getElementById('data-display-3').textContent = JSON.stringify(data, null, 2);
+            document.getElementById('data-output-3').classList.remove('hidden');
+        }
+
+        function clearTable3() {
+            table3.clear();
+            document.getElementById('data-output-3').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
+

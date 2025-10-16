@@ -1,7 +1,7 @@
 # Cookie Policy
 
-**Last Updated:** October 14, 2025
-**Effective Date:** October 11, 2025
+**Last Updated:** October 16, 2025
+**Effective Date:** October 16, 2025
 
 ---
 
@@ -11,10 +11,11 @@
 2. [How We Use Cookies](#-how-we-use-cookies)
 3. [Cookie Categories](#-cookie-categories)
 4. [Detailed Cookie Information](#-detailed-cookie-information)
-5. [Security & Encryption](#️-security--encryption)
-6. [User Risks & Responsibilities](#️-user-risks--responsibilities)
-7. [Managing Your Cookie Preferences](#️-managing-your-cookie-preferences)
-8. [Contact Information](#-contact-information)
+5. [Data Storage (localStorage)](#localstorage-items-current-storage-method)
+6. [Security & Encryption](#️-security--encryption)
+7. [User Risks & Responsibilities](#️-user-risks--responsibilities)
+8. [Managing Your Cookie Preferences](#️-managing-your-cookie-preferences)
+9. [Contact Information](#-contact-information)
 
 ---
 
@@ -22,7 +23,7 @@
 
 Cookies are small text files that websites store on your device (computer, tablet, or mobile phone) to remember information about your visit. They help websites provide a better user experience by remembering your preferences and actions.
 
-In our application, **our cookies** serve **one primary purpose**: to allow you to safely close your browser without losing your progress on forms and data entry. Additionally, third-party cookies from the QuillJS library CDN are used for library usage analytics.
+**Important Update (October 2025):** This application **no longer uses cookies** for storing your form data. We now use **localStorage** (browser local storage) which provides better capacity and reliability. However, third-party cookies from the QuillJS library CDN are still used for library usage analytics.
 
 ---
 
@@ -90,11 +91,25 @@ These cookies are essential for the basic functionality you've requested:
 
 ### First-Party Cookies (This Website)
 
-| Cookie Name | Provider | Purpose | Duration | Security |
-|-------------|----------|---------|----------|----------|
-| `userFormData` | This Website | Stores your encrypted form data | 30 days | AES-GCM 256-bit encryption |
-| `hasStoredData` | This Website | Indicates if you have saved data (for UI) | 30 days | Boolean flag only |
-| `dataExpiration` | This Website | Tracks when your saved data expires | 30 days | Timestamp only |
+**We no longer use first-party cookies for storing form data.** As of October 16, 2025, all form data is stored in **localStorage** instead of cookies.
+
+**Why the change?**
+
+- Cookies have a 4 KB size limit, which was insufficient for complex forms with table data
+- localStorage provides 5-10 MB capacity, allowing us to store larger, more complex forms
+- Same security: We use the exact same AES-GCM 256-bit encryption
+
+**Legacy cookie cleanup:** If you have old cookie-based data, it will be automatically migrated to localStorage when you load it.
+
+### localStorage Items (Current Storage Method)
+
+| Item Name | Purpose | Encrypted | Size |
+|-----------|---------|-----------|------|
+| `userFormData` | Your encrypted form data | ✅ Yes (AES-GCM 256-bit) | Variable (10-500 KB typical) |
+| `hasStoredData` | Flag indicating data exists | ❌ No | ~10 bytes |
+| `dataExpiration` | Timestamp for expiration | ❌ No | ~20 bytes |
+
+**For full details on localStorage security, see [STORAGE-POLICY.md](./STORAGE-POLICY.md)**
 
 ### Third-Party Cookies (QuillJS CDN)
 
@@ -103,14 +118,18 @@ These cookies are essential for the basic functionality you've requested:
 | `_ga` | Google Analytics (via QuillJS) | Track QuillJS library usage statistics | ~2 years | `.quilljs.com` |
 | `_ga_B37E2WMSPW` | Google Analytics (via QuillJS) | Enhanced analytics for QuillJS usage | ~2 years | `.quilljs.com` |
 
-**Important:** These cookies are set by the QuillJS CDN to track how many websites use their library. They track library usage patterns, **NOT your personal form data or information**. Your encrypted form data remains completely separate and inaccessible to these analytics cookies.
+**Important:** These cookies are set by the QuillJS CDN to track how many websites use their library. They track library usage patterns, **NOT your personal form data or information**. Your encrypted form data is stored in localStorage and is completely inaccessible to these analytics cookies.
 
-### 🔐 Encryption Details
+### 🔐 Encryption Details (localStorage)
+
+Our localStorage data uses the same military-grade encryption previously used for cookies:
 
 - **Algorithm**: AES-GCM with 256-bit keys
 - **Key Derivation**: PBKDF2 with 100,000 iterations and SHA-256
 - **Salt**: Randomly generated 16-byte salt per save operation
 - **IV**: Randomly generated 12-byte initialization vector per save operation
+
+**For complete security details, see [STORAGE-POLICY.md](./STORAGE-POLICY.md)**
 
 ---
 
@@ -120,14 +139,15 @@ These cookies are essential for the basic functionality you've requested:
 
 1. **Client-Side Encryption**: Your data is encrypted on your device using industry-standard AES-GCM encryption
 2. **User-Controlled Keys**: Only you know the encryption phrase - we cannot access your data
-3. **No Server Storage**: Encrypted data stays in your browser's cookies only
-4. **Secure Transmission**: Cookies use `Secure` and `SameSite=Strict` flags when possible
+3. **No Server Storage**: Encrypted data stays in your browser's localStorage only
+4. **Local Storage Only**: Data never leaves your device
 
 ### What This Means
 
 - ✅ **Privacy**: Your actual form data is unreadable without your phrase
 - ✅ **Control**: You have complete control over your data
 - ✅ **Transparency**: All encryption happens in your browser (client-side)
+- ✅ **Capacity**: localStorage can handle large, complex forms without size limits
 
 ---
 
@@ -141,10 +161,10 @@ By using the "Save for Later" feature, you acknowledge and accept that:
 
 1. **Phrase Security**: If you choose a weak phrase, your data may be vulnerable
 2. **Device Security**: If your device is compromised, your saved data may be at risk
-3. **Browser Security**: If your browser is compromised, cookies may be accessible
+3. **Browser Security**: If your browser is compromised, localStorage may be accessible
 4. **Shared Devices**: Anyone with access to your device/browser may attempt to access your data
 5. **Data Loss**: We cannot recover your data if you forget your phrase
-6. **No Backup**: There is no way to recover lost or corrupted cookie data
+6. **No Backup**: There is no way to recover lost or corrupted localStorage data
 
 #### **Your Responsibilities:**
 
@@ -179,26 +199,34 @@ By using the "Save for Later" feature, you acknowledge and accept that:
 
 #### **Option 1: Use Our Built-In Controls**
 
-- **Save Data**: Click "Save for Later" button (creates our first-party cookies)
+- **Save Data**: Click "Save for Later" button (stores encrypted data in localStorage)
 - **Load Data**: Click "Load Saved Data" and enter your phrase
-- **Clear Data**: Click "Clear Saved Data" (removes our first-party cookies only, not QuillJS cookies)
+- **Clear Data**: Click "Clear Saved Data" (removes localStorage data, not QuillJS cookies)
 
-#### **Option 2: Browser Settings**
+#### **Option 2: Browser Settings - localStorage**
 
-You can also manage cookies through your browser (manages both our cookies and QuillJS cookies):
+You can also manage localStorage through your browser:
+
+- **Chrome/Edge**: Press F12 → Application tab → Local Storage → your site URL → Right-click → Clear
+- **Firefox**: Press F12 → Storage tab → Local Storage → your site URL → Right-click → Delete All
+- **Safari**: Preferences → Privacy → Manage Website Data → Find your site → Remove
+
+#### **Option 3: Browser Settings - Cookies (QuillJS only)**
+
+To manage third-party QuillJS cookies:
 
 - **Chrome**: Settings → Privacy and Security → Cookies and other site data
 - **Firefox**: Settings → Privacy & Security → Cookies and Site Data
 - **Safari**: Preferences → Privacy → Manage Website Data
 - **Edge**: Settings → Cookies and site permissions → Cookies and site data
 
-#### **Option 3: Automatic Expiration**
+#### **Option 4: Automatic Expiration**
 
-**Our first-party cookies** automatically expire after **30 days** - no action needed.
+**Our localStorage data** is marked to expire after **30 days** and will be automatically cleared on next visit.
 
 **Third-party QuillJS cookies** expire after approximately **2 years**.
 
-#### **Option 4: Managing Third-Party Analytics Cookies**
+#### **Option 5: Managing Third-Party Analytics Cookies**
 
 QuillJS sets Google Analytics cookies that expire after approximately 2 years. To manage these:
 
@@ -227,23 +255,32 @@ If you have questions about this Cookie Policy or our data practices:
 
 **Developer**: Austin Steil
 **Project**: Document Generator
-**Policy Version**: 1.1.0
+**Policy Version**: 2.0.0 (Updated for localStorage migration)
+
+**For detailed storage security information, see [STORAGE-POLICY.md](./STORAGE-POLICY.md)**
 
 ---
 
 ## 📋 Policy Updates
 
-This policy may be updated to reflect changes in our cookie usage. When updates occur:
+This policy may be updated to reflect changes in our cookie and storage usage. When updates occur:
 
 - The "Last Updated" date at the top will change
 - Significant changes will be highlighted in the application
 - Continued use after updates constitutes acceptance of new terms
+
+### Recent Updates
+
+- **v2.0.0 (October 16, 2025)**: Migrated from cookie-based storage to localStorage for better capacity and reliability. Same encryption security maintained.
+- **v1.1.0 (October 14, 2025)**: Enhanced cookie policy documentation
+- **v1.0.0 (October 11, 2025)**: Initial cookie policy
 
 ---
 
 ## 🔗 Related Information
 
 - **Privacy by Design**: This application is built with privacy as the primary concern
+- **Full Storage Details**: See [STORAGE-POLICY.md](./STORAGE-POLICY.md) for complete information on localStorage security
 - **Open Source**: The encryption implementation is transparent and auditable
 - **Minimal External Dependencies**: Only CDN-hosted libraries (QuillJS) for rich text editing functionality
 - **No User Tracking**: We do not track users; QuillJS CDN tracks library usage only (not user behavior)

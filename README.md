@@ -29,7 +29,7 @@ The Save for Later feature uses industry-standard security practices to protect 
 
 **How it works:**
 
-1. Enter your form data and click "Save Data for Later" 
+1. Enter your form data and click "Save Data for Later"
 2. Create a secure passphrase (never stored anywhere)
 3. Data is encrypted using AES-256-GCM and saved as a browser cookie
 4. To retrieve: Click "Load Saved Data" and enter your passphrase
@@ -131,6 +131,7 @@ The project includes interactive demo pages for testing and showcasing component
 - **[Tooltip Component Demo](https://austinsteil.github.io/generate-files-model/src/components/tooltip/tooltip-example.html)** - Interactive tooltip examples with different positions
 - **[Area Input Demo](https://austinsteil.github.io/generate-files-model/src/components/area-input/area-input-example.html)** - Multi-line text input with auto-grow, character counter, and rich text editor options
 - **[Work Week Calculator Demo](https://austinsteil.github.io/generate-files-model/src/components/work-week-calculator/work-week-calculator-example.html)** - Interactive work schedule calculator with auto-calculating fields
+- **[Table Component Demo](https://austinsteil.github.io/generate-files-model/src/components/table/demo.html)** - Flexible table component with selectable cells and input fields for data collection
 
 These demo files can be opened directly in your browser or served through a local web server.
 
@@ -235,6 +236,28 @@ Dynamic array input system for collecting multiple rows of data:
 - **Storage integration** - Seamlessly works with save-data system
 - **Slim design** - Compact, elegant UI with proper spacing
 - **Dark mode** - Full light/dark mode support with proper contrast
+
+### Table Component
+
+Flexible table component for data collection and selection:
+
+- **Configurable structure** - Define custom rows, columns, and headers
+- **Selectable cells** - Click to select with single or multiple selection modes
+- **Input cells** - Text input or textarea for data entry
+- **Styling options** - Striped, hoverable, bordered, and compact variants
+- **Validation support** - Custom validation with callbacks
+- **Dark mode** - Full light/dark mode support
+
+### SubNav Component
+
+Vertical side navigation with content panel layout:
+
+- **Vertical navigation** - Side navigation with content panel
+- **Active state management** - Automatic active section tracking
+- **Dynamic content** - Support for HTML strings or functions
+- **Smooth transitions** - Elegant animations and gradient styling
+- **Accessible** - Full keyboard navigation support
+- **Dark mode** - Full light/dark mode support
 
 ## Configuration
 
@@ -374,16 +397,34 @@ generate-files-model/
     │   │   ├── work-week-calculator.css # Calculator styling
     │   │   ├── work-week-calculator-example.html # Calculator demo page
     │   │   └── README.md           # Calculator documentation
-    │   └── button/         # Button component
-    │       ├── button.js           # Button functionality
-    │       ├── button.css          # Button styling
-    │       └── README.md           # Button documentation
+    │   ├── button/         # Button component
+    │   │   ├── button.js           # Button functionality
+    │   │   ├── button.css          # Button styling
+    │   │   └── README.md           # Button documentation
+    │   ├── table/          # Table component
+    │   │   ├── table.js            # Table functionality
+    │   │   ├── table.css           # Table styling
+    │   │   ├── demo.html           # Table demo page
+    │   │   └── README.md           # Table documentation
+    │   └── subnav/         # SubNav component
+    │       ├── subnav.js           # SubNav functionality
+    │       ├── subnav.css          # SubNav styling
+    │       └── README.md           # SubNav documentation
     ├── tabs/               # Tab-based application structure
     │   ├── tabs.js                 # Tab management and navigation
     │   ├── tabs.css                # Tab styling and layout
     │   ├── tabs-content.css        # Content area styling
-    │   └── intro/          # Intro tab (template selection)
-    │       └── intro.js            # Template selection with Cards component
+    │   ├── intro/          # Intro tab (template selection)
+    │   │   └── intro.js            # Template selection with Cards component
+    │   └── jobs/           # Jobs tab (job demands analysis)
+    │       ├── jobs.js             # Jobs tab with SubNav integration
+    │       └── demands/            # Modular demand section files
+    │           ├── physical-demands.js # Physical demands section
+    │           ├── mobility-demands.js # Mobility demands section
+    │           ├── cognitive-and-sensory-demands.js # Cognitive & sensory section
+    │           ├── environmental-demands.js # Environmental demands section
+    │           ├── lifting-pushing-and-pulling.js # Lifting/pushing/pulling section
+    │           └── classification-of-work.js # Classification of work section
     ├── dark-mode-toggle/   # Dark mode feature (non-reusable)
     │   ├── dark-mode-toggle.js     # Dark mode logic
     │   ├── dark-mode-toggle.css    # Dark mode toggle styling
@@ -421,7 +462,7 @@ generate-files-model/
 
 ### Code Organization
 
-- **Reusable components** → `src/components/` (alert, cards, tooltip, dropdown, toggle, button, text-input, address, area-input, work-week-calculator, repeater)
+- **Reusable components** → `src/components/` (alert, cards, tooltip, dropdown, toggle, button, text-input, address, area-input, work-week-calculator, repeater, table, subnav)
 - **Application-specific features** → `src/` (dark-mode-toggle, save-data, tabs)
 - **Shared utilities** → `src/color-system/`
 

@@ -1,0 +1,458 @@
+/**
+ * Reusable Table Component
+ *
+ * A flexible table component for physical demands analysis and similar data collection.
+ * Supports configurable rows, columns, headers, and cell types (selectable or input).
+ *
+ * Features:
+ * - Configurable number of rows and columns
+ * - Header row (top) and header column (left)
+ * - Selectable cells (single or multiple selection per row)
+ * - Text input cells
+ * - Full dark mode support
+ * - Data export/import
+ *
+ * @author Austin Steil
+ * @version 1.0.0
+ */
+
+class Table {
+    constructor(options = {}) {
+        this.options = {
+            containerId: options.containerId || null,
+            id: options.id || this.generateId(),
+            title: options.title || null,
+            description: options.description || null,
+
+            // Table structure
+            headerColumns: options.headerColumns || [],
+            headerRows: options.headerRows || [],
+
+            // Cell configuration
+            cellType: options.cellType || 'selectable',
+            inputType: options.inputType || 'text',
+            selectionMode: options.selectionMode || 'single',
+
+            // Styling options
+            striped: options.striped !== undefined ? options.striped : true,
+            hoverable: options.hoverable !== undefined ? options.hoverable : true,
+            bordered: options.bordered !== undefined ? options.bordered : false,
+            compact: options.compact !== undefined ? options.compact : false,
+
+            // Callbacks
+            onChange: options.onChange || null,
+            onValidate: options.onValidate || null,
+
+            // Initial data
+            initialData: options.initialData || null
+        };
+
+        this.container = null;
+        this.tableElement = null;
+        this.data = this.initializeData();
+
+        this.init();
+    }
+
+    /**
+     * Generate a unique ID for the table
+     */
+    generateId() {
+        return 'table-' + Math.random().toString(36).substring(2, 11);
+    }
+
+    /**
+     * Initialize data structure
+     */
+    initializeData() {
+        const data = {};
+
+        if (this.options.initialData) {
+            return JSON.parse(JSON.stringify(this.options.initialData));
+        }
+
+        // Initialize empty data structure
+        this.options.headerRows.forEach((rowHeader, rowIndex) => {
+            data[rowIndex] = {};
+            this.options.headerColumns.forEach((colHeader, colIndex) => {
+                if (this.options.cellType === 'selectable') {
+                    data[rowIndex][colIndex] = false;
+                } else {
+                    data[rowIndex][colIndex] = '';
+                }
+            });
+        });
+
+        return data;
+    }
+
+    /**
+     * Initialize the table component
+     */
+    init() {
+        if (this.options.containerId) {
+            this.container = document.getElementById(this.options.containerId);
+            if (this.container) {
+                this.render();
+            }
+        }
+    }
+
+    /**
+     * Render the table component
+     */
+    render() {
+        if (!this.container) return;
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'table-component-wrapper';
+        wrapper.id = this.options.id + '-wrapper';
+
+        // Add title if provided
+        if (this.options.title) {
+            const title = document.createElement('div');
+            title.className = 'table-component-title';
+            title.textContent = this.options.title;
+            wrapper.appendChild(title);
+        }
+
+        // Add description if provided
+        if (this.options.description) {
+            const description = document.createElement('div');
+            description.className = 'table-component-description';
+            description.textContent = this.options.description;
+            wrapper.appendChild(description);
+        }
+
+        // Create table container
+        const tableContainer = document.createElement('div');
+        tableContainer.className = 'table-component';
+        tableContainer.id = this.options.id;
+
+        // Add styling classes
+        if (this.options.striped) tableContainer.classList.add('striped');
+        if (this.options.hoverable) tableContainer.classList.add('hoverable');
+        if (this.options.bordered) tableContainer.classList.add('bordered');
+        if (this.options.compact) tableContainer.classList.add('compact');
+
+        // Create table
+        const table = document.createElement('table');
+        table.setAttribute('role', 'grid');
+
+        // Create header row
+        const thead = document.createElement('thead');
+        const headerRow = document.createElement('tr');
+
+        // Empty cell for top-left corner
+        const cornerCell = document.createElement('th');
+        cornerCell.className = 'header-row';
+        headerRow.appendChild(cornerCell);
+
+        // Add column headers
+        this.options.headerColumns.forEach(header => {
+            const th = document.createElement('th');
+            th.textContent = header;
+            headerRow.appendChild(th);
+        });
+
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+
+        // Create table body
+        const tbody = document.createElement('tbody');
+
+        this.options.headerRows.forEach((rowHeader, rowIndex) => {
+            const row = document.createElement('tr');
+
+            // Add row header
+            const rowHeaderCell = document.createElement('td');
+            rowHeaderCell.className = 'row-header';
+            rowHeaderCell.textContent = rowHeader;
+            row.appendChild(rowHeaderCell);
+
+            // Add data cells
+            this.options.headerColumns.forEach((colHeader, colIndex) => {
+                const cell = this.createCell(rowIndex, colIndex);
+                row.appendChild(cell);
+            });
+
+            tbody.appendChild(row);
+        });
+
+        table.appendChild(tbody);
+        tableContainer.appendChild(table);
+        wrapper.appendChild(tableContainer);
+
+        // Clear container and add new content
+        this.container.innerHTML = '';
+        this.container.appendChild(wrapper);
+
+        this.tableElement = tableContainer;
+
+        // Setup column hover effects if hoverable
+        if (this.options.hoverable) {
+            this.setupColumnHover();
+        }
+    }
+
+    /**
+     * Setup column hover effects
+     */
+    setupColumnHover() {
+        if (!this.tableElement) return;
+
+        const cells = this.tableElement.querySelectorAll('td.selectable, td.input-cell');
+
+        cells.forEach(cell => {
+            const colIndex = Array.from(cell.parentElement.children).indexOf(cell);
+
+            cell.addEventListener('mouseenter', () => {
+                const allRows = this.tableElement.querySelectorAll('tbody tr');
+                allRows.forEach(row => {
+                    const targetCell = row.children[colIndex];
+                    if (targetCell) {
+                        targetCell.setAttribute('data-column-hover', 'true');
+                    }
+                });
+            });
+
+            cell.addEventListener('mouseleave', () => {
+                const allCells = this.tableElement.querySelectorAll('[data-column-hover="true"]');
+                allCells.forEach(c => c.removeAttribute('data-column-hover'));
+            });
+        });
+    }
+
+    /**
+     * Create a table cell based on configuration
+     */
+    createCell(rowIndex, colIndex) {
+        const cell = document.createElement('td');
+
+        if (this.options.cellType === 'selectable') {
+            cell.className = 'selectable';
+            cell.setAttribute('tabindex', '0');
+            cell.setAttribute('role', 'gridcell');
+            cell.setAttribute('aria-label', `${this.options.headerRows[rowIndex]} - ${this.options.headerColumns[colIndex]}`);
+
+            // Set initial state
+            if (this.data[rowIndex][colIndex]) {
+                cell.classList.add('selected');
+                cell.setAttribute('aria-selected', 'true');
+            } else {
+                cell.setAttribute('aria-selected', 'false');
+            }
+
+            // Add click handler
+            cell.addEventListener('click', () => this.handleCellClick(rowIndex, colIndex, cell));
+
+            // Add keyboard support
+            cell.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.handleCellClick(rowIndex, colIndex, cell);
+                }
+            });
+        } else {
+            cell.className = 'input-cell';
+
+            // Create input element
+            const input = this.options.inputType === 'textarea'
+                ? document.createElement('textarea')
+                : document.createElement('input');
+
+            if (this.options.inputType !== 'textarea') {
+                input.type = 'text';
+            }
+
+            input.value = this.data[rowIndex][colIndex] || '';
+            input.setAttribute('aria-label', `${this.options.headerRows[rowIndex]} - ${this.options.headerColumns[colIndex]}`);
+
+            // Add input handler
+            input.addEventListener('input', (e) => {
+                this.handleInputChange(rowIndex, colIndex, e.target.value);
+
+                // Auto-grow textarea
+                if (this.options.inputType === 'textarea') {
+                    this.autoGrowTextarea(e.target);
+                }
+            });
+
+            // Initialize textarea height if needed
+            if (this.options.inputType === 'textarea') {
+                setTimeout(() => this.autoGrowTextarea(input), 0);
+            }
+
+            cell.appendChild(input);
+        }
+
+        return cell;
+    }
+
+    /**
+     * Auto-grow textarea to fit content
+     */
+    autoGrowTextarea(textarea) {
+        textarea.style.height = 'auto';
+        const newHeight = Math.max(40, textarea.scrollHeight);
+        textarea.style.height = newHeight + 'px';
+
+        const cell = textarea.parentElement;
+        if (cell) {
+            cell.style.height = 'auto';
+        }
+    }
+
+    /**
+     * Handle cell click for selectable cells
+     */
+    handleCellClick(rowIndex, colIndex, cell) {
+        if (this.options.selectionMode === 'single') {
+            // Deselect all cells in this row
+            const row = cell.parentElement;
+            const cells = row.querySelectorAll('td.selectable');
+            cells.forEach(c => {
+                c.classList.remove('selected');
+                c.setAttribute('aria-selected', 'false');
+            });
+
+            // Clear all selections in this row
+            Object.keys(this.data[rowIndex]).forEach(key => {
+                this.data[rowIndex][key] = false;
+            });
+        }
+
+        // Toggle this cell
+        const isSelected = cell.classList.toggle('selected');
+        cell.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+        this.data[rowIndex][colIndex] = isSelected;
+
+        // Trigger onChange callback
+        if (this.options.onChange) {
+            this.options.onChange(this.getData());
+        }
+    }
+
+    /**
+     * Handle input change for input cells
+     */
+    handleInputChange(rowIndex, colIndex, value) {
+        this.data[rowIndex][colIndex] = value;
+
+        // Trigger onChange callback
+        if (this.options.onChange) {
+            this.options.onChange(this.getData());
+        }
+    }
+
+    /**
+     * Get current table data
+     */
+    getData() {
+        return JSON.parse(JSON.stringify(this.data));
+    }
+
+    /**
+     * Set table data
+     */
+    setData(data) {
+        this.data = data;
+        this.render();
+    }
+
+    /**
+     * Clear all selections/inputs
+     */
+    clear() {
+        this.data = this.initializeData();
+        this.render();
+    }
+
+    /**
+     * Validate table data
+     */
+    validate() {
+        if (this.options.onValidate) {
+            return this.options.onValidate(this.getData());
+        }
+        return true;
+    }
+
+    /**
+     * Set loading state
+     */
+    setLoading(isLoading) {
+        if (this.tableElement) {
+            if (isLoading) {
+                this.tableElement.classList.add('loading');
+            } else {
+                this.tableElement.classList.remove('loading');
+            }
+        }
+    }
+
+    /**
+     * Set disabled state
+     */
+    setDisabled(isDisabled) {
+        if (this.tableElement) {
+            if (isDisabled) {
+                this.tableElement.classList.add('disabled');
+            } else {
+                this.tableElement.classList.remove('disabled');
+            }
+        }
+    }
+
+    /**
+     * Export data to CSV
+     */
+    exportToCSV() {
+        const rows = [];
+
+        // Header row
+        const headerRow = ['', ...this.options.headerColumns];
+        rows.push(headerRow);
+
+        // Data rows
+        this.options.headerRows.forEach((rowHeader, rowIndex) => {
+            const row = [rowHeader];
+            this.options.headerColumns.forEach((colHeader, colIndex) => {
+                const value = this.data[rowIndex][colIndex];
+                // Handle boolean values for selectable cells
+                row.push(typeof value === 'boolean' ? (value ? 'X' : '') : value);
+            });
+            rows.push(row);
+        });
+
+        // Convert to CSV string
+        const csvContent = rows.map(row =>
+            row.map(cell => {
+                const cellStr = String(cell);
+                if (cellStr.includes(',') || cellStr.includes('"') || cellStr.includes('\n')) {
+                    return '"' + cellStr.replace(/"/g, '""') + '"';
+                }
+                return cellStr;
+            }).join(',')
+        ).join('\n');
+
+        return csvContent;
+    }
+
+    /**
+     * Get the table element
+     */
+    getElement() {
+        return this.tableElement;
+    }
+
+    /**
+     * Destroy the table component
+     */
+    destroy() {
+        if (this.container) {
+            this.container.innerHTML = '';
+        }
+    }
+}
+

@@ -1,9 +1,14 @@
 /**
  * Job Tab
  *
- * Handles job data collection for the job demands analysis.
- * This is the most complex tab with ability to add/remove different analysis methods.
- * Dynamically generates and manages the job tab content.
+ * Handles job demands analysis data collection.
+ * Uses SubNav component for organizing different demand categories:
+ * - Physical Demands
+ * - Mobility Demands
+ * - Cognitive and Sensory Demands
+ * - Environmental Demands
+ * - Lifting/Pushing/Pulling
+ * - Classification of Work
  *
  * @author Austin Steil
  */
@@ -15,49 +20,28 @@ class JobsTab {
             console.error(`Jobs tab container with ID "${containerId}" not found`);
             return;
         }
-        this.jobCount = 1;
+        this.subNav = null;
+
+        // Initialize demand section instances
+        this.physicalDemands = new PhysicalDemands();
+        this.mobilityDemands = new MobilityDemands();
+        this.cognitiveSensoryDemands = new CognitiveSensoryDemands();
+        this.environmentalDemands = new EnvironmentalDemands();
+        this.liftingPushingPulling = new LiftingPushingPulling();
+        this.classificationOfWork = new ClassificationOfWork();
+
         this.render();
         this.init();
     }
 
     /**
-     * Render the jobs tab content
+     * Render the jobs tab content with SubNav
      */
     render() {
         this.container.innerHTML = `
             <div class="jobs-content">
-                <h2>Employment History</h2>
-                <p>This section will collect detailed job history information.</p>
-
-                <div class="jobs-list">
-                    <div class="job-entry">
-                        <h3>Job Entry 1</h3>
-
-                        <div class="form-group">
-                            <label for="job-1-title">Job Title:</label>
-                            <input type="text" id="job-1-title" placeholder="Enter job title">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="job-1-company">Company:</label>
-                            <input type="text" id="job-1-company" placeholder="Enter company name">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="job-1-duration">Duration:</label>
-                            <input type="text" id="job-1-duration" placeholder="e.g., Jan 2020 - Dec 2022">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="job-1-description">Description:</label>
-                            <textarea id="job-1-description" rows="4" placeholder="Describe your responsibilities and achievements"></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-actions">
-                    <button type="button" class="btn btn-secondary" id="add-job-btn">+ Add Another Job</button>
-                </div>
+                <!-- SubNav container -->
+                <div id="jobs-subnav-container"></div>
 
                 <!-- Next button container -->
                 <div class="form-actions-right">
@@ -70,149 +54,148 @@ class JobsTab {
     init() {
         console.log('Jobs tab initialized');
 
-        // Add event listener for adding new jobs
-        const addJobBtn = document.getElementById('add-job-btn');
-        if (addJobBtn) {
-            addJobBtn.addEventListener('click', () => this.addJobEntry());
+        // Initialize SubNav with demand categories
+        this.subNav = new SubNav({
+            containerId: 'jobs-subnav-container',
+            sections: [
+                {
+                    id: 'physical-demands',
+                    title: 'Physical Demands',
+                    hideTitle: true,
+                    noPadding: true,
+                    content: () => this.physicalDemands.render()
+                },
+                {
+                    id: 'mobility-demands',
+                    title: 'Mobility Demands',
+                    content: () => this.mobilityDemands.render()
+                },
+                {
+                    id: 'cognitive-sensory',
+                    title: 'Cognitive & Sensory',
+                    content: () => this.cognitiveSensoryDemands.render()
+                },
+                {
+                    id: 'environmental',
+                    title: 'Environmental Demands',
+                    content: () => this.environmentalDemands.render()
+                },
+                {
+                    id: 'lifting-pushing-pulling',
+                    title: 'Lifting/Pushing/Pulling',
+                    content: () => this.liftingPushingPulling.render()
+                },
+                {
+                    id: 'classification',
+                    title: 'Classification of Work',
+                    content: () => this.classificationOfWork.render()
+                }
+            ],
+            defaultSection: 'physical-demands'
+        });
+
+        // Initialize table components after SubNav has rendered
+        // Use setTimeout to ensure DOM is ready
+        setTimeout(() => {
+            this.physicalDemands.init();
+        }, 100);
+
+        // Listen for section changes
+        const subNavContainer = document.getElementById('jobs-subnav-container');
+        if (subNavContainer) {
+            subNavContainer.addEventListener('sectionchange', (e) => {
+                console.log('Section changed to:', e.detail.sectionId);
+            });
         }
     }
-    
+
     /**
-     * Add a new job entry to the form
+     * Ensure all demand sections are initialized
+     * Call this before getting or setting data
      */
-    addJobEntry() {
-        this.jobCount++;
-        const jobsList = document.querySelector('.jobs-list');
-        
-        const newJobEntry = document.createElement('div');
-        newJobEntry.className = 'job-entry';
-        newJobEntry.innerHTML = `
-            <h3>Job Entry ${this.jobCount}</h3>
-            
-            <div class="form-group">
-                <label for="job-${this.jobCount}-title">Job Title:</label>
-                <input type="text" id="job-${this.jobCount}-title" placeholder="Enter job title">
-            </div>
-            
-            <div class="form-group">
-                <label for="job-${this.jobCount}-company">Company:</label>
-                <input type="text" id="job-${this.jobCount}-company" placeholder="Enter company name">
-            </div>
-            
-            <div class="form-group">
-                <label for="job-${this.jobCount}-duration">Duration:</label>
-                <input type="text" id="job-${this.jobCount}-duration" placeholder="e.g., Jan 2020 - Dec 2022">
-            </div>
-            
-            <div class="form-group">
-                <label for="job-${this.jobCount}-description">Description:</label>
-                <textarea id="job-${this.jobCount}-description" rows="4" placeholder="Describe your responsibilities and achievements"></textarea>
-            </div>
-            
-            <button type="button" class="btn btn-warning remove-job-btn" data-job-number="${this.jobCount}">Remove This Job</button>
-        `;
-        
-        jobsList.appendChild(newJobEntry);
-        
-        // Add event listener to remove button
-        const removeBtn = newJobEntry.querySelector('.remove-job-btn');
-        removeBtn.addEventListener('click', (e) => {
-            newJobEntry.remove();
-        });
+    ensureInitialized() {
+        if (!this.physicalDemands.table) {
+            this.physicalDemands.init();
+        }
     }
-    
+
+
+
     /**
-     * Get data from all job entries
-     * @returns {Array} Array of job objects
+     * Get data from all sections
+     * @returns {Object} Object containing all job demands data
      */
     getData() {
-        const jobs = [];
-        const jobEntries = document.querySelectorAll('.job-entry');
-        
-        jobEntries.forEach((entry, index) => {
-            const jobNumber = index + 1;
-            const title = document.getElementById(`job-${jobNumber}-title`)?.value || '';
-            const company = document.getElementById(`job-${jobNumber}-company`)?.value || '';
-            const duration = document.getElementById(`job-${jobNumber}-duration`)?.value || '';
-            const description = document.getElementById(`job-${jobNumber}-description`)?.value || '';
-            
-            if (title || company || duration || description) {
-                jobs.push({ title, company, duration, description });
-            }
-        });
-        
-        return jobs;
+        // Ensure physical demands table is initialized before getting data
+        this.ensureInitialized();
+
+        const data = {
+            activeSection: this.subNav?.getActiveSection() || null,
+            physicalDemands: this.physicalDemands.getData(),
+            mobilityDemands: this.mobilityDemands.getData(),
+            cognitiveSensoryDemands: this.cognitiveSensoryDemands.getData(),
+            environmentalDemands: this.environmentalDemands.getData(),
+            liftingPushingPulling: this.liftingPushingPulling.getData(),
+            classificationOfWork: this.classificationOfWork.getData()
+        };
+
+        console.log('Jobs tab getData:', data);
+        return data;
     }
-    
+
     /**
-     * Set data for job entries
-     * @param {Array} jobs - Array of job objects
+     * Set data for all sections
+     * @param {Object} data - Object containing all job demands data
      */
-    setData(jobs) {
-        if (!Array.isArray(jobs) || jobs.length === 0) return;
-        
-        // Clear existing entries except the first one
-        const jobsList = document.querySelector('.jobs-list');
-        jobsList.innerHTML = '';
-        this.jobCount = 0;
-        
-        // Add job entries
-        jobs.forEach((job, index) => {
-            if (index === 0) {
-                // Use existing first entry
-                this.jobCount = 1;
-                this.addFirstJobEntry(job);
-            } else {
-                this.addJobEntry();
-                const jobNumber = this.jobCount;
-                if (job.title) document.getElementById(`job-${jobNumber}-title`).value = job.title;
-                if (job.company) document.getElementById(`job-${jobNumber}-company`).value = job.company;
-                if (job.duration) document.getElementById(`job-${jobNumber}-duration`).value = job.duration;
-                if (job.description) document.getElementById(`job-${jobNumber}-description`).value = job.description;
-            }
-        });
+    setData(data) {
+        if (!data) return;
+
+        console.log('Jobs tab setData called with:', data);
+
+        // Ensure physical demands table is initialized before setting data
+        this.ensureInitialized();
+
+        if (data.activeSection && this.subNav) {
+            this.subNav.setActiveSection(data.activeSection);
+        }
+
+        if (data.physicalDemands) {
+            console.log('Setting physical demands data:', data.physicalDemands);
+            this.physicalDemands.setData(data.physicalDemands);
+        }
+        if (data.mobilityDemands) {
+            this.mobilityDemands.setData(data.mobilityDemands);
+        }
+        if (data.cognitiveSensoryDemands) {
+            this.cognitiveSensoryDemands.setData(data.cognitiveSensoryDemands);
+        }
+        if (data.environmentalDemands) {
+            this.environmentalDemands.setData(data.environmentalDemands);
+        }
+        if (data.liftingPushingPulling) {
+            this.liftingPushingPulling.setData(data.liftingPushingPulling);
+        }
+        if (data.classificationOfWork) {
+            this.classificationOfWork.setData(data.classificationOfWork);
+        }
     }
-    
-    /**
-     * Add the first job entry (helper for setData)
-     */
-    addFirstJobEntry(job) {
-        const jobsList = document.querySelector('.jobs-list');
-        const firstEntry = document.createElement('div');
-        firstEntry.className = 'job-entry';
-        firstEntry.innerHTML = `
-            <h3>Job Entry 1</h3>
-            
-            <div class="form-group">
-                <label for="job-1-title">Job Title:</label>
-                <input type="text" id="job-1-title" placeholder="Enter job title" value="${job.title || ''}">
-            </div>
-            
-            <div class="form-group">
-                <label for="job-1-company">Company:</label>
-                <input type="text" id="job-1-company" placeholder="Enter company name" value="${job.company || ''}">
-            </div>
-            
-            <div class="form-group">
-                <label for="job-1-duration">Duration:</label>
-                <input type="text" id="job-1-duration" placeholder="e.g., Jan 2020 - Dec 2022" value="${job.duration || ''}">
-            </div>
-            
-            <div class="form-group">
-                <label for="job-1-description">Description:</label>
-                <textarea id="job-1-description" rows="4" placeholder="Describe your responsibilities and achievements">${job.description || ''}</textarea>
-            </div>
-        `;
-        jobsList.appendChild(firstEntry);
-    }
-    
+
     /**
      * Validate jobs tab data
-     * @returns {boolean} True if at least one job has data
+     * @returns {boolean} True if validation passes
      */
     validate() {
-        const jobs = this.getData();
-        return jobs.length > 0;
+        // Validate all demand sections
+        const validations = [
+            this.physicalDemands.validate(),
+            this.mobilityDemands.validate(),
+            this.cognitiveSensoryDemands.validate(),
+            this.environmentalDemands.validate(),
+            this.liftingPushingPulling.validate(),
+            this.classificationOfWork.validate()
+        ];
+
+        return validations.every(v => v === true);
     }
 }
 

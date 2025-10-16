@@ -178,16 +178,28 @@ class DocumentGenerator {
         // Get all data from tabs
         const allTabData = this.tabsManager.getAllData();
 
+        console.log('=== COLLECT FORM DATA DEBUG ===');
+        console.log('All tab data:', allTabData);
+        console.log('Jobs data from tabs:', allTabData.jobs);
+
         // Flatten the tab data structure into formData
         this.formData = {
             ...allTabData.intro,
             ...allTabData.demographics,
             ...allTabData.summary,
-            // Jobs data is an array, so we'll handle it separately if needed
-            jobs: allTabData.jobs
+            // Store jobs data as a nested object for easy access
+            jobsData: allTabData.jobs,
+            // Also flatten individual demand sections for vars.json compatibility
+            physicalDemands: allTabData.jobs?.physicalDemands || {},
+            mobilityDemands: allTabData.jobs?.mobilityDemands || {},
+            cognitiveSensoryDemands: allTabData.jobs?.cognitiveSensoryDemands || {},
+            environmentalDemands: allTabData.jobs?.environmentalDemands || {},
+            liftingPushingPulling: allTabData.jobs?.liftingPushingPulling || {},
+            classificationOfWork: allTabData.jobs?.classificationOfWork || {}
         };
 
         console.log('Collected form data from tabs:', this.formData);
+        console.log('Physical demands in formData:', this.formData.physicalDemands);
         return this.formData;
     }
 
@@ -371,6 +383,28 @@ class DocumentGenerator {
                 templateData.shiftsPerWeek = value.shiftsPerWeek || 0;
                 // Also keep the original nested structure for advanced templates
                 templateData[templateKey] = value;
+            } else if (key === 'jobsData' && value && typeof value === 'object') {
+                // Handle jobs data - convert table data to readable format for templates
+                templateData[templateKey] = value;
+
+                // Process physical demands table data into readable format
+                if (value.physicalDemands) {
+                    templateData.physicalDemandsFormatted = this.formatTableDataForTemplate(
+                        value.physicalDemands,
+                        ['Not Applicable', 'Occasional', 'Frequent', 'Constant'],
+                        [
+                            'Awkward position', 'Bending over', 'Carrying', 'Driving',
+                            'Fine motor tasks', 'Gripping or grasping', 'Handling', 'Kneeling',
+                            'Lifting', 'Lifting overhead', 'Pulling', 'Pushing', 'Reaching',
+                            'Sitting', 'Squatting or crouching', 'Standing', 'Talking and hearing',
+                            'Twisting or turning', 'Walking'
+                        ]
+                    );
+                }
+            } else if (['physicalDemands', 'mobilityDemands', 'cognitiveSensoryDemands',
+                        'environmentalDemands', 'liftingPushingPulling', 'classificationOfWork'].includes(key)) {
+                // Handle individual demand sections
+                templateData[templateKey] = value;
             } else {
                 // For arrays and simple values, pass them directly
                 templateData[templateKey] = value;
@@ -383,6 +417,37 @@ class DocumentGenerator {
 
         console.log('Template data prepared:', templateData);
         return templateData;
+    }
+
+    /**
+     * Format table data into a readable structure for Word templates
+     * @param {Object} tableData - Raw table data (row/column indices with boolean values)
+     * @param {Array} columnHeaders - Column header labels
+     * @param {Array} rowHeaders - Row header labels
+     * @returns {Array} Formatted array of objects for template consumption
+     */
+    formatTableDataForTemplate(tableData, columnHeaders, rowHeaders) {
+        const formatted = [];
+
+        Object.keys(tableData).forEach(rowIndex => {
+            const rowData = tableData[rowIndex];
+            const rowLabel = rowHeaders[rowIndex] || `Row ${rowIndex}`;
+
+            // Find which column is selected (true value)
+            let selectedColumn = null;
+            Object.keys(rowData).forEach(colIndex => {
+                if (rowData[colIndex] === true) {
+                    selectedColumn = columnHeaders[colIndex] || `Column ${colIndex}`;
+                }
+            });
+
+            formatted.push({
+                activity: rowLabel,
+                frequency: selectedColumn || 'Not Selected'
+            });
+        });
+
+        return formatted;
     }
 
     createDownloadLinkForDoc(documentBuffer) {

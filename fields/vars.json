@@ -16,5 +16,12 @@
   "marginalFunctions": "{marginalFunctions}",
   "workSchedule": "{workSchedule}",
   "breaks": "{breaks}",
-  "otherShiftInfo": "{otherShiftInfo}"
+  "otherShiftInfo": "{otherShiftInfo}",
+  "jobsData": "{jobsData}",
+  "physicalDemands": "{physicalDemands}",
+  "mobilityDemands": "{mobilityDemands}",
+  "cognitiveSensoryDemands": "{cognitiveSensoryDemands}",
+  "environmentalDemands": "{environmentalDemands}",
+  "liftingPushingPulling": "{liftingPushingPulling}",
+  "classificationOfWork": "{classificationOfWork}"
 }

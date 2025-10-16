@@ -1,0 +1,571 @@
+/**
+ * Reusable Table Component Styles
+ *
+ * A flexible table component for physical demands analysis and similar data collection.
+ * Supports:
+ * - Configurable rows and columns
+ * - Header rows and columns
+ * - Selectable cells (checkbox/radio style)
+ * - Text input cells
+ * - Full light/dark mode support
+ * - Responsive design
+ *
+ * NOTE: This component uses the centralized color management system from src/color-system/colors.css
+ * All colors are referenced using CSS custom properties (variables) for consistency.
+ *
+ * @author Austin Steil
+ * @version 1.0.0
+ */
+
+/* Z-Index Management */
+:root {
+    --z-index-hover-cell: 1;
+    --z-index-focus-cell: 2;
+}
+
+/* Table Container */
+.table-component {
+    width: 100%;
+    margin: var(--spacing-lg) 0;
+    overflow-x: auto;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow var(--transition-base);
+}
+
+.table-component:hover {
+    box-shadow: var(--shadow-md);
+}
+
+/* Table Element */
+.table-component table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--color-bg-primary);
+    color: var(--color-text-primary);
+}
+
+/* Table Headers - Clean, elegant design without gradients */
+.table-component th {
+    background: var(--color-primary);
+    color: var(--color-text-white);
+    font-weight: 600;
+    text-align: center;
+    padding: var(--spacing-md);
+    border: 1px solid rgba(var(--color-primary-rgb), 0.2);
+    font-size: 14px;
+    line-height: 1.4;
+    position: relative;
+    transition: background-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+.table-component th:hover {
+    background: var(--color-primary-dark);
+}
+
+/* Dark mode headers - consistent color family with adjusted brightness */
+.dark-mode .table-component th {
+    background: var(--color-primary-dark);
+    color: var(--color-text-white);
+    border-color: rgba(var(--color-primary-rgb), 0.3);
+}
+
+.dark-mode .table-component th:hover {
+    background: var(--color-primary-darker);
+}
+
+/* Header Row (leftmost column) - Clean, solid color */
+.table-component th.header-row {
+    background: var(--color-gray-100);
+    color: var(--color-text-primary);
+    text-align: left;
+    font-weight: 600;
+    min-width: 150px;
+    border-right: 2px solid var(--color-border-medium);
+}
+
+.table-component th.header-row:hover {
+    background: var(--color-gray-200);
+}
+
+/* Dark mode header row */
+.dark-mode .table-component th.header-row {
+    background: var(--color-gray-700);
+    color: var(--color-text-primary);
+    border-right-color: var(--color-gray-500);
+}
+
+.dark-mode .table-component th.header-row:hover {
+    background: var(--color-gray-600);
+}
+
+/* Table Rows - Ensure vertical alignment */
+.table-component tr {
+    transition: background-color var(--transition-base);
+}
+
+/* Table Cells - Enhanced with specific transitions for better performance */
+.table-component td {
+    padding: var(--spacing-sm);
+    border: 1px solid var(--color-border-light);
+    text-align: center;
+    vertical-align: middle;
+    background: var(--color-bg-primary);
+    transition: background-color var(--transition-base), box-shadow var(--transition-base), transform 0.1s ease;
+    position: relative;
+}
+
+/* Selectable Cells - Clean, elegant design */
+.table-component td.selectable {
+    cursor: pointer;
+    position: relative;
+    min-width: 60px;
+    height: 40px;
+}
+
+.table-component td.selectable:hover {
+    background: rgba(var(--color-primary-rgb), 0.06);
+    box-shadow: inset 0 0 0 1px rgba(var(--color-primary-rgb), 0.15);
+}
+
+.dark-mode .table-component td.selectable:hover {
+    background: rgba(var(--color-info-rgb), 0.1);
+    box-shadow: inset 0 0 0 1px rgba(var(--color-info-rgb), 0.25);
+}
+
+.table-component td.selectable.selected {
+    background: var(--color-primary-light);
+    position: relative;
+    box-shadow: inset 0 0 0 2px var(--color-primary);
+}
+
+.table-component td.selectable.selected::after {
+    content: '✓';
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--color-primary);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    animation: checkmarkPop 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+@keyframes checkmarkPop {
+    0% {
+        transform: translate(-50%, -50%) scale(0) rotate(-45deg);
+        opacity: 0;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.2) rotate(0deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+/* Dark mode selected state */
+.dark-mode .table-component td.selectable.selected {
+    background: var(--color-info-darkest);
+    box-shadow: inset 0 0 0 2px var(--color-info);
+}
+
+.dark-mode .table-component td.selectable.selected::after {
+    color: var(--color-info);
+}
+
+/* Input Cells - Clean, elegant design */
+.table-component td.input-cell {
+    padding: 0;
+    height: auto;
+}
+
+.table-component td.input-cell input,
+.table-component td.input-cell textarea {
+    width: 100%;
+    height: 100%;
+    min-height: 40px;
+    padding: var(--spacing-sm);
+    border: none;
+    background: transparent;
+    color: var(--color-text-primary);
+    font-family: inherit;
+    font-size: 14px;
+    resize: none;
+    line-height: 1.5;
+    transition: all var(--transition-base);
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+/* Auto-grow textarea */
+.table-component td.input-cell textarea {
+    overflow: hidden;
+    min-height: 40px;
+}
+
+.table-component td.input-cell input:hover,
+.table-component td.input-cell textarea:hover {
+    background: rgba(var(--color-primary-rgb), 0.03);
+}
+
+.dark-mode .table-component td.input-cell input:hover,
+.dark-mode .table-component td.input-cell textarea:hover {
+    background: rgba(var(--color-info-rgb), 0.06);
+}
+
+.table-component td.input-cell input:focus,
+.table-component td.input-cell textarea:focus {
+    outline: none;
+    background: var(--color-bg-tertiary);
+    box-shadow: inset 0 0 0 2px var(--color-primary);
+    border-radius: var(--radius-sm);
+}
+
+/* Row Headers (first column) - Clean, solid color */
+.table-component td.row-header {
+    background: var(--color-bg-secondary);
+    font-weight: 500;
+    text-align: left;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-right: 2px solid var(--color-border-medium);
+    transition: background-color var(--transition-base);
+}
+
+.table-component td.row-header:hover {
+    background: var(--color-bg-tertiary);
+}
+
+/* Hover Effect - Enhanced Row and Column Highlighting */
+.table-component.hoverable tbody tr {
+    transition: background-color var(--transition-base);
+}
+
+/* Highlight entire row on hover - subtle enhancement */
+.table-component.hoverable tbody tr:hover td {
+    background: rgba(var(--color-primary-rgb), 0.05);
+    position: relative;
+}
+
+.dark-mode .table-component.hoverable tbody tr:hover td {
+    background: rgba(var(--color-info-rgb), 0.08);
+}
+
+/* Keep row header distinct on hover - maintain visual hierarchy */
+.table-component.hoverable tbody tr:hover td.row-header {
+    background: var(--color-bg-tertiary);
+}
+
+.dark-mode .table-component.hoverable tbody tr:hover td.row-header {
+    background: var(--color-bg-tertiary);
+}
+
+/* Preserve selected cell appearance on row hover - enhanced */
+.table-component.hoverable tbody tr:hover td.selectable.selected {
+    background: var(--color-primary-light);
+    box-shadow: inset 0 0 0 2px var(--color-primary);
+    filter: brightness(0.95);
+}
+
+.dark-mode .table-component.hoverable tbody tr:hover td.selectable.selected {
+    background: var(--color-info-dark);
+    box-shadow: inset 0 0 0 2px var(--color-info);
+    filter: brightness(1.1);
+}
+
+/* Column highlighting on cell hover - uses data attribute set by JS */
+.table-component.hoverable td.selectable:hover,
+.table-component.hoverable td.input-cell:hover {
+    position: relative;
+    z-index: var(--z-index-hover-cell, 1);
+}
+
+/* Column highlight effect - applied via JS to all cells in column - subtle enhancement */
+.table-component.hoverable td[data-column-hover="true"] {
+    background: rgba(var(--color-primary-rgb), 0.06);
+}
+
+.dark-mode .table-component.hoverable td[data-column-hover="true"] {
+    background: rgba(var(--color-primary-rgb), 0.09);
+}
+
+/* Don't apply column hover to row headers */
+.table-component.hoverable td.row-header[data-column-hover="true"] {
+    background: var(--color-bg-tertiary);
+}
+
+/* Don't override selected cells in column hover */
+.table-component.hoverable td.selectable.selected[data-column-hover="true"] {
+    background: var(--color-primary-light);
+}
+
+/* When both row and column are hovered (intersection cell) - slightly stronger highlight */
+.table-component.hoverable tbody tr:hover td[data-column-hover="true"]:not(.row-header):not(.selectable.selected) {
+    background: rgba(var(--color-primary-rgb), 0.10);
+}
+
+.dark-mode .table-component.hoverable tbody tr:hover td[data-column-hover="true"]:not(.row-header):not(.selectable.selected) {
+    background: rgba(var(--color-info-rgb), 0.14);
+}
+
+/* Compact Size */
+.table-component.compact th,
+.table-component.compact td {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 13px;
+}
+
+/* Bordered Style - Enhanced borders */
+.table-component.bordered th,
+.table-component.bordered td {
+    border: 2px solid var(--color-border-medium);
+}
+
+.table-component.bordered th {
+    border-color: rgba(var(--color-primary-rgb), 0.5);
+}
+
+.dark-mode .table-component.bordered th {
+    border-color: rgba(var(--color-info-rgb), 0.5);
+}
+
+/* First and Last Row/Column - Consistent borders for even appearance */
+/* Removed variable border widths for cleaner, more consistent look */
+
+/* Corner Rounding for Visual Polish */
+.table-component table {
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.table-component thead tr:first-child th:first-child {
+    border-top-left-radius: var(--radius-md);
+}
+
+.table-component thead tr:first-child th:last-child {
+    border-top-right-radius: var(--radius-md);
+}
+
+.table-component tbody tr:last-child td:first-child {
+    border-bottom-left-radius: var(--radius-md);
+}
+
+.table-component tbody tr:last-child td:last-child {
+    border-bottom-right-radius: var(--radius-md);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .table-component {
+        font-size: 12px;
+    }
+
+    .table-component th,
+    .table-component td {
+        padding: var(--spacing-xs);
+    }
+
+    .table-component th.header-row {
+        min-width: 100px;
+    }
+
+    .table-component td.selectable {
+        min-width: 40px;
+    }
+
+    /* Disable ALL hover effects on mobile for better performance */
+    .table-component.hoverable tbody tr:hover td {
+        background: var(--color-bg-primary) !important;
+    }
+
+    .table-component.hoverable tbody tr:hover td.row-header {
+        background: var(--color-bg-secondary) !important;
+    }
+
+    .table-component.hoverable tbody tr:hover td.selectable.selected {
+        background: var(--color-primary-light) !important;
+    }
+
+    .table-component td.selectable:hover {
+        background: var(--color-bg-primary) !important;
+        box-shadow: none !important;
+        transform: none;
+    }
+
+    .table-component td[data-column-hover="true"] {
+        background: var(--color-bg-primary) !important;
+    }
+
+    .table-component th:hover {
+        background: var(--color-primary) !important;
+    }
+
+    .dark-mode .table-component th:hover {
+        background: var(--color-primary-dark) !important;
+    }
+}
+
+/* Loading State - Enhanced with pulse animation */
+.table-component.loading {
+    opacity: 0.6;
+    pointer-events: none;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 0.4;
+    }
+}
+
+/* Disabled State */
+.table-component.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    filter: grayscale(50%);
+}
+
+/* Error State - Enhanced with gradient border */
+.table-component.error {
+    border: 2px solid var(--color-error);
+    box-shadow: 0 0 0 4px rgba(var(--color-error-rgb), 0.1);
+    animation: errorShake 0.5s ease-in-out;
+}
+
+@keyframes errorShake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-5px);
+    }
+    75% {
+        transform: translateX(5px);
+    }
+}
+
+/* Success State - Enhanced with gradient border */
+.table-component.success {
+    border: 2px solid var(--color-success);
+    box-shadow: 0 0 0 4px rgba(var(--color-success-rgb), 0.1);
+    animation: successPulse 0.5s ease-in-out;
+}
+
+@keyframes successPulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.01);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Table Caption/Title - Enhanced */
+.table-component-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-md);
+    padding: var(--spacing-sm) 0;
+    position: relative;
+    padding-left: var(--spacing-sm);
+}
+
+.table-component-title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 70%;
+    background: linear-gradient(180deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+    border-radius: 2px;
+}
+
+/* Table Description */
+.table-component-description {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-md);
+    line-height: 1.6;
+}
+
+/* Accessibility - Focus Styles - Enhanced */
+.table-component td.selectable:focus {
+    outline: none;
+    box-shadow: inset 0 0 0 2px var(--color-primary), 0 0 0 3px rgba(var(--color-primary-rgb), 0.2);
+    z-index: var(--z-index-focus-cell, 2);
+}
+
+.dark-mode .table-component td.selectable:focus {
+    box-shadow: inset 0 0 0 2px var(--color-primary), 0 0 0 3px rgba(var(--color-primary-rgb), 0.3);
+}
+
+.table-component td.input-cell input:focus,
+.table-component td.input-cell textarea:focus {
+    box-shadow: inset 0 0 0 2px var(--color-primary), 0 0 0 3px rgba(var(--color-primary-rgb), 0.1);
+}
+
+/* Active state for selectable cells - clean feedback */
+.table-component td.selectable:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+}
+
+/* Print Styles - Optimized for printing */
+@media print {
+    .table-component {
+        box-shadow: none;
+        border: 1px solid #000;
+        page-break-inside: avoid;
+    }
+
+    .table-component th,
+    .table-component td {
+        border: 1px solid #000;
+        background: white !important;
+        color: black !important;
+    }
+
+    .table-component th {
+        background: #e0e0e0 !important;
+        color: black !important;
+    }
+
+    .table-component td.selectable.selected::after {
+        color: black !important;
+    }
+
+    .table-component td.selectable.selected {
+        background: #f0f0f0 !important;
+        border: 2px solid #000 !important;
+    }
+
+    /* Print input values */
+    .table-component td.input-cell input,
+    .table-component td.input-cell textarea {
+        border: none;
+        background: transparent;
+        color: black;
+    }
+
+    /* Avoid page breaks inside rows */
+    .table-component tr {
+        page-break-inside: avoid;
+    }
+
+    /* Hide hover effects in print */
+    .table-component.hoverable tbody tr:hover td {
+        background: white !important;
+    }
+}
+

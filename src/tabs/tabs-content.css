@@ -22,6 +22,29 @@
     animation: contentFadeIn var(--transition-cubic) forwards;
 }
 
+/* Jobs content uses full width for SubNav layout */
+.jobs-content {
+    max-width: 100%;
+}
+
+/* Jobs header styling */
+.jobs-header {
+    margin-bottom: var(--spacing-2xl);
+    text-align: center;
+}
+
+.jobs-header h2 {
+    color: var(--color-text-primary);
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+}
+
+.jobs-header p {
+    color: var(--color-text-secondary);
+    font-size: 16px;
+}
+
 @keyframes contentFadeIn {
     from {
         opacity: 0;

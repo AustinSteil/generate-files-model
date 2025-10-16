@@ -1,19 +1,24 @@
 /**
- * Secure Cookie Storage for User Form Data
- * 
- * Provides client-side encryption for storing sensitive form data in cookies.
+ * Secure Storage for User Form Data
+ *
+ * Provides client-side encryption for storing sensitive form data.
  * Uses Web Crypto API for AES-GCM encryption with a user-derived key.
- * 
+ *
+ * Storage mechanism: localStorage (no size limits like cookies)
+ * Security: AES-GCM 256-bit encryption with PBKDF2 key derivation
+ *
  * @author Austin Steil
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 class SecureStorage {
     constructor() {
+        this.storageName = 'userFormData';
+        this.storageExpireDays = 30; // Data expires after 30 days
+
+        // Legacy cookie names for backward compatibility
         this.cookieName = 'userFormData';
-        this.keyName = 'userStorageKey';
-        this.saltName = 'userStorageSalt';
-        this.cookieExpireDays = 30; // Cookies expire after 30 days
+        this.cookieExpireDays = 30;
     }
 
     /**
@@ -154,7 +159,8 @@ class SecureStorage {
     }
 
     /**
-     * Save form data securely
+     * Save form data securely to localStorage
+     * Uses the same AES-GCM encryption as before, but stores in localStorage instead of cookies
      * @param {Object} formData - Form data to save
      * @param {string} userPhrase - User phrase for encryption
      * @returns {Promise<boolean>} Success status
@@ -162,66 +168,128 @@ class SecureStorage {
     async saveFormData(formData, userPhrase) {
         try {
             const encryptedData = await this.encryptData(formData, userPhrase);
-            this.setCookie(this.cookieName, encryptedData, this.cookieExpireDays);
 
-            // Store a flag indicating data is saved (for UI purposes)
-            this.setCookie('hasStoredData', 'true', this.cookieExpireDays);
+            // Check data size
+            const dataSize = encryptedData.length;
+            const dataSizeKB = (dataSize / 1024).toFixed(2);
+            const dataSizeMB = (dataSize / (1024 * 1024)).toFixed(2);
+            console.log(`=== STORAGE SIZE CHECK ===`);
+            console.log(`Encrypted data size: ${dataSize} bytes (${dataSizeKB} KB / ${dataSizeMB} MB)`);
+            console.log(`localStorage limit: ~5-10 MB (varies by browser)`);
+
+            // Store in localStorage (much larger limit than cookies)
+            localStorage.setItem(this.storageName, encryptedData);
+
+            // Store metadata
+            localStorage.setItem('hasStoredData', 'true');
 
             // Store the expiration timestamp for dynamic calculation
             const expirationDate = new Date();
-            expirationDate.setTime(expirationDate.getTime() + (this.cookieExpireDays * 24 * 60 * 60 * 1000));
-            this.setCookie('dataExpiration', expirationDate.getTime().toString(), this.cookieExpireDays);
+            expirationDate.setTime(expirationDate.getTime() + (this.storageExpireDays * 24 * 60 * 60 * 1000));
+            localStorage.setItem('dataExpiration', expirationDate.getTime().toString());
+
+            console.log('Data saved successfully to localStorage');
+
+            // Clean up any old cookie data
+            this.deleteCookie(this.cookieName);
+            this.deleteCookie('hasStoredData');
+            this.deleteCookie('dataExpiration');
 
             return true;
         } catch (error) {
             console.error('Failed to save form data:', error);
+
+            // Check if it's a quota exceeded error
+            if (error.name === 'QuotaExceededError') {
+                console.error('localStorage quota exceeded! Data is too large.');
+            }
+
             return false;
         }
     }
 
     /**
-     * Load form data securely
+     * Load form data securely from localStorage (with fallback to cookies for backward compatibility)
      * @param {string} userPhrase - User phrase for decryption
      * @returns {Promise<Object|null>} Decrypted form data or null
      */
     async loadFormData(userPhrase) {
         try {
-            const encryptedData = this.getCookie(this.cookieName);
+            // Try localStorage first
+            let encryptedData = localStorage.getItem(this.storageName);
+            let source = 'localStorage';
+
+            // Fallback to cookies for backward compatibility
             if (!encryptedData) {
+                encryptedData = this.getCookie(this.cookieName);
+                source = 'cookie (legacy)';
+            }
+
+            console.log(`=== STORAGE LOAD CHECK ===`);
+            if (!encryptedData) {
+                console.error('No encrypted data found in localStorage or cookies');
                 return null;
             }
 
+            const dataSize = encryptedData.length;
+            const dataSizeKB = (dataSize / 1024).toFixed(2);
+            console.log(`Retrieved data from ${source}`);
+            console.log(`Data size: ${dataSize} bytes (${dataSizeKB} KB)`);
+
             const formData = await this.decryptData(encryptedData, userPhrase);
+            console.log('Decryption successful!');
+
+            // If we loaded from cookie, migrate to localStorage
+            if (source === 'cookie (legacy)') {
+                console.log('Migrating data from cookie to localStorage...');
+                await this.saveFormData(formData, userPhrase);
+            }
+
             return formData;
         } catch (error) {
             console.error('Failed to load form data:', error);
+            console.error('This could be due to: wrong passphrase, corrupted data, or truncated cookie data');
             throw error;
         }
     }
 
     /**
-     * Check if stored data exists
+     * Check if stored data exists (checks both localStorage and cookies)
      * @returns {boolean} True if stored data exists
      */
     hasStoredData() {
+        // Check localStorage first
+        if (localStorage.getItem('hasStoredData') === 'true') {
+            return true;
+        }
+
+        // Fallback to cookie for backward compatibility
         return this.getCookie('hasStoredData') === 'true';
     }
 
     /**
-     * Clear all stored data
+     * Clear all stored data (both localStorage and cookies)
      */
     clearStoredData() {
+        // Clear localStorage
+        localStorage.removeItem(this.storageName);
+        localStorage.removeItem('hasStoredData');
+        localStorage.removeItem('dataExpiration');
+
+        // Clear legacy cookies
         this.deleteCookie(this.cookieName);
         this.deleteCookie('hasStoredData');
         this.deleteCookie('dataExpiration');
+
+        console.log('All stored data cleared from localStorage and cookies');
     }
 
     /**
-     * Get the number of days until cookie expiration
+     * Get the number of days until storage expiration
      * @returns {number} Number of days until expiration
      */
     getExpirationDays() {
-        return this.cookieExpireDays;
+        return this.storageExpireDays;
     }
 
     /**
@@ -233,8 +301,13 @@ class SecureStorage {
             return null;
         }
 
-        // Get the expiration timestamp we stored when saving data
-        const expirationTimestamp = this.getCookie('dataExpiration');
+        // Get the expiration timestamp from localStorage first
+        let expirationTimestamp = localStorage.getItem('dataExpiration');
+
+        // Fallback to cookie for backward compatibility
+        if (!expirationTimestamp) {
+            expirationTimestamp = this.getCookie('dataExpiration');
+        }
 
         if (expirationTimestamp) {
             const expirationDate = new Date(parseInt(expirationTimestamp));
@@ -244,7 +317,7 @@ class SecureStorage {
             return Math.max(0, daysDiff);
         } else {
             // Fallback: assume it was set recently with default expiration
-            return this.cookieExpireDays;
+            return this.storageExpireDays;
         }
     }
 }

@@ -23,6 +23,8 @@
     <link rel="stylesheet" href="src/components/repeater/repeater.css">
     <link rel="stylesheet" href="src/components/work-week-calculator/work-week-calculator.css">
     <link rel="stylesheet" href="src/components/area-input/area-input.css">
+    <link rel="stylesheet" href="src/components/subnav/subnav.css">
+    <link rel="stylesheet" href="src/components/table/table.css">
     <link rel="stylesheet" href="src/dark-mode-toggle/dark-mode-toggle.css">
     <!-- Quill.js for rich text editing -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
@@ -74,7 +76,11 @@
             <footer class="tab-footer">
                 <p>&copy; <span id="currentYear">YEAR</span> Document Generator</p>
                 <p>Version 1.0.0</p>
-                <p><a href="https://austinsteil.github.io/generate-files-model/src/save-data/COOKIE-POLICY.pdf" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none; cursor: default;" onmouseover="this.style.cursor='pointer'" onmouseout="this.style.cursor='default'">Cookie Policy</a></p>
+                <p>
+                    <a href="https://austinsteil.github.io/generate-files-model/src/save-data/STORAGE-POLICY.pdf" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none; cursor: default;" onmouseover="this.style.cursor='pointer'" onmouseout="this.style.cursor='default'">Data Storage &amp; Privacy Policy</a>
+                    &nbsp;|&nbsp;
+                    <a href="https://austinsteil.github.io/generate-files-model/src/save-data/COOKIE-POLICY.pdf" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none; cursor: default;" onmouseover="this.style.cursor='pointer'" onmouseout="this.style.cursor='default'">Cookie Policy</a>
+                </p>
             </footer>
         </div>
     </div>
@@ -135,13 +141,24 @@
     <script src="src/components/toggle/toggle.js"></script>
     <script src="src/components/repeater/repeater.js"></script>
     <script src="src/components/work-week-calculator/work-week-calculator.js"></script>
+    <script src="src/components/subnav/subnav.js"></script>
+    <script src="src/components/table/table.js"></script>
     <script src="src/dark-mode-toggle/dark-mode-toggle.js"></script>
 
     <!-- Tabs Scripts -->
     <script src="src/tabs/tabs.js"></script>
     <script src="src/tabs/intro/intro.js"></script>
     <script src="src/tabs/demographics/demographics.js"></script>
+
+    <!-- Jobs Tab Demand Sections -->
+    <script src="src/tabs/jobs/demands/physical-demands.js"></script>
+    <script src="src/tabs/jobs/demands/mobility-demands.js"></script>
+    <script src="src/tabs/jobs/demands/cognitive-and-sensory-demands.js"></script>
+    <script src="src/tabs/jobs/demands/environmental-demands.js"></script>
+    <script src="src/tabs/jobs/demands/lifting-pushing-and-pulling.js"></script>
+    <script src="src/tabs/jobs/demands/classification-of-work.js"></script>
     <script src="src/tabs/jobs/jobs.js"></script>
+
     <script src="src/tabs/summary/summary.js"></script>
     <script src="src/tabs/preview/preview.js"></script>
     <script src="src/tabs/next-button-manager.js"></script>
