@@ -84,7 +84,7 @@ Date: {documentDate}
 The storage system will automatically:
 
 - ✅ Collect the new field when saving data
-- ✅ Store the new field in encrypted cookies
+- ✅ Store the new field in encrypted browser storage
 - ✅ Load the new field when restoring data
 - ✅ Include the new field in generated documents
 

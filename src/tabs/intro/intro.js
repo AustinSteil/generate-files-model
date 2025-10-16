@@ -168,43 +168,43 @@ class IntroTab {
             {
                 title: 'Classic Template',
                 content: 'Traditional professional document layout',
-                image: 'templates/images/template_1.png',
-                pdf: 'templates/pdf/template_1.pdf',
+                image: 'src/templates/images/template_1.png',
+                pdf: 'src/templates/pdf/template_1.pdf',
                 value: 'template_1'
             },
             {
                 title: 'Modern Template',
                 content: 'Clean contemporary design with bold headers',
-                image: 'templates/images/template_2.png',
-                pdf: 'templates/pdf/template_2.pdf',
+                image: 'src/templates/images/template_2.png',
+                pdf: 'src/templates/pdf/template_2.pdf',
                 value: 'template_2'
             },
             {
                 title: 'Minimal Template',
                 content: 'Simple and elegant minimalist approach',
-                image: 'templates/images/template_3.png',
-                pdf: 'templates/pdf/template_3.pdf',
+                image: 'src/templates/images/template_3.png',
+                pdf: 'src/templates/pdf/template_3.pdf',
                 value: 'template_3'
             },
             {
                 title: 'Corporate Template',
                 content: 'Professional business document format',
-                image: 'templates/images/template_4.png',
-                pdf: 'templates/pdf/template_4.pdf',
+                image: 'src/templates/images/template_4.png',
+                pdf: 'src/templates/pdf/template_4.pdf',
                 value: 'template_4'
             },
             {
                 title: 'Creative Template',
                 content: 'Artistic layout with creative elements',
-                image: 'templates/images/template_5.png',
-                pdf: 'templates/pdf/template_5.pdf',
+                image: 'src/templates/images/template_5.png',
+                pdf: 'src/templates/pdf/template_5.pdf',
                 value: 'template_5'
             },
             {
                 title: 'Academic Template',
                 content: 'Structured format for academic documents',
-                image: 'templates/images/template_6.png',
-                pdf: 'templates/pdf/template_6.pdf',
+                image: 'src/templates/images/template_6.png',
+                pdf: 'src/templates/pdf/template_6.pdf',
                 value: 'template_6'
             }
         ];

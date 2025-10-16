@@ -17,7 +17,7 @@ This color management system provides a centralized, consistent approach to colo
 Add the color system to your HTML file **before** any other CSS files:
 
 ```html
-<link rel="stylesheet" href="src/colors.css">
+<link rel="stylesheet" href="src/color-system/colors.css">
 <link rel="stylesheet" href="main.css">
 <!-- other CSS files -->
 ```

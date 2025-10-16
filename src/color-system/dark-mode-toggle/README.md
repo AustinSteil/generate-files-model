@@ -19,11 +19,11 @@ Include the required files in your HTML:
 <!-- CSS -->
 <link rel="stylesheet" href="src/color-system/colors.css">
 <link rel="stylesheet" href="src/components/toggle/toggle.css">
-<link rel="stylesheet" href="src/dark-mode-toggle/dark-mode-toggle.css">
+<link rel="stylesheet" href="src/color-system/dark-mode-toggle/dark-mode-toggle.css">
 
 <!-- JavaScript -->
 <script src="src/components/toggle/toggle.js"></script>
-<script src="src/dark-mode-toggle/dark-mode-toggle.js"></script>
+<script src="src/color-system/dark-mode-toggle/dark-mode-toggle.js"></script>
 ```
 
 ## How It Works

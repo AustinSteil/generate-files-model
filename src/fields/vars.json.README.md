@@ -14,7 +14,7 @@
 The application automatically uses `vars.json` to:
 
 - **Collect form data**: Only fields defined in `vars.json` are collected
-- **Save data**: Only fields in `vars.json` are saved to encrypted cookies
+- **Save data**: Only fields in `vars.json` are saved to encrypted browser storage
 - **Load data**: Only fields in `vars.json` are populated when loading saved data
 - **Generate documents**: Field values are mapped to template variables
 

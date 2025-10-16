@@ -5,9 +5,9 @@
  * This includes saving, loading, and clearing form data, as well as
  * managing user authentication and form population.
  *
- * IMPORTANT: This manager uses fields/vars.json as the single source of truth.
- * It automatically adapts to changes in fields/vars.json without code modifications.
- * When you add/remove fields in fields/vars.json, the storage system automatically
+ * IMPORTANT: This manager uses src/fields/vars.json as the single source of truth.
+ * It automatically adapts to changes in src/fields/vars.json without code modifications.
+ * When you add/remove fields in src/fields/vars.json, the storage system automatically
  * handles them - no updates needed to this file!
  *
  * @author Austin Steil
@@ -253,7 +253,7 @@ class StorageDataManager {
                     if (element) {
                         element.value = formData[fieldName];
                     } else {
-                        console.warn(`Field "${fieldName}" defined in fields/vars.json but not found in form`);
+                        console.warn(`Field "${fieldName}" defined in src/fields/vars.json but not found in form`);
                     }
                 }
             });

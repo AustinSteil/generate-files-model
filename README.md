@@ -22,7 +22,7 @@ The Save for Later feature uses industry-standard security practices to protect 
 
 - **🔐 Client-Side Encryption**: All data is encrypted using AES-256-GCM encryption before being stored
 - **🔑 Passphrase Protection**: Your data is protected by a user-defined passphrase that never leaves your device
-- **🍪 Encrypted Cookies**: Data is stored in encrypted browser cookies, not on external servers
+- **💾 Browser Storage**: Data is stored in encrypted browser localStorage (5-10 MB capacity), not on external servers
 - **⏰ Automatic Expiration**: Saved data automatically expires after a configurable time period (default: 30 days)
 - **🔒 Zero-Knowledge Architecture**: The application cannot access your data without your passphrase
 - **🚫 No Server Storage**: All encryption and storage happens locally in your browser
@@ -31,7 +31,7 @@ The Save for Later feature uses industry-standard security practices to protect 
 
 1. Enter your form data and click "Save Data for Later"
 2. Create a secure passphrase (never stored anywhere)
-3. Data is encrypted using AES-256-GCM and saved as a browser cookie
+3. Data is encrypted using AES-256-GCM and saved in browser localStorage
 4. To retrieve: Click "Load Saved Data" and enter your passphrase
 5. The data is decrypted client-side and restored to the form
 
@@ -110,7 +110,7 @@ The toggle button shows the current mode and allows instant switching between li
    - Fill out the form with some information
    - Choose "Save Data for Later" button in the top-right corner
    - Create a secure passphrase when prompted
-   - Your data is encrypted and saved locally as a secure browser cookie
+   - Your data is encrypted and saved locally in browser storage
 
 2. **Loading Saved Data:**
    - Click the storage button and select "Load Saved Data"
@@ -263,13 +263,13 @@ Vertical side navigation with content panel layout:
 
 ### Template Variables (vars.json)
 
-**`fields/vars.json` is the single source of truth** for all document variables in the application. This file controls:
+**`src/fields/vars.json` is the single source of truth** for all document variables in the application. This file controls:
 
 - Which form fields are collected
 - Which data gets saved/loaded with "Save Data for Later"
 - How form data maps to template variables
 
-Edit `fields/vars.json` to customize the template variable mappings:
+Edit `src/fields/vars.json` to customize the template variable mappings:
 
 ```json
 {
@@ -282,21 +282,21 @@ Edit `fields/vars.json` to customize the template variable mappings:
 
 **Adding new fields is easy:**
 
-1. Add the field to `fields/vars.json`
+1. Add the field to `src/fields/vars.json`
 2. Add the corresponding HTML form element to `index.html`
 3. Add the placeholder to your Word template
 
-The storage system automatically adapts to changes in `fields/vars.json` - no code changes needed!
+The storage system automatically adapts to changes in `src/fields/vars.json` - no code changes needed!
 
-For detailed documentation, see [`fields/vars.json.README.md`](fields/vars.json.README.md).
+For detailed documentation, see [`src/fields/vars.json.README.md`](src/fields/vars.json.README.md).
 
 ### Custom Templates
 
-The application supports multiple templates organized in the `templates/` folder:
+The application supports multiple templates organized in the `src/templates/` folder:
 
-- **Add new templates**: Place files in `templates/word/`, `templates/pdf/`, and `templates/images/`
+- **Add new templates**: Place files in `src/templates/word/`, `src/templates/pdf/`, and `src/templates/images/`
 - **Template naming**: Use consistent naming (e.g., `template_7.docx`, `template_7.pdf`, `template_7.png`)
-- **Variable consistency**: Ensure all templates use the same placeholder variables defined in `fields/vars.json`
+- **Variable consistency**: Ensure all templates use the same placeholder variables defined in `src/fields/vars.json`
 - **Update template cards**: Add new template configurations to `src/tabs/intro/intro.js`
 
 **Template Workflow**:
@@ -312,46 +312,24 @@ generate-files-model/
 ├── index.html              # Main application interface
 ├── main.js                 # Core application logic
 ├── main.css                # Main styling and responsive design
-├── fields/                 # Field configuration and documentation
-│   ├── vars.json           # Template variable configuration (single source of truth)
-│   ├── vars.json.README.md # Detailed vars.json documentation
-│   ├── QUICK-START-ADDING-FIELDS.md # Quick guide for adding fields
-│   └── STORAGE-SYSTEM-IMPROVEMENTS.md # Storage system architecture
-├── templates/              # Template files organized by type
-│   ├── images/             # PNG preview images for template cards
-│   │   ├── template_1.png          # Classic template preview
-│   │   ├── template_2.png          # Modern template preview
-│   │   ├── template_3.png          # Minimal template preview
-│   │   ├── template_4.png          # Corporate template preview
-│   │   ├── template_5.png          # Creative template preview
-│   │   └── template_6.png          # Academic template preview
-│   ├── pdf/                # PDF files for full-screen preview
-│   │   ├── template_1.pdf          # Classic template full preview
-│   │   ├── template_2.pdf          # Modern template full preview
-│   │   ├── template_3.pdf          # Minimal template full preview
-│   │   ├── template_4.pdf          # Corporate template full preview
-│   │   ├── template_5.pdf          # Creative template full preview
-│   │   └── template_6.pdf          # Academic template full preview
-│   └── word/               # DOCX templates for document generation
-│       ├── template_1.docx         # Classic template source
-│       ├── template_2.docx         # Modern template source
-│       ├── template_3.docx         # Minimal template source
-│       ├── template_4.docx         # Corporate template source
-│       ├── template_5.docx         # Creative template source
-│       └── template_6.docx         # Academic template source
 ├── package.json            # Project dependencies and scripts
 ├── LICENSE                 # MIT license
 ├── README.md               # This file
 ├── docxtemplater.js        # Generated: Document templating library
 ├── pizzip.js               # Generated: ZIP file handling library
 └── src/                    # Source code organization
-    ├── color-system/       # Centralized color management
-    │   ├── colors.css              # Color variables and dark mode
-    │   ├── COLOR-SYSTEM.md         # Color system documentation
-    │   ├── COLOR-QUICK-REFERENCE.md # Quick reference guide
-    │   ├── CONTRAST-AUDIT.md       # Accessibility audit
-    │   ├── color-system-demo.html  # Interactive demo
-    │   └── contrast-test.html      # Contrast testing tool
+    ├── color-system/       # Color management and dark mode
+    │   ├── colors.css                      # Color system variables
+    │   ├── COLOR-SYSTEM.md                 # Color system documentation
+    │   ├── COLOR-QUICK-REFERENCE.md        # Quick reference guide
+    │   ├── CONTRAST-AUDIT.md               # Accessibility audit
+    │   ├── color-system-demo.html          # Interactive demo
+    │   ├── color-system-demo.css           # Demo styling
+    │   ├── contrast-test.html              # Contrast testing tool
+    │   └── dark-mode-toggle/               # Dark mode feature
+    │       ├── dark-mode-toggle.js         # Dark mode logic
+    │       ├── dark-mode-toggle.css        # Dark mode toggle styling
+    │       └── README.md                   # Dark mode documentation
     ├── components/         # Reusable UI components
     │   ├── alert/          # Alert notification component
     │   │   ├── alert.js            # Alert functionality
@@ -366,7 +344,8 @@ generate-files-model/
     │   ├── tooltip/        # Tooltip component
     │   │   ├── tooltip.js          # Tooltip functionality
     │   │   ├── tooltip.css         # Tooltip styling
-    │   │   └── tooltip-example.html # Tooltip demo page
+    │   │   ├── tooltip-example.html # Tooltip demo page
+    │   │   └── README.md           # Tooltip documentation
     │   ├── dropdown/       # Dropdown component
     │   │   ├── dropdown.js         # Dropdown functionality
     │   │   └── dropdown.css        # Dropdown styling
@@ -406,35 +385,77 @@ generate-files-model/
     │   │   ├── table.css           # Table styling
     │   │   ├── demo.html           # Table demo page
     │   │   └── README.md           # Table documentation
+    │   ├── modal/          # Modal dialog component
+    │   │   ├── modal.js            # Modal functionality
+    │   │   ├── modal.css           # Modal styling
+    │   │   └── README.md           # Modal documentation
     │   └── subnav/         # SubNav component
     │       ├── subnav.js           # SubNav functionality
     │       ├── subnav.css          # SubNav styling
     │       └── README.md           # SubNav documentation
+    ├── fields/             # Field configuration and documentation
+    │   ├── vars.json           # Template variable configuration (single source of truth)
+    │   ├── vars.json.README.md # Detailed vars.json documentation
+    │   ├── QUICK-START-ADDING-FIELDS.md # Quick guide for adding fields
+    │   ├── README.md           # Fields documentation
+    │   └── STORAGE-SYSTEM-IMPROVEMENTS.md # Storage system architecture
+    ├── templates/          # Template files organized by type
+    │   ├── images/         # PNG preview images for template cards
+    │   │   ├── template_1.png          # Classic template preview
+    │   │   ├── template_2.png          # Modern template preview
+    │   │   ├── template_3.png          # Minimal template preview
+    │   │   ├── template_4.png          # Corporate template preview
+    │   │   ├── template_5.png          # Creative template preview
+    │   │   ├── template_6.png          # Academic template preview
+    │   │   └── archived/               # Archived template images
+    │   ├── pdf/            # PDF files for full-screen preview
+    │   │   ├── template_1.pdf          # Classic template full preview
+    │   │   ├── template_2.pdf          # Modern template full preview
+    │   │   ├── template_3.pdf          # Minimal template full preview
+    │   │   ├── template_4.pdf          # Corporate template full preview
+    │   │   ├── template_5.pdf          # Creative template full preview
+    │   │   └── template_6.pdf          # Academic template full preview
+    │   └── word/           # DOCX templates for document generation
+    │       ├── template_1.docx         # Classic template source
+    │       ├── template_2.docx         # Modern template source
+    │       ├── template_3.docx         # Minimal template source
+    │       ├── template_4.docx         # Corporate template source
+    │       ├── template_5.docx         # Creative template source
+    │       └── template_6.docx         # Academic template source
     ├── tabs/               # Tab-based application structure
     │   ├── tabs.js                 # Tab management and navigation
     │   ├── tabs.css                # Tab styling and layout
     │   ├── tabs-content.css        # Content area styling
+    │   ├── tabs-manager.js         # Coordinates all tabs
+    │   ├── next-button-manager.js  # Manages next button validation
+    │   ├── README.md               # Tabs documentation
     │   ├── intro/          # Intro tab (template selection)
     │   │   └── intro.js            # Template selection with Cards component
-    │   └── jobs/           # Jobs tab (job demands analysis)
-    │       ├── jobs.js             # Jobs tab with SubNav integration
-    │       └── demands/            # Modular demand section files
-    │           ├── physical-demands.js # Physical demands section
-    │           ├── mobility-demands.js # Mobility demands section
-    │           ├── cognitive-and-sensory-demands.js # Cognitive & sensory section
-    │           ├── environmental-demands.js # Environmental demands section
-    │           ├── lifting-pushing-and-pulling.js # Lifting/pushing/pulling section
-    │           └── classification-of-work.js # Classification of work section
-    ├── dark-mode-toggle/   # Dark mode feature (non-reusable)
-    │   ├── dark-mode-toggle.js     # Dark mode logic
-    │   ├── dark-mode-toggle.css    # Dark mode toggle styling
-    │   └── README.md               # Dark mode documentation
+    │   ├── demographics/   # Demographics information
+    │   │   └── demographics.js     # Demographics form
+    │   ├── jobs/           # Jobs tab (job demands analysis)
+    │   │   ├── jobs.js             # Jobs tab with SubNav integration
+    │   │   └── demands/            # Modular demand section files
+    │   │       ├── physical-demands.js # Physical demands section
+    │   │       ├── mobility-demands.js # Mobility demands section
+    │   │       ├── cognitive-and-sensory-demands.js # Cognitive & sensory section
+    │   │       ├── environmental-demands.js # Environmental demands section
+    │   │       ├── lifting-pushing-and-pulling.js # Lifting/pushing/pulling section
+    │   │       └── classification-of-work.js # Classification of work section
+    │   ├── summary/        # Summary and additional info
+    │   │   └── summary.js          # Summary form
+    │   └── preview/        # Preview all data
+    │       └── preview.js          # Preview display
     └── save-data/          # Storage and data management
         ├── secure-storage.js       # Encrypted storage foundation
         ├── phrase-modal.js         # Passphrase modal for security
         ├── storage-data-manager.js # Data management logic
         ├── storage-ui-manager.js   # Storage UI coordination
-        └── floating-storage-button.js # Storage button component
+        ├── floating-storage-button.js # Storage button component
+        ├── COOKIE-POLICY.md        # Cookie security policy
+        ├── STORAGE-POLICY.md       # Storage security policy
+        ├── COOKIE-POLICY.pdf       # Cookie policy PDF
+        └── STORAGE-POLICY.pdf      # Storage policy PDF
 ```
 
 ## Dependencies
@@ -463,8 +484,8 @@ generate-files-model/
 ### Code Organization
 
 - **Reusable components** → `src/components/` (alert, cards, tooltip, dropdown, toggle, button, text-input, address, area-input, work-week-calculator, repeater, table, subnav)
-- **Application-specific features** → `src/` (dark-mode-toggle, save-data, tabs)
-- **Shared utilities** → `src/color-system/`
+- **Application-specific features** → `src/` (save-data, tabs)
+- **Shared utilities** → `src/color-system/` (color system, dark mode toggle)
 
 ## Browser Support
 

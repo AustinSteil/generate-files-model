@@ -4,7 +4,7 @@
 
 ```html
 <!-- Add to your HTML -->
-<link rel="stylesheet" href="src/colors.css">
+<link rel="stylesheet" href="src/color-system/colors.css">
 ```
 
 ## 🎨 Most Common Colors

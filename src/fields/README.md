@@ -54,4 +54,4 @@ That's it! The storage system automatically handles the rest.
 
 ---
 
-**Note**: All paths in the application have been updated to reference `fields/vars.json` instead of the root-level `vars.json`.
+**Note**: All paths in the application have been updated to reference `src/fields/vars.json` instead of the root-level `vars.json`.

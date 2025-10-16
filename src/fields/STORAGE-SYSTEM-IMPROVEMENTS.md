@@ -134,7 +134,7 @@ populateForm(formData) {
 
 Created comprehensive documentation:
 
-- **`fields/vars.json.README.md`**: Complete guide to using `vars.json` as the single source of truth
+- **`src/fields/vars.json.README.md`**: Complete guide to using `vars.json` as the single source of truth
 - **Updated `README.md`**: Added section explaining the architectural decision
 - **Code comments**: Added inline documentation explaining the design
 

@@ -26,10 +26,10 @@ class DocumentGenerator {
 
         // varsConfig is the SINGLE SOURCE OF TRUTH for all document variables
         // It defines: which fields to collect, save, load, and map to templates
-        // See fields/vars.json.README.md for detailed documentation
+        // See src/fields/vars.json.README.md for detailed documentation
         this.varsConfig = {}; // Configuration mapping for template variables
 
-        this.templatePath = 'templates/word/template_1.docx'; // Default template file path
+        this.templatePath = 'src/templates/word/template_1.docx'; // Default template file path
         this.secureStorage = new SecureStorage(); // Secure storage instance
         this.storageUIManager = null; // Storage UI manager instance
         this.storageDataManager = null; // Storage data manager instance
@@ -60,22 +60,22 @@ class DocumentGenerator {
     }
 
     /**
-     * Load variable configuration from fields/vars.json file
+     * Load variable configuration from src/fields/vars.json file
      * Falls back to default configuration if file cannot be loaded
      */
     async loadVarsConfig() {
         try {
-            const response = await fetch('fields/vars.json');
+            const response = await fetch('src/fields/vars.json');
             this.varsConfig = await response.json();
             console.log('Loaded vars config:', this.varsConfig);
         } catch (error) {
-            console.warn('Could not load fields/vars.json, using default configuration');
+            console.warn('Could not load src/fields/vars.json, using default configuration');
             this.varsConfig = this.getDefaultVarsConfig();
         }
     }
 
     /**
-     * Get default variable configuration if fields/vars.json cannot be loaded
+     * Get default variable configuration if src/fields/vars.json cannot be loaded
      * @returns {Object} Default variable mapping configuration
      */
     getDefaultVarsConfig() {
@@ -306,11 +306,11 @@ class DocumentGenerator {
         const selectedTemplate = this.formData.selectedTemplate || this.formData.template;
 
         if (selectedTemplate) {
-            this.templatePath = `templates/word/${selectedTemplate}.docx`;
+            this.templatePath = `src/templates/word/${selectedTemplate}.docx`;
             console.log('Using template:', this.templatePath);
         } else {
             console.warn('No template selected, using default template');
-            this.templatePath = 'templates/word/template_1.docx';
+            this.templatePath = 'src/templates/word/template_1.docx';
         }
     }
 
