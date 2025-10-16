@@ -64,6 +64,22 @@ class StorageUIManager {
                 this.secureStorage.hasStoredData();
 
             if (hasStoredData) {
+                // Check if data has expired before showing the modal
+                const remainingDays = this.documentGenerator.storageDataManager ?
+                    this.documentGenerator.storageDataManager.getRemainingDays() :
+                    this.secureStorage.getRemainingDays();
+
+                // If data is expired (0 or negative days), automatically clear it
+                if (remainingDays !== null && remainingDays <= 0) {
+                    console.log('Saved data has expired. Automatically clearing...');
+                    this.secureStorage.clearStoredData();
+                    if (this.floatingButton) {
+                        this.floatingButton.resetUnlockedState();
+                    }
+                    return; // Don't show the modal, data is cleared
+                }
+
+                // Data is still valid, show the modal
                 const shouldLoad = await this.showSavedDataAlert();
                 if (shouldLoad) {
                     // Automatically trigger load data flow
