@@ -157,9 +157,13 @@
         <div class="info-box">
             <h3>About This Component</h3>
             <p>
-                This table component is designed for physical demands analysis forms. It supports configurable 
-                rows and columns, selectable cells (like checkboxes), and text input cells. The component 
+                This table component is designed for physical demands analysis forms. It supports configurable
+                rows and columns, selectable cells (like checkboxes), and text input cells. The component
                 fully integrates with the project's color system and supports light/dark mode.
+            </p>
+            <p style="margin-top: 10px; font-size: 14px;">
+                <strong>New:</strong> Built-in validation with visual feedback using error/success colors from the color system.
+                Hover over error cells to see validation messages.
             </p>
         </div>
 
@@ -217,6 +221,47 @@
             <div id="data-output-3" class="data-output hidden">
                 <h3>Current Data:</h3>
                 <pre id="data-display-3"></pre>
+            </div>
+        </div>
+
+        <!-- Demo 4: Validation Example (Selectable) -->
+        <div class="demo-section">
+            <h2>Demo 4: Validation (Selectable Cells)</h2>
+            <p class="demo-description">
+                Click "Validate" to test validation. Cells with errors show red background with error messages on hover.
+                All cells show green when validation passes.
+            </p>
+            <div id="table-demo-4"></div>
+
+            <div class="controls">
+                <button onclick="validateTable4()">Validate</button>
+                <button onclick="clearValidationTable4()">Clear Validation</button>
+                <button onclick="clearTable4()">Clear All</button>
+            </div>
+
+            <div id="data-output-4" class="data-output hidden">
+                <h3>Validation Errors:</h3>
+                <pre id="data-display-4"></pre>
+            </div>
+        </div>
+
+        <!-- Demo 5: Validation Example (Input Cells) -->
+        <div class="demo-section">
+            <h2>Demo 5: Validation (Input Cells)</h2>
+            <p class="demo-description">
+                Fill in the cells and click "Validate". Empty cells show red errors. All cells show green when filled.
+            </p>
+            <div id="table-demo-5"></div>
+
+            <div class="controls">
+                <button onclick="validateTable5()">Validate</button>
+                <button onclick="clearValidationTable5()">Clear Validation</button>
+                <button onclick="clearTable5()">Clear All</button>
+            </div>
+
+            <div id="data-output-5" class="data-output hidden">
+                <h3>Validation Errors:</h3>
+                <pre id="data-display-5"></pre>
             </div>
         </div>
     </div>
@@ -334,6 +379,93 @@
         function clearTable3() {
             table3.clear();
             document.getElementById('data-output-3').classList.add('hidden');
+        }
+
+        // Demo 4: Validation Table (Selectable, with built-in validation)
+        const table4 = new Table({
+            containerId: 'table-demo-4',
+            title: 'Validation Example - Selectable',
+            description: 'Each row requires at least one selection',
+            headerColumns: ['Never', 'Rare', 'Occasional', 'Frequent', 'Constant'],
+            headerRows: [
+                'Activity A',
+                'Activity B',
+                'Activity C'
+            ],
+            cellType: 'selectable',
+            selectionMode: 'single',
+            striped: false,
+            hoverable: true,
+            showValidationErrors: true,
+            onChange: (data) => {
+                console.log('Table 4 data changed:', data);
+            }
+        });
+
+        function validateTable4() {
+            const isValid = table4.validate();
+            const errors = table4.getValidationErrors();
+
+            if (Object.keys(errors).length > 0) {
+                document.getElementById('data-display-4').textContent = JSON.stringify(errors, null, 2);
+            } else {
+                document.getElementById('data-display-4').textContent = 'No validation errors - all rows have selections!';
+            }
+            document.getElementById('data-output-4').classList.remove('hidden');
+        }
+
+        function clearValidationTable4() {
+            table4.clearValidationErrors();
+            document.getElementById('data-output-4').classList.add('hidden');
+        }
+
+        function clearTable4() {
+            table4.clear();
+            table4.clearValidationErrors();
+            document.getElementById('data-output-4').classList.add('hidden');
+        }
+
+        // Demo 5: Validation Table (Input, with built-in validation)
+        const table5 = new Table({
+            containerId: 'table-demo-5',
+            title: 'Validation Example - Input Cells',
+            description: 'All cells must be filled',
+            headerColumns: ['Value 1', 'Value 2', 'Value 3'],
+            headerRows: [
+                'Row A',
+                'Row B'
+            ],
+            cellType: 'input',
+            inputType: 'text',
+            striped: false,
+            hoverable: true,
+            showValidationErrors: true,
+            onChange: (data) => {
+                console.log('Table 5 data changed:', data);
+            }
+        });
+
+        function validateTable5() {
+            const isValid = table5.validate();
+            const errors = table5.getValidationErrors();
+
+            if (Object.keys(errors).length > 0) {
+                document.getElementById('data-display-5').textContent = JSON.stringify(errors, null, 2);
+            } else {
+                document.getElementById('data-display-5').textContent = 'No validation errors - all cells are filled!';
+            }
+            document.getElementById('data-output-5').classList.remove('hidden');
+        }
+
+        function clearValidationTable5() {
+            table5.clearValidationErrors();
+            document.getElementById('data-output-5').classList.add('hidden');
+        }
+
+        function clearTable5() {
+            table5.clear();
+            table5.clearValidationErrors();
+            document.getElementById('data-output-5').classList.add('hidden');
         }
     </script>
 </body>

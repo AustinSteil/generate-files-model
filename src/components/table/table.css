@@ -521,6 +521,16 @@
     transition: transform 0.1s ease;
 }
 
+/* ============================================
+   VALIDATION STYLES
+   Minimal, non-intrusive validation feedback
+   ============================================ */
+
+/* Validation Error State - Light red background for entire row */
+.table-component tbody tr.validation-error td {
+    background: rgba(var(--color-error-rgb), 0.15) !important;
+}
+
 /* Print Styles - Optimized for printing */
 @media print {
     .table-component {

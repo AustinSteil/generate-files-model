@@ -88,29 +88,35 @@ class NextButtonManager {
         button.setText('Validating...');
 
         try {
+            // Special handling for jobs tab - navigate through subnav sections
+            if (currentTabName === 'jobs') {
+                this.handleJobsTabNavigation(button);
+                return;
+            }
+
             // Validate current tab
             const isValid = this.validateCurrentTab(currentTabName);
-            
+
             if (isValid) {
                 // Show success feedback
                 button.setText('Success!');
                 button.setVariant('success');
-                
+
                 // Navigate to next tab after brief delay
                 setTimeout(() => {
                     this.navigateToNextTab(currentTabName);
-                    
+
                     // Reset button state
                     button.setText('Next');
                     button.setVariant('primary');
                     button.setLoading(false);
                 }, 800);
-                
+
             } else {
                 // Show error state
                 button.setText('Please fix errors');
                 button.setVariant('error');
-                
+
                 // Reset button after delay
                 setTimeout(() => {
                     button.setText('Next');
@@ -118,15 +124,115 @@ class NextButtonManager {
                     button.setLoading(false);
                 }, 2000);
             }
-            
+
         } catch (error) {
             console.error('Error during validation:', error);
             showError('An error occurred during validation. Please try again.');
-            
+
             // Reset button state
             button.setText('Next');
             button.setVariant('primary');
             button.setLoading(false);
+        }
+    }
+
+    /**
+     * Handle Next button navigation for jobs tab with subnav cycling
+     * @param {Button} button - Button instance that was clicked
+     */
+    handleJobsTabNavigation(button) {
+        const jobsTab = this.tabsManager?.jobsTab;
+        if (!jobsTab || !jobsTab.subNav) {
+            console.error('Jobs tab or SubNav not available');
+            button.setText('Next');
+            button.setVariant('primary');
+            button.setLoading(false);
+            return;
+        }
+
+        // Get the subnav sections and current active section
+        const sections = jobsTab.subNav.sections;
+        const currentSectionId = jobsTab.subNav.getActiveSection();
+        const currentSectionIndex = sections.findIndex(s => s.id === currentSectionId);
+
+        // Validate current section
+        const isValid = this.validateJobsSection(currentSectionId);
+
+        if (isValid) {
+            // Show success feedback
+            button.setText('Success!');
+            button.setVariant('success');
+
+            // Navigate after brief delay
+            setTimeout(() => {
+                // Check if we're on the last section
+                if (currentSectionIndex === sections.length - 1) {
+                    // Move to summary tab
+                    this.navigateToNextTab('jobs');
+                } else {
+                    // Move to next subnav section
+                    const nextSection = sections[currentSectionIndex + 1];
+                    jobsTab.subNav.switchSection(nextSection.id);
+                }
+
+                // Reset button state
+                button.setText('Next');
+                button.setVariant('primary');
+                button.setLoading(false);
+            }, 800);
+
+        } else {
+            // Show error state
+            button.setText('Please fix errors');
+            button.setVariant('error');
+
+            // Reset button after delay
+            setTimeout(() => {
+                button.setText('Next');
+                button.setVariant('primary');
+                button.setLoading(false);
+            }, 2000);
+        }
+    }
+
+    /**
+     * Validate a specific jobs section
+     * @param {string} sectionId - ID of the section to validate
+     * @returns {boolean} True if validation passes
+     */
+    validateJobsSection(sectionId) {
+        const jobsTab = this.tabsManager?.jobsTab;
+        if (!jobsTab) return false;
+
+        try {
+            // Map section IDs to their corresponding demand objects
+            const sectionValidators = {
+                'physical-demands': () => jobsTab.physicalDemands.validate(),
+                'mobility-demands': () => jobsTab.mobilityDemands.validate(),
+                'cognitive-sensory': () => jobsTab.cognitiveSensoryDemands.validate(),
+                'environmental': () => jobsTab.environmentalDemands.validate(),
+                'lifting-pushing-pulling': () => jobsTab.liftingPushingPulling.validate(),
+                'classification': () => jobsTab.classificationOfWork.validate()
+            };
+
+            const validator = sectionValidators[sectionId];
+            if (!validator) {
+                console.warn(`No validator found for section: ${sectionId}`);
+                return true; // Allow navigation if no validator
+            }
+
+            const isValid = validator();
+
+            if (!isValid) {
+                showError('Please complete all required fields in this section before continuing.', { duration: 6 });
+            }
+
+            return isValid;
+
+        } catch (error) {
+            console.error(`Validation error for section ${sectionId}:`, error);
+            showError('Validation failed. Please check your inputs and try again.');
+            return false;
         }
     }
 
@@ -137,7 +243,7 @@ class NextButtonManager {
      */
     validateCurrentTab(tabName) {
         const validator = this.tabValidators[tabName];
-        
+
         if (!validator) {
             console.warn(`No validator found for tab: ${tabName}`);
             return true; // Allow navigation if no validator
@@ -145,15 +251,15 @@ class NextButtonManager {
 
         try {
             const isValid = validator();
-            
+
             if (!isValid) {
                 // Show error message
                 const errorMessage = this.errorMessages[tabName] || 'Please complete all required fields.';
                 showError(errorMessage, { duration: 6 });
             }
-            
+
             return isValid;
-            
+
         } catch (error) {
             console.error(`Validation error for ${tabName} tab:`, error);
             showError('Validation failed. Please check your inputs and try again.');

@@ -4,14 +4,15 @@ A flexible, reusable table component designed for physical demands analysis and 
 
 ## Features
 
-✅ **Configurable Structure** - Define custom rows and columns  
-✅ **Header Support** - Top header row and left header column  
-✅ **Selectable Cells** - Click to select (single or multiple per row)  
-✅ **Input Cells** - Text input or textarea for data entry  
-✅ **Dark Mode** - Full light/dark mode support  
-✅ **Responsive** - Mobile-friendly design  
-✅ **Accessible** - ARIA labels and keyboard navigation  
-✅ **Styling Options** - Striped, hoverable, bordered, compact variants  
+✅ **Configurable Structure** - Define custom rows and columns
+✅ **Header Support** - Top header row and left header column
+✅ **Selectable Cells** - Click to select (single or multiple per row)
+✅ **Input Cells** - Text input or textarea for data entry
+✅ **Validation** - Built-in and custom validation with visual feedback
+✅ **Dark Mode** - Full light/dark mode support
+✅ **Responsive** - Mobile-friendly design
+✅ **Accessible** - ARIA labels and keyboard navigation
+✅ **Styling Options** - Striped, hoverable, bordered, compact variants
 
 ## Installation
 
@@ -203,6 +204,99 @@ const physicalDemands = new Table({
 });
 ```
 
+## Validation
+
+The table component includes built-in validation with visual feedback using the project's color system.
+
+### Built-in Validation
+
+**For Selectable Cells:**
+
+- Ensures at least one selection per row
+- Highlights rows with missing selections in red (error color)
+
+**For Input Cells:**
+
+- Ensures all cells are filled (no empty values)
+- Highlights empty cells in red (error color)
+
+### Custom Validation
+
+Pass a custom validation function to define your own rules:
+
+```javascript
+const table = new Table({
+    containerId: 'my-table',
+    title: 'Data Entry',
+    headerColumns: ['Value 1', 'Value 2', 'Value 3'],
+    headerRows: ['Row A', 'Row B', 'Row C'],
+    cellType: 'input',
+
+    // Custom validation function
+    validation: (data) => {
+        const errors = {};
+
+        // Example: Validate that Row A, Value 1 is a number
+        const value = data[0][0];
+        if (isNaN(value) || value === '') {
+            errors['cell-0-0'] = 'Must be a valid number';
+        }
+
+        return errors; // Return empty object if valid
+    },
+
+    showValidationErrors: true
+});
+```
+
+### Validation Methods
+
+**validate()** - Run validation and update UI
+
+```javascript
+const isValid = table.validate();
+if (!isValid) {
+    console.log('Validation errors:', table.getValidationErrors());
+}
+```
+
+**getValidationErrors()** - Get current validation errors
+
+```javascript
+const errors = table.getValidationErrors();
+// Returns: { 'row-0': 'Row A requires a selection', ... }
+```
+
+**clearValidationErrors()** - Clear all validation states
+
+```javascript
+table.clearValidationErrors();
+```
+
+### Validation Configuration
+
+```javascript
+const table = new Table({
+    // ... other options
+
+    // Enable/disable validation error display
+    showValidationErrors: true,
+
+    // Custom validation function
+    validation: (data) => {
+        // Return object with errors or empty object
+        return {};
+    }
+});
+```
+
+### Visual Feedback
+
+- **Error State** (Red): Cells with validation errors show red background with left border accent
+- **Success State** (Green): All cells show green background when validation passes
+- **Tooltips**: Hover over error cells to see the error message
+- **Color System**: Uses `--color-error`, `--color-success`, and their variants from the centralized color system
+
 ### Comments Table
 
 ```javascript
@@ -306,35 +400,6 @@ You can add custom classes to style specific tables:
 - Firefox (latest)
 - Safari (latest)
 - Mobile browsers (iOS Safari, Chrome Mobile)
-
-## Validation
-
-You can provide custom validation logic using the `onValidate` callback:
-
-```javascript
-const table = new Table({
-    containerId: 'my-table',
-    headerColumns: ['Never', 'Rare', 'Occasional'],
-    headerRows: ['Lifting', 'Carrying'],
-    cellType: 'selectable',
-    onValidate: (data) => {
-        // Ensure at least one selection per row
-        for (let rowIndex in data) {
-            const hasSelection = Object.values(data[rowIndex]).some(val => val === true);
-            if (!hasSelection) {
-                alert(`Please select a frequency for row ${rowIndex}`);
-                return false;
-            }
-        }
-        return true;
-    }
-});
-
-// Later, validate the data
-if (table.validate()) {
-    console.log('Table data is valid');
-}
-```
 
 ## Performance Considerations
 

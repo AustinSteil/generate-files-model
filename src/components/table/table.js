@@ -39,6 +39,10 @@ class Table {
             bordered: options.bordered !== undefined ? options.bordered : false,
             compact: options.compact !== undefined ? options.compact : false,
 
+            // Validation options
+            validation: options.validation || null,
+            showValidationErrors: options.showValidationErrors !== undefined ? options.showValidationErrors : true,
+
             // Callbacks
             onChange: options.onChange || null,
             onValidate: options.onValidate || null,
@@ -50,6 +54,7 @@ class Table {
         this.container = null;
         this.tableElement = null;
         this.data = this.initializeData();
+        this.validationErrors = {}; // Track validation errors per cell
 
         this.init();
     }
@@ -327,6 +332,11 @@ class Table {
         cell.setAttribute('aria-selected', isSelected ? 'true' : 'false');
         this.data[rowIndex][colIndex] = isSelected;
 
+        // Clear validation error for this row when user makes a selection
+        if (isSelected) {
+            this.clearRowValidationError(rowIndex);
+        }
+
         // Trigger onChange callback
         if (this.options.onChange) {
             this.options.onChange(this.getData());
@@ -338,6 +348,11 @@ class Table {
      */
     handleInputChange(rowIndex, colIndex, value) {
         this.data[rowIndex][colIndex] = value;
+
+        // Clear validation error for this cell when user starts typing
+        if (value && value.trim() !== '') {
+            this.clearCellValidationError(rowIndex, colIndex);
+        }
 
         // Trigger onChange callback
         if (this.options.onChange) {
@@ -372,10 +387,178 @@ class Table {
      * Validate table data
      */
     validate() {
+        this.validationErrors = {};
+        let isValid = true;
+
+        // Run custom validation if provided
+        if (this.options.validation) {
+            const customErrors = this.options.validation(this.getData());
+            if (customErrors && Object.keys(customErrors).length > 0) {
+                this.validationErrors = customErrors;
+                isValid = false;
+            }
+        }
+
+        // Run built-in validation
+        if (this.options.cellType === 'selectable') {
+            isValid = this.validateSelectableCells() && isValid;
+        } else if (this.options.cellType === 'input') {
+            isValid = this.validateInputCells() && isValid;
+        }
+
+        // Update UI to show validation state
+        if (this.options.showValidationErrors) {
+            this.updateValidationUI();
+        }
+
+        // Run onValidate callback if provided
         if (this.options.onValidate) {
             return this.options.onValidate(this.getData());
         }
-        return true;
+
+        return isValid;
+    }
+
+    /**
+     * Validate selectable cells (ensure at least one selection per row if required)
+     */
+    validateSelectableCells() {
+        let isValid = true;
+
+        this.options.headerRows.forEach((rowHeader, rowIndex) => {
+            const hasSelection = Object.values(this.data[rowIndex]).some(val => val === true);
+
+            if (!hasSelection) {
+                this.validationErrors[`row-${rowIndex}`] = `${rowHeader} requires a selection`;
+                isValid = false;
+            }
+        });
+
+        return isValid;
+    }
+
+    /**
+     * Validate input cells (ensure required fields are filled)
+     */
+    validateInputCells() {
+        let isValid = true;
+
+        this.options.headerRows.forEach((rowHeader, rowIndex) => {
+            this.options.headerColumns.forEach((colHeader, colIndex) => {
+                const value = this.data[rowIndex][colIndex];
+                const isEmpty = !value || (typeof value === 'string' && value.trim() === '');
+
+                if (isEmpty) {
+                    const cellKey = `cell-${rowIndex}-${colIndex}`;
+                    this.validationErrors[cellKey] = `${rowHeader} - ${colHeader} is required`;
+                    isValid = false;
+                }
+            });
+        });
+
+        return isValid;
+    }
+
+    /**
+     * Update UI to show validation errors
+     */
+    updateValidationUI() {
+        if (!this.tableElement) return;
+
+        // Clear previous validation states from rows
+        this.tableElement.querySelectorAll('tbody tr').forEach(row => {
+            row.classList.remove('validation-error', 'validation-success');
+            row.setAttribute('data-validation-error', '');
+        });
+
+        // Apply validation states to rows
+        Object.entries(this.validationErrors).forEach(([key, error]) => {
+            if (key.startsWith('row-')) {
+                // Row-level error: outline entire row
+                const rowIndex = parseInt(key.split('-')[1]);
+                const row = this.tableElement.querySelector(`tbody tr:nth-child(${rowIndex + 1})`);
+                if (row) {
+                    row.classList.add('validation-error');
+                    row.setAttribute('data-validation-error', error);
+                }
+            } else if (key.startsWith('cell-')) {
+                // Cell-level error: outline entire row containing the cell
+                const [, rowIndex] = key.split('-').map(Number);
+                const row = this.tableElement.querySelector(`tbody tr:nth-child(${rowIndex + 1})`);
+                if (row) {
+                    row.classList.add('validation-error');
+                    row.setAttribute('data-validation-error', error);
+                }
+            }
+        });
+
+        // Mark valid rows if no errors
+        if (Object.keys(this.validationErrors).length === 0) {
+            this.tableElement.querySelectorAll('tbody tr').forEach(row => {
+                row.classList.add('validation-success');
+            });
+        }
+    }
+
+    /**
+     * Clear validation error for a specific row
+     * @param {number} rowIndex - Index of the row to clear
+     */
+    clearRowValidationError(rowIndex) {
+        const rowKey = `row-${rowIndex}`;
+        if (this.validationErrors[rowKey]) {
+            delete this.validationErrors[rowKey];
+
+            // Remove validation classes from the row
+            if (this.tableElement) {
+                const row = this.tableElement.querySelector(`tbody tr:nth-child(${rowIndex + 1})`);
+                if (row) {
+                    row.classList.remove('validation-error', 'validation-success');
+                    row.removeAttribute('data-validation-error');
+                }
+            }
+        }
+    }
+
+    /**
+     * Clear validation error for a specific cell
+     * @param {number} rowIndex - Index of the row
+     * @param {number} colIndex - Index of the column
+     */
+    clearCellValidationError(rowIndex, colIndex) {
+        const cellKey = `cell-${rowIndex}-${colIndex}`;
+        if (this.validationErrors[cellKey]) {
+            delete this.validationErrors[cellKey];
+
+            // Remove validation classes from the row containing this cell
+            if (this.tableElement) {
+                const row = this.tableElement.querySelector(`tbody tr:nth-child(${rowIndex + 1})`);
+                if (row) {
+                    row.classList.remove('validation-error', 'validation-success');
+                    row.removeAttribute('data-validation-error');
+                }
+            }
+        }
+    }
+
+    /**
+     * Clear validation errors
+     */
+    clearValidationErrors() {
+        this.validationErrors = {};
+        if (this.tableElement) {
+            this.tableElement.querySelectorAll('tbody tr').forEach(row => {
+                row.classList.remove('validation-error', 'validation-success');
+                row.removeAttribute('data-validation-error');
+            });
+        }
+    }
+
+    /**
+     * Get validation errors
+     */
+    getValidationErrors() {
+        return JSON.parse(JSON.stringify(this.validationErrors));
     }
 
     /**

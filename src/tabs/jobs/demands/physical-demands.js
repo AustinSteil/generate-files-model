@@ -65,13 +65,14 @@ class PhysicalDemands {
             selectionMode: 'single',
             striped: true,
             hoverable: true,
+            showValidationErrors: true,
             onChange: (data) => {
                 // Optional: Handle data changes
                 console.log('Physical demands data changed:', data);
             }
         });
 
-        console.log('Physical demands table initialized');
+        console.log('Physical demands table initialized with validation');
     }
 
     /**
@@ -108,6 +109,7 @@ class PhysicalDemands {
 
     /**
      * Validate physical demands data
+     * Uses the table component's built-in validation system
      * @returns {boolean} True if validation passes
      */
     validate() {
@@ -115,18 +117,29 @@ class PhysicalDemands {
             return false;
         }
 
-        // Optional: Add custom validation logic
-        // For example, ensure at least one selection per row
-        const data = this.table.getData();
-        for (let rowIndex in data) {
-            const hasSelection = Object.values(data[rowIndex]).some(val => val === true);
-            if (!hasSelection) {
-                // At least one row has no selection
-                // You can make this stricter if needed
-            }
-        }
+        // Use the table's built-in validation
+        // This ensures each row has at least one selection
+        return this.table.validate();
+    }
 
-        return true;
+    /**
+     * Get validation errors from the table
+     * @returns {Object} Object containing validation errors
+     */
+    getValidationErrors() {
+        if (!this.table) {
+            return {};
+        }
+        return this.table.getValidationErrors();
+    }
+
+    /**
+     * Clear validation errors from the table
+     */
+    clearValidationErrors() {
+        if (this.table) {
+            this.table.clearValidationErrors();
+        }
     }
 }
 
