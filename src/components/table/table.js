@@ -27,6 +27,7 @@ class Table {
             // Table structure
             headerColumns: options.headerColumns || [],
             headerRows: options.headerRows || [],
+            rowGroups: options.rowGroups || null, // Optional: array of {category, rows} for grouping
 
             // Cell configuration
             cellType: options.cellType || 'selectable',
@@ -156,7 +157,21 @@ class Table {
         // Add column headers
         this.options.headerColumns.forEach(header => {
             const th = document.createElement('th');
-            th.textContent = header;
+
+            // Support both string headers and multi-line headers
+            if (typeof header === 'string') {
+                th.textContent = header;
+            } else if (typeof header === 'object' && header.lines) {
+                // Multi-line header: {lines: ['Line 1', 'Line 2', ...]}
+                th.className = 'multi-line-header';
+                header.lines.forEach((line, index) => {
+                    if (index > 0) {
+                        th.appendChild(document.createElement('br'));
+                    }
+                    th.appendChild(document.createTextNode(line));
+                });
+            }
+
             headerRow.appendChild(th);
         });
 
@@ -166,23 +181,69 @@ class Table {
         // Create table body
         const tbody = document.createElement('tbody');
 
-        this.options.headerRows.forEach((rowHeader, rowIndex) => {
-            const row = document.createElement('tr');
+        // Check if we have row groups
+        if (this.options.rowGroups && this.options.rowGroups.length > 0) {
+            // Render with row groups
+            this.options.rowGroups.forEach(group => {
+                // Add category row
+                const categoryRow = document.createElement('tr');
+                categoryRow.className = 'category-row';
 
-            // Add row header
-            const rowHeaderCell = document.createElement('td');
-            rowHeaderCell.className = 'row-header';
-            rowHeaderCell.textContent = rowHeader;
-            row.appendChild(rowHeaderCell);
+                const categoryCell = document.createElement('td');
+                categoryCell.className = 'category-header';
+                categoryCell.textContent = group.category;
+                categoryCell.setAttribute('colspan', this.options.headerColumns.length + 1);
+                categoryRow.appendChild(categoryCell);
 
-            // Add data cells
-            this.options.headerColumns.forEach((colHeader, colIndex) => {
-                const cell = this.createCell(rowIndex, colIndex);
-                row.appendChild(cell);
+                tbody.appendChild(categoryRow);
+
+                // Add data rows for this group
+                group.rows.forEach(rowIndex => {
+                    const rowHeader = this.options.headerRows[rowIndex];
+                    const row = document.createElement('tr');
+                    row.className = 'grouped-row';
+
+                    // Add row header
+                    const rowHeaderCell = document.createElement('td');
+                    rowHeaderCell.className = 'row-header';
+                    rowHeaderCell.textContent = rowHeader;
+                    row.appendChild(rowHeaderCell);
+
+                    // Add data cells
+                    this.options.headerColumns.forEach((colHeader, colIndex) => {
+                        const cell = this.createCell(rowIndex, colIndex);
+                        row.appendChild(cell);
+                    });
+
+                    // Add data attribute to track row index for validation
+                    row.setAttribute('data-row-index', rowIndex);
+
+                    tbody.appendChild(row);
+                });
             });
+        } else {
+            // Render without row groups (original behavior)
+            this.options.headerRows.forEach((rowHeader, rowIndex) => {
+                const row = document.createElement('tr');
 
-            tbody.appendChild(row);
-        });
+                // Add row header
+                const rowHeaderCell = document.createElement('td');
+                rowHeaderCell.className = 'row-header';
+                rowHeaderCell.textContent = rowHeader;
+                row.appendChild(rowHeaderCell);
+
+                // Add data cells
+                this.options.headerColumns.forEach((colHeader, colIndex) => {
+                    const cell = this.createCell(rowIndex, colIndex);
+                    row.appendChild(cell);
+                });
+
+                // Add data attribute to track row index for validation
+                row.setAttribute('data-row-index', rowIndex);
+
+                tbody.appendChild(row);
+            });
+        }
 
         table.appendChild(tbody);
         tableContainer.appendChild(table);
@@ -474,17 +535,17 @@ class Table {
         // Apply validation states to rows
         Object.entries(this.validationErrors).forEach(([key, error]) => {
             if (key.startsWith('row-')) {
-                // Row-level error: outline entire row
+                // Row-level error: find row by data-row-index attribute
                 const rowIndex = parseInt(key.split('-')[1]);
-                const row = this.tableElement.querySelector(`tbody tr:nth-child(${rowIndex + 1})`);
+                const row = this.tableElement.querySelector(`tbody tr[data-row-index="${rowIndex}"]`);
                 if (row) {
                     row.classList.add('validation-error');
                     row.setAttribute('data-validation-error', error);
                 }
             } else if (key.startsWith('cell-')) {
-                // Cell-level error: outline entire row containing the cell
+                // Cell-level error: find row by data-row-index attribute
                 const [, rowIndex] = key.split('-').map(Number);
-                const row = this.tableElement.querySelector(`tbody tr:nth-child(${rowIndex + 1})`);
+                const row = this.tableElement.querySelector(`tbody tr[data-row-index="${rowIndex}"]`);
                 if (row) {
                     row.classList.add('validation-error');
                     row.setAttribute('data-validation-error', error);
@@ -509,9 +570,9 @@ class Table {
         if (this.validationErrors[rowKey]) {
             delete this.validationErrors[rowKey];
 
-            // Remove validation classes from the row
+            // Remove validation classes from the row using data-row-index attribute
             if (this.tableElement) {
-                const row = this.tableElement.querySelector(`tbody tr:nth-child(${rowIndex + 1})`);
+                const row = this.tableElement.querySelector(`tbody tr[data-row-index="${rowIndex}"]`);
                 if (row) {
                     row.classList.remove('validation-error', 'validation-success');
                     row.removeAttribute('data-validation-error');
@@ -530,9 +591,9 @@ class Table {
         if (this.validationErrors[cellKey]) {
             delete this.validationErrors[cellKey];
 
-            // Remove validation classes from the row containing this cell
+            // Remove validation classes from the row containing this cell using data-row-index attribute
             if (this.tableElement) {
-                const row = this.tableElement.querySelector(`tbody tr:nth-child(${rowIndex + 1})`);
+                const row = this.tableElement.querySelector(`tbody tr[data-row-index="${rowIndex}"]`);
                 if (row) {
                     row.classList.remove('validation-error', 'validation-success');
                     row.removeAttribute('data-validation-error');

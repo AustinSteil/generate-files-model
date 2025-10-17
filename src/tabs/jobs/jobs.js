@@ -68,26 +68,36 @@ class JobsTab {
                 {
                     id: 'mobility-demands',
                     title: 'Mobility Demands',
+                    hideTitle: true,
+                    noPadding: true,
                     content: () => this.mobilityDemands.render()
                 },
                 {
                     id: 'cognitive-sensory',
                     title: 'Cognitive & Sensory',
+                    hideTitle: true,
+                    noPadding: true,
                     content: () => this.cognitiveSensoryDemands.render()
                 },
                 {
                     id: 'environmental',
                     title: 'Environmental Demands',
+                    hideTitle: true,
+                    noPadding: true,
                     content: () => this.environmentalDemands.render()
                 },
                 {
                     id: 'lifting-pushing-pulling',
                     title: 'Lifting/Pushing/Pulling',
+                    hideTitle: true,
+                    noPadding: true,
                     content: () => this.liftingPushingPulling.render()
                 },
                 {
                     id: 'classification',
                     title: 'Classification of Work',
+                    hideTitle: true,
+                    noPadding: true,
                     content: () => this.classificationOfWork.render()
                 }
             ],
@@ -98,6 +108,11 @@ class JobsTab {
         // Use setTimeout to ensure DOM is ready
         setTimeout(() => {
             this.physicalDemands.init();
+            this.mobilityDemands.init();
+            this.cognitiveSensoryDemands.init();
+            this.environmentalDemands.init();
+            this.liftingPushingPulling.init();
+            this.classificationOfWork.init();
         }, 100);
 
         // Listen for section changes

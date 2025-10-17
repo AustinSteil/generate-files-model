@@ -200,6 +200,11 @@ class DocumentGenerator {
 
         console.log('Collected form data from tabs:', this.formData);
         console.log('Physical demands in formData:', this.formData.physicalDemands);
+        console.log('Mobility demands in formData:', this.formData.mobilityDemands);
+        console.log('Cognitive sensory demands in formData:', this.formData.cognitiveSensoryDemands);
+        console.log('Environmental demands in formData:', this.formData.environmentalDemands);
+        console.log('Lifting pushing pulling in formData:', this.formData.liftingPushingPulling);
+        console.log('Classification of work in formData:', this.formData.classificationOfWork);
         return this.formData;
     }
 

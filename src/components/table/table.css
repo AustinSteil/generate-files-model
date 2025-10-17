@@ -58,6 +58,16 @@
     line-height: 1.4;
     position: relative;
     transition: background-color var(--transition-base), box-shadow var(--transition-base);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Multi-line headers - support for headers with multiple lines */
+.table-component th.multi-line-header {
+    padding: var(--spacing-sm) var(--spacing-md);
+    line-height: 1.3;
+    white-space: normal;
+    vertical-align: middle;
 }
 
 .table-component th:hover {
@@ -173,7 +183,7 @@
 }
 
 .dark-mode .table-component td.selectable.selected::after {
-    color: var(--color-info);
+    color: var(--color-text-white);
 }
 
 /* Input Cells - Clean, elegant design */
@@ -236,6 +246,36 @@
 
 .table-component td.row-header:hover {
     background: var(--color-bg-tertiary);
+}
+
+/* Category Row Headers - Visual grouping for related rows */
+.table-component tr.category-row {
+    background: var(--color-primary-light);
+}
+
+.dark-mode .table-component tr.category-row {
+    background: var(--color-info-darkest);
+}
+
+.table-component td.category-header {
+    background: var(--color-primary-light);
+    color: var(--color-text-secondary);
+    font-weight: 500;
+    font-size: 13px;
+    padding: var(--spacing-sm);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: left;
+}
+
+.dark-mode .table-component td.category-header {
+    background: var(--color-primary-darker);
+    color: var(--color-text-primary);
+}
+
+/* Grouped rows - slight visual distinction */
+.table-component tr.grouped-row td.row-header {
+    padding-left: calc(var(--spacing-md) + 12px);
 }
 
 /* Hover Effect - Enhanced Row and Column Highlighting */

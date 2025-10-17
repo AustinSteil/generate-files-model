@@ -38,6 +38,11 @@ class StorageDataManager {
         console.log('Form data to save:', this.documentGenerator.formData);
         console.log('Jobs data:', this.documentGenerator.formData.jobsData);
         console.log('Physical demands:', this.documentGenerator.formData.physicalDemands);
+        console.log('Mobility demands:', this.documentGenerator.formData.mobilityDemands);
+        console.log('Cognitive sensory demands:', this.documentGenerator.formData.cognitiveSensoryDemands);
+        console.log('Environmental demands:', this.documentGenerator.formData.environmentalDemands);
+        console.log('Lifting pushing pulling:', this.documentGenerator.formData.liftingPushingPulling);
+        console.log('Classification of work:', this.documentGenerator.formData.classificationOfWork);
 
         if (Object.keys(this.documentGenerator.formData).length === 0) {
             showError('Please fill in some information before saving');
