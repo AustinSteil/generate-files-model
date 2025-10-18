@@ -98,19 +98,13 @@ class NextButtonManager {
             const isValid = this.validateCurrentTab(currentTabName);
 
             if (isValid) {
-                // Show success feedback
-                button.setText('Success!');
-                button.setVariant('success');
+                // Navigate to next tab immediately on successful validation
+                this.navigateToNextTab(currentTabName);
 
-                // Navigate to next tab after brief delay
-                setTimeout(() => {
-                    this.navigateToNextTab(currentTabName);
-
-                    // Reset button state
-                    button.setText('Next');
-                    button.setVariant('primary');
-                    button.setLoading(false);
-                }, 800);
+                // Reset button state
+                button.setText('Next');
+                button.setVariant('primary');
+                button.setLoading(false);
 
             } else {
                 // Show error state
@@ -159,27 +153,21 @@ class NextButtonManager {
         const isValid = this.validateJobsSection(currentSectionId);
 
         if (isValid) {
-            // Show success feedback
-            button.setText('Success!');
-            button.setVariant('success');
+            // Navigate immediately on successful validation
+            // Check if we're on the last section
+            if (currentSectionIndex === sections.length - 1) {
+                // Move to summary tab
+                this.navigateToNextTab('jobs');
+            } else {
+                // Move to next subnav section
+                const nextSection = sections[currentSectionIndex + 1];
+                jobsTab.subNav.switchSection(nextSection.id);
+            }
 
-            // Navigate after brief delay
-            setTimeout(() => {
-                // Check if we're on the last section
-                if (currentSectionIndex === sections.length - 1) {
-                    // Move to summary tab
-                    this.navigateToNextTab('jobs');
-                } else {
-                    // Move to next subnav section
-                    const nextSection = sections[currentSectionIndex + 1];
-                    jobsTab.subNav.switchSection(nextSection.id);
-                }
-
-                // Reset button state
-                button.setText('Next');
-                button.setVariant('primary');
-                button.setLoading(false);
-            }, 800);
+            // Reset button state
+            button.setText('Next');
+            button.setVariant('primary');
+            button.setLoading(false);
 
         } else {
             // Show error state

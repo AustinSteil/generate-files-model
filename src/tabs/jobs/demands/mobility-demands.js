@@ -110,12 +110,16 @@ class MobilityDemands {
                 { lines: ['Not Applicable', '0%'] },
                 { lines: ['Occasional', '1-33%'] },
                 { lines: ['Frequent', '34-66%'] },
-                { lines: ['Constant', '67-100%'] }
+                { lines: ['Constant', '67-100%'] }, 
+                { lines: ['Objective Measurements', '& General Comments'] }
             ],
             headerRows: headerRows,
             rowGroups: rowGroups,
             cellType: 'selectable',
             selectionMode: 'single',
+            rowHeaderWidth: '200px',
+            columnTypes: ['selectable', 'selectable', 'selectable', 'selectable', 'input'],
+            columnWidths: ['auto', 'auto', 'auto', 'auto', 'auto'],
             striped: true,
             hoverable: true,
             showValidationErrors: true,

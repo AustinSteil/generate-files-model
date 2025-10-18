@@ -52,8 +52,6 @@ class JobsTab {
     }
 
     init() {
-        console.log('Jobs tab initialized');
-
         // Initialize SubNav with demand categories
         this.subNav = new SubNav({
             containerId: 'jobs-subnav-container',
@@ -119,7 +117,6 @@ class JobsTab {
         const subNavContainer = document.getElementById('jobs-subnav-container');
         if (subNavContainer) {
             subNavContainer.addEventListener('sectionchange', (e) => {
-                console.log('Section changed to:', e.detail.sectionId);
             });
         }
     }
@@ -154,7 +151,6 @@ class JobsTab {
             classificationOfWork: this.classificationOfWork.getData()
         };
 
-        console.log('Jobs tab getData:', data);
         return data;
     }
 
@@ -165,8 +161,6 @@ class JobsTab {
     setData(data) {
         if (!data) return;
 
-        console.log('Jobs tab setData called with:', data);
-
         // Ensure physical demands table is initialized before setting data
         this.ensureInitialized();
 
@@ -175,7 +169,6 @@ class JobsTab {
         }
 
         if (data.physicalDemands) {
-            console.log('Setting physical demands data:', data.physicalDemands);
             this.physicalDemands.setData(data.physicalDemands);
         }
         if (data.mobilityDemands) {
@@ -204,7 +197,6 @@ class JobsTab {
         const validations = [
             this.physicalDemands.validate(),
             this.mobilityDemands.validate(),
-            this.cognitiveSensoryDemands.validate(),
             this.environmentalDemands.validate(),
             this.liftingPushingPulling.validate(),
             this.classificationOfWork.validate()

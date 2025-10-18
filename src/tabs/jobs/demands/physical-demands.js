@@ -39,7 +39,13 @@ class PhysicalDemands {
 
         this.table = new Table({
             containerId: this.containerId,
-            headerColumns: ['Not Applicable', 'Occasional', 'Frequent', 'Constant'],
+            headerColumns: [
+                { lines: ['Not Applicable', '0%'] },
+                { lines: ['Occasional', '1-33%'] },
+                { lines: ['Frequent', '34-66%'] },
+                { lines: ['Constant', '67-100%'] }, 
+                { lines: ['Objective Measurements', '& General Comments'] }
+            ],         
             headerRows: [
                 'Awkward position',
                 'Bending over',
@@ -63,16 +69,13 @@ class PhysicalDemands {
             ],
             cellType: 'selectable',
             selectionMode: 'single',
+            rowHeaderWidth: '200px',
+            columnWidths: ['auto', 'auto', 'auto', 'auto', 'auto'],
+            columnTypes: ['selectable', 'selectable', 'selectable', 'selectable', 'input'],
             striped: true,
             hoverable: true,
-            showValidationErrors: true,
-            onChange: (data) => {
-                // Optional: Handle data changes
-                console.log('Physical demands data changed:', data);
-            }
+            showValidationErrors: true
         });
-
-        console.log('Physical demands table initialized with validation');
     }
 
     /**
@@ -101,7 +104,6 @@ class PhysicalDemands {
 
         if (this.table) {
             this.table.setData(data);
-            console.log('Physical demands data set:', data);
         } else {
             console.error('Failed to initialize physical demands table for setData');
         }

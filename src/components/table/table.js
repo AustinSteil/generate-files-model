@@ -31,8 +31,13 @@ class Table {
 
             // Cell configuration
             cellType: options.cellType || 'selectable',
+            columnTypes: options.columnTypes || null, // Optional: array of cell types per column
             inputType: options.inputType || 'text',
             selectionMode: options.selectionMode || 'single',
+
+            // Column configuration
+            columnWidths: options.columnWidths || null, // Optional: array of widths per column
+            rowHeaderWidth: options.rowHeaderWidth || 'auto', // Optional: width of the row header column (default: auto)
 
             // Styling options
             striped: options.striped !== undefined ? options.striped : true,
@@ -68,6 +73,18 @@ class Table {
     }
 
     /**
+     * Get cell type for a specific column
+     * Supports both global cellType and per-column cellType configuration
+     */
+    getCellType(colIndex) {
+        // If columnTypes array is provided, use per-column configuration
+        if (this.options.columnTypes && Array.isArray(this.options.columnTypes)) {
+            return this.options.columnTypes[colIndex] || this.options.cellType;
+        }
+        return this.options.cellType;
+    }
+
+    /**
      * Initialize data structure
      */
     initializeData() {
@@ -81,7 +98,8 @@ class Table {
         this.options.headerRows.forEach((rowHeader, rowIndex) => {
             data[rowIndex] = {};
             this.options.headerColumns.forEach((colHeader, colIndex) => {
-                if (this.options.cellType === 'selectable') {
+                const cellType = this.getCellType(colIndex);
+                if (cellType === 'selectable') {
                     data[rowIndex][colIndex] = false;
                 } else {
                     data[rowIndex][colIndex] = '';
@@ -155,7 +173,7 @@ class Table {
         headerRow.appendChild(cornerCell);
 
         // Add column headers
-        this.options.headerColumns.forEach(header => {
+        this.options.headerColumns.forEach((header, colIndex) => {
             const th = document.createElement('th');
 
             // Support both string headers and multi-line headers
@@ -170,6 +188,11 @@ class Table {
                     }
                     th.appendChild(document.createTextNode(line));
                 });
+            }
+
+            // Apply column width if specified
+            if (this.options.columnWidths && this.options.columnWidths[colIndex]) {
+                th.style.width = this.options.columnWidths[colIndex];
             }
 
             headerRow.appendChild(th);
@@ -207,6 +230,12 @@ class Table {
                     const rowHeaderCell = document.createElement('td');
                     rowHeaderCell.className = 'row-header';
                     rowHeaderCell.textContent = rowHeader;
+
+                    // Apply row header width if specified
+                    if (this.options.rowHeaderWidth) {
+                        rowHeaderCell.style.width = this.options.rowHeaderWidth;
+                    }
+
                     row.appendChild(rowHeaderCell);
 
                     // Add data cells
@@ -230,6 +259,12 @@ class Table {
                 const rowHeaderCell = document.createElement('td');
                 rowHeaderCell.className = 'row-header';
                 rowHeaderCell.textContent = rowHeader;
+
+                // Apply row header width if specified
+                if (this.options.rowHeaderWidth) {
+                    rowHeaderCell.style.width = this.options.rowHeaderWidth;
+                }
+
                 row.appendChild(rowHeaderCell);
 
                 // Add data cells
@@ -294,12 +329,18 @@ class Table {
      */
     createCell(rowIndex, colIndex) {
         const cell = document.createElement('td');
+        const cellType = this.getCellType(colIndex);
 
-        if (this.options.cellType === 'selectable') {
+        // Apply column width if specified
+        if (this.options.columnWidths && this.options.columnWidths[colIndex]) {
+            cell.style.width = this.options.columnWidths[colIndex];
+        }
+
+        if (cellType === 'selectable') {
             cell.className = 'selectable';
             cell.setAttribute('tabindex', '0');
             cell.setAttribute('role', 'gridcell');
-            cell.setAttribute('aria-label', `${this.options.headerRows[rowIndex]} - ${this.options.headerColumns[colIndex]}`);
+            cell.setAttribute('aria-label', `${this.options.headerRows[rowIndex]} - ${this.getColumnLabel(colIndex)}`);
 
             // Set initial state
             if (this.data[rowIndex][colIndex]) {
@@ -332,7 +373,7 @@ class Table {
             }
 
             input.value = this.data[rowIndex][colIndex] || '';
-            input.setAttribute('aria-label', `${this.options.headerRows[rowIndex]} - ${this.options.headerColumns[colIndex]}`);
+            input.setAttribute('aria-label', `${this.options.headerRows[rowIndex]} - ${this.getColumnLabel(colIndex)}`);
 
             // Add input handler
             input.addEventListener('input', (e) => {
@@ -353,6 +394,19 @@ class Table {
         }
 
         return cell;
+    }
+
+    /**
+     * Get column label (supports both string and object headers)
+     */
+    getColumnLabel(colIndex) {
+        const header = this.options.headerColumns[colIndex];
+        if (typeof header === 'string') {
+            return header;
+        } else if (typeof header === 'object' && header.lines) {
+            return header.lines[0];
+        }
+        return '';
     }
 
     /**
