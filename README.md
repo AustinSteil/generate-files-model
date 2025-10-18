@@ -4,6 +4,19 @@ A web-based document generation tool that creates Word documents from templates 
 
 Live demo: <https://austinsteil.github.io/generate-files-model/>
 
+## About
+
+Author: Austin Steil  
+Version: 1.0.0
+Created October 11, 2025
+Updated October 18, 2025
+
+## License & Copyright
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Live License Page Link: <https://raw.githubusercontent.com/AustinSteil/generate-files-model/refs/heads/main/LICENSE>
+Copyright 2025 Austin Steil
+
 ## Features
 
 - 📄 Generate Word documents from predefined templates
@@ -512,14 +525,6 @@ The application follows web accessibility best practices:
 - ✅ **Color contrast** - WCAG AA compliant contrast ratios (see `src/color-system/CONTRAST-AUDIT.md`)
 - ✅ **Reduced motion** - Respects `prefers-reduced-motion` for animations
 - ✅ **Focus indicators** - Clear visual focus states for keyboard navigation
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Author
-
-Austin Steil
 
 ## Acknowledgments
 
