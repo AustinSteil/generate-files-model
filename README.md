@@ -145,6 +145,7 @@ The project includes interactive demo pages for testing and showcasing component
 - **[Area Input Demo](https://austinsteil.github.io/generate-files-model/src/components/area-input/area-input-example.html)** - Multi-line text input with auto-grow, character counter, and rich text editor options
 - **[Work Week Calculator Demo](https://austinsteil.github.io/generate-files-model/src/components/work-week-calculator/work-week-calculator-example.html)** - Interactive work schedule calculator with auto-calculating fields
 - **[Table Component Demo](https://austinsteil.github.io/generate-files-model/src/components/table/demo.html)** - Flexible table component with selectable cells and input fields for data collection
+- **[Demand Level Selector Demo](https://austinsteil.github.io/generate-files-model/src/components/demands-level-selector/demands-level-selector-example.html)** - Comparison interface for selecting physical demand levels
 
 These demo files can be opened directly in your browser or served through a local web server.
 
@@ -270,6 +271,16 @@ Vertical side navigation with content panel layout:
 - **Dynamic content** - Support for HTML strings or functions
 - **Smooth transitions** - Elegant animations and gradient styling
 - **Accessible** - Full keyboard navigation support
+- **Dark mode** - Full light/dark mode support
+
+### Demand Level Selector Component
+
+Comparison interface for selecting physical demand levels:
+
+- **Comparison interface** - Visual comparison of 5 demand levels (Sedentary to Very Heavy)
+- **Color-coded rows** - Green (Sedentary) to Red (Heavy) gradient
+- **Single-select mode** - Entire row clickable
+- **Validation support** - Required field enforcement
 - **Dark mode** - Full light/dark mode support
 
 ## Configuration
@@ -402,10 +413,15 @@ generate-files-model/
     │   │   ├── modal.js            # Modal functionality
     │   │   ├── modal.css           # Modal styling
     │   │   └── README.md           # Modal documentation
-    │   └── subnav/         # SubNav component
-    │       ├── subnav.js           # SubNav functionality
-    │       ├── subnav.css          # SubNav styling
-    │       └── README.md           # SubNav documentation
+    │   ├── subnav/         # SubNav component
+    │   │   ├── subnav.js           # SubNav functionality
+    │   │   ├── subnav.css          # SubNav styling
+    │   │   └── README.md           # SubNav documentation
+    │   └── demands-level-selector/ # Demand Level Selector component
+    │       ├── demands-level-selector.js # Selector functionality
+    │       ├── demands-level-selector.css # Selector styling
+    │       ├── demands-level-selector-example.html # Selector demo page
+    │       └── README.md           # Selector documentation
     ├── fields/             # Field configuration and documentation
     │   ├── vars.json           # Template variable configuration (single source of truth)
     │   ├── vars.json.README.md # Detailed vars.json documentation
@@ -496,7 +512,7 @@ generate-files-model/
 
 ### Code Organization
 
-- **Reusable components** → `src/components/` (alert, cards, tooltip, dropdown, toggle, button, text-input, address, area-input, work-week-calculator, repeater, table, subnav)
+- **Reusable components** → `src/components/` (alert, cards, tooltip, dropdown, toggle, button, text-input, address, area-input, work-week-calculator, repeater, table, subnav, demands-level-selector)
 - **Application-specific features** → `src/` (save-data, tabs)
 - **Shared utilities** → `src/color-system/` (color system, dark mode toggle)
 

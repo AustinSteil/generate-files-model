@@ -212,7 +212,17 @@ class NextButtonManager {
             const isValid = validator();
 
             if (!isValid) {
-                showError('Please complete all required fields in this section before continuing.', { duration: 6 });
+                // Get specific error message from the section
+                let errorMessage = 'Please complete all required fields in this section before continuing.';
+
+                if (sectionId === 'classification') {
+                    const errors = jobsTab.classificationOfWork.demandLevelSelector?.getValidationErrors();
+                    if (errors && errors['demand-level']) {
+                        errorMessage = errors['demand-level'];
+                    }
+                }
+
+                showError(errorMessage, { duration: 6 });
             }
 
             return isValid;

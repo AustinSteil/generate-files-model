@@ -1,0 +1,436 @@
+/**
+ * Demand Level Selector Component Styles
+ *
+ * Styling for the physical demand level comparison interface with:
+ * - Color-coded rows (green to red gradient)
+ * - Clear visual hierarchy
+ * - Full dark/light mode support
+ * - Responsive design
+ *
+ * NOTE: This component uses the centralized color management system from src/color-system/colors.css
+ * All colors are referenced using CSS custom properties (variables) for consistency.
+ *
+ * @author Austin Steil
+ * @version 1.0.0
+ */
+
+/* ============================================
+   WRAPPER & LAYOUT
+   ============================================ */
+
+.demand-level-selector-wrapper {
+    width: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.demand-level-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin: 0;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    position: relative;
+    background: linear-gradient(135deg,
+        rgba(var(--color-primary-rgb), 0.06) 0%,
+        rgba(var(--color-primary-rgb), 0.02) 100%);
+    border-left: 3px solid var(--color-primary);
+    border-radius: var(--radius-md);
+    letter-spacing: 0.3px;
+}
+
+.dark-mode .demand-level-title {
+    background: linear-gradient(135deg,
+        rgba(var(--color-primary-rgb), 0.1) 0%,
+        rgba(var(--color-primary-rgb), 0.04) 100%);
+}
+
+.demand-level-description {
+    margin: 0;
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: linear-gradient(135deg,
+        rgba(var(--color-primary-rgb), 0.08) 0%,
+        rgba(var(--color-primary-rgb), 0.04) 100%);
+    border-left: 3px solid var(--color-primary);
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+}
+
+.dark-mode .demand-level-description {
+    background: linear-gradient(135deg,
+        rgba(var(--color-primary-rgb), 0.12) 0%,
+        rgba(var(--color-primary-rgb), 0.06) 100%);
+    border-left-color: var(--color-primary);
+}
+
+.demand-level-description p {
+    margin: 0;
+}
+
+/* ============================================
+   TABLE LAYOUT
+   ============================================ */
+
+.demand-level-table {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    background: var(--color-bg-primary);
+}
+
+.dark-mode .demand-level-table {
+    border-color: var(--color-border-medium);
+    box-shadow: var(--shadow-md);
+}
+
+/* Validation error state */
+.demand-level-table.demand-level-error {
+    border: 2px solid var(--color-error);
+    box-shadow: 0 0 0 3px rgba(var(--color-error-rgb), 0.1);
+}
+
+.dark-mode .demand-level-table.demand-level-error {
+    box-shadow: 0 0 0 3px rgba(var(--color-error-rgb), 0.2);
+}
+
+/* ============================================
+   HEADER ROW
+   ============================================ */
+
+.demand-level-header-row {
+    display: grid;
+    grid-template-columns: 120px 1fr 1fr 1fr 1fr;
+    gap: 0;
+    background: var(--color-primary);
+    color: var(--color-text-white);
+    font-weight: 600;
+    border-bottom: 2px solid rgba(var(--color-primary-rgb), 0.2);
+}
+
+.dark-mode .demand-level-header-row {
+    background: var(--color-primary-dark);
+    border-bottom-color: rgba(var(--color-primary-rgb), 0.3);
+}
+
+.demand-level-header-cell {
+    padding: var(--spacing-md);
+    text-align: center;
+    font-size: 13px;
+    line-height: 1.4;
+    border-right: 1px solid rgba(var(--color-primary-rgb), 0.2);
+}
+
+.dark-mode .demand-level-header-cell {
+    border-right-color: rgba(var(--color-primary-rgb), 0.3);
+}
+
+.demand-level-header-cell:last-child {
+    border-right: none;
+}
+
+.demand-level-header-level {
+    text-align: left;
+    font-weight: 600;
+}
+
+/* ============================================
+   DATA ROWS
+   ============================================ */
+
+.demand-level-row {
+    display: grid;
+    grid-template-columns: 120px 1fr 1fr 1fr 1fr;
+    gap: 0;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    border-bottom: 1px solid var(--color-border-light);
+    position: relative;
+}
+
+.dark-mode .demand-level-row {
+    border-bottom-color: var(--color-border-medium);
+}
+
+.demand-level-row:last-child {
+    border-bottom: none;
+}
+
+.demand-level-row:hover {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.dark-mode .demand-level-row:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.demand-level-row:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: -2px;
+}
+
+.demand-level-cell {
+    padding: var(--spacing-md);
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.5;
+    border-right: 1px solid var(--color-border-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60px;
+}
+
+.dark-mode .demand-level-cell {
+    border-right-color: var(--color-border-medium);
+}
+
+.demand-level-cell:last-child {
+    border-right: none;
+}
+
+.demand-level-level-name {
+    font-weight: 600;
+    text-align: left;
+    justify-content: flex-start;
+    background: var(--color-bg-secondary);
+    border-right: 2px solid var(--color-border-medium);
+}
+
+/* ============================================
+   COLOR-CODED ROWS
+   Uses color system variables for consistency:
+   - Sedentary: Success (Green)
+   - Light: Info (Blue)
+   - Medium: Warning (Orange)
+   - Heavy: Error (Red)
+   - Very Heavy: Secondary (Gray) - Highest demand level
+   ============================================ */
+
+/* Shared selection indicator styles */
+.demand-level-row.demand-level-selected::after {
+    content: '✓';
+    position: absolute;
+    right: var(--spacing-md);
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Shared selected row border */
+.demand-level-row.demand-level-selected {
+    border: 2px solid;
+}
+
+/* Sedentary - Success (Green) */
+.demand-level-sedentary {
+    background: rgba(var(--color-success-rgb), var(--opacity-5));
+}
+
+.demand-level-sedentary .demand-level-level-name {
+    background: rgba(var(--color-success-rgb), var(--opacity-10));
+    border-right-color: rgba(var(--color-success-rgb), var(--opacity-30));
+}
+
+.demand-level-sedentary:hover {
+    background: rgba(var(--color-success-rgb), var(--opacity-10));
+}
+
+.demand-level-sedentary.demand-level-selected {
+    background: rgba(var(--color-success-rgb), var(--opacity-20));
+    border-color: var(--color-success);
+}
+
+.demand-level-sedentary.demand-level-selected .demand-level-level-name {
+    background: rgba(var(--color-success-rgb), var(--opacity-25));
+    border-right-color: rgba(var(--color-success-rgb), var(--opacity-50));
+    font-weight: 700;
+}
+
+.demand-level-sedentary.demand-level-selected::after {
+    color: var(--color-success);
+}
+
+/* Light - Info (Blue) */
+.demand-level-light {
+    background: rgba(var(--color-info-rgb), var(--opacity-5));
+}
+
+.demand-level-light .demand-level-level-name {
+    background: rgba(var(--color-info-rgb), var(--opacity-10));
+    border-right-color: rgba(var(--color-info-rgb), var(--opacity-30));
+}
+
+.demand-level-light:hover {
+    background: rgba(var(--color-info-rgb), var(--opacity-10));
+}
+
+.demand-level-light.demand-level-selected {
+    background: rgba(var(--color-info-rgb), var(--opacity-20));
+    border-color: var(--color-info);
+}
+
+.demand-level-light.demand-level-selected .demand-level-level-name {
+    background: rgba(var(--color-info-rgb), var(--opacity-25));
+    border-right-color: rgba(var(--color-info-rgb), var(--opacity-50));
+    font-weight: 700;
+}
+
+.demand-level-light.demand-level-selected::after {
+    color: var(--color-info);
+}
+
+/* Medium - Warning (Orange) */
+.demand-level-medium {
+    background: rgba(var(--color-warning-rgb), var(--opacity-5));
+}
+
+.demand-level-medium .demand-level-level-name {
+    background: rgba(var(--color-warning-rgb), var(--opacity-10));
+    border-right-color: rgba(var(--color-warning-rgb), var(--opacity-30));
+}
+
+.demand-level-medium:hover {
+    background: rgba(var(--color-warning-rgb), var(--opacity-10));
+}
+
+.demand-level-medium.demand-level-selected {
+    background: rgba(var(--color-warning-rgb), var(--opacity-20));
+    border-color: var(--color-warning);
+}
+
+.demand-level-medium.demand-level-selected .demand-level-level-name {
+    background: rgba(var(--color-warning-rgb), var(--opacity-25));
+    border-right-color: rgba(var(--color-warning-rgb), var(--opacity-50));
+    font-weight: 700;
+}
+
+.demand-level-medium.demand-level-selected::after {
+    color: var(--color-warning);
+}
+
+/* Heavy - Error (Red) */
+.demand-level-heavy {
+    background: rgba(var(--color-error-rgb), var(--opacity-5));
+}
+
+.demand-level-heavy .demand-level-level-name {
+    background: rgba(var(--color-error-rgb), var(--opacity-10));
+    border-right-color: rgba(var(--color-error-rgb), var(--opacity-30));
+}
+
+.demand-level-heavy:hover {
+    background: rgba(var(--color-error-rgb), var(--opacity-10));
+}
+
+.demand-level-heavy.demand-level-selected {
+    background: rgba(var(--color-error-rgb), var(--opacity-20));
+    border-color: var(--color-error);
+}
+
+.demand-level-heavy.demand-level-selected .demand-level-level-name {
+    background: rgba(var(--color-error-rgb), var(--opacity-25));
+    border-right-color: rgba(var(--color-error-rgb), var(--opacity-50));
+    font-weight: 700;
+}
+
+.demand-level-heavy.demand-level-selected::after {
+    color: var(--color-error);
+}
+
+/* Very Heavy - Secondary (Gray) - Highest demand level */
+.demand-level-very-heavy {
+    background: rgba(var(--color-secondary-rgb), var(--opacity-5));
+}
+
+.demand-level-very-heavy .demand-level-level-name {
+    background: rgba(var(--color-secondary-rgb), var(--opacity-10));
+    border-right-color: rgba(var(--color-secondary-rgb), var(--opacity-30));
+}
+
+.demand-level-very-heavy:hover {
+    background: rgba(var(--color-secondary-rgb), var(--opacity-10));
+}
+
+.demand-level-very-heavy.demand-level-selected {
+    background: rgba(var(--color-secondary-rgb), var(--opacity-20));
+    border-color: var(--color-secondary);
+}
+
+.demand-level-very-heavy.demand-level-selected .demand-level-level-name {
+    background: rgba(var(--color-secondary-rgb), var(--opacity-25));
+    border-right-color: rgba(var(--color-secondary-rgb), var(--opacity-50));
+    font-weight: 700;
+}
+
+.demand-level-very-heavy.demand-level-selected::after {
+    color: var(--color-secondary);
+}
+
+/* ============================================
+   SUBNAV INTEGRATION
+   ============================================ */
+
+/* Remove margins when inside no-padding subnav content */
+.subnav-content-body.no-padding .demand-level-selector-wrapper {
+    margin: 0;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+    .demand-level-header-row,
+    .demand-level-row {
+        grid-template-columns: 100px 1fr 1fr 1fr 1fr;
+    }
+
+    .demand-level-header-cell,
+    .demand-level-cell {
+        padding: var(--spacing-sm);
+        font-size: 12px;
+        min-height: 50px;
+    }
+
+    .demand-level-description {
+        padding: var(--spacing-sm);
+        font-size: 13px;
+    }
+
+    .demand-level-row.demand-level-selected::after {
+        font-size: 18px;
+        right: var(--spacing-sm);
+    }
+}
+
+@media (max-width: 480px) {
+    .demand-level-header-row,
+    .demand-level-row {
+        grid-template-columns: 80px 1fr 1fr 1fr 1fr;
+    }
+
+    .demand-level-header-cell,
+    .demand-level-cell {
+        padding: var(--spacing-xs);
+        font-size: 11px;
+        min-height: 45px;
+    }
+
+    .demand-level-title {
+        font-size: 16px;
+    }
+
+    .demand-level-description {
+        padding: var(--spacing-xs);
+        font-size: 12px;
+    }
+}
+
