@@ -162,6 +162,11 @@
     position: relative;
 }
 
+/* When content panel contains only no-padding sections, don't enforce min-height */
+.subnav-content-panel:has(> .subnav-content.no-padding.active) {
+    min-height: auto;
+}
+
 .subnav-content {
     display: none;
     animation: contentFadeIn var(--transition-cubic) forwards;
@@ -207,7 +212,10 @@
 
 /* No padding option for sections that need flush content (e.g., tables) */
 .subnav-content.no-padding {
-    margin: calc(var(--spacing-3xl) * -1);
+    margin-top: calc(var(--spacing-3xl) * -1);
+    margin-bottom: calc(var(--spacing-3xl) * -1);
+    margin-left: calc(var(--spacing-3xl) * -1);
+    margin-right: calc(var(--spacing-3xl) * -1);
 }
 
 .subnav-content-body.no-padding {

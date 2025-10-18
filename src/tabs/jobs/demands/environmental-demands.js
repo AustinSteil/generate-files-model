@@ -2,14 +2,22 @@
  * Environmental Demands Section
  *
  * Handles environmental demands data collection for job analysis.
- * Includes fields for weather exposure, noise levels, hazards, and other environmental factors.
+ * Captures exposure to various environmental hazards and conditions including
+ * wet surfaces, machinery, heights, chemicals, temperatures, noise, vibration,
+ * electrical hazards, radiation, lighting, confined spaces, and biological hazards.
  *
  * @author Austin Steil
+ * @version 1.0.0
+ * @license MIT <https://raw.githubusercontent.com/AustinSteil/generate-files-model/refs/heads/main/LICENSE>
+ * @copyright 2025 Austin Steil
+ * @created October 18, 2025
+ * @updated October 18, 2025
  */
 
 class EnvironmentalDemands {
     constructor() {
-        this.data = {};
+        this.table = null;
+        this.containerId = 'environmental-demands-table-container';
     }
 
     /**
@@ -19,62 +27,63 @@ class EnvironmentalDemands {
     render() {
         return `
             <div class="demands-section environmental-demands">
-                <h3>Environmental Demands</h3>
-                <p class="section-description">
-                    Describe the environmental conditions and exposures associated with this position.
-                </p>
-
-                <div class="demand-item">
-                    <label>Weather Exposure</label>
-                    <select class="form-control" id="environmental-weather">
-                        <option value="">Select exposure...</option>
-                        <option value="none">None - Climate controlled environment</option>
-                        <option value="occasional">Occasional - Brief outdoor exposure</option>
-                        <option value="frequent">Frequent - Regular outdoor work</option>
-                        <option value="constant">Constant - Primarily outdoor work</option>
-                    </select>
-                </div>
-
-                <div class="demand-item">
-                    <label>Noise Level</label>
-                    <select class="form-control" id="environmental-noise">
-                        <option value="">Select level...</option>
-                        <option value="quiet">Quiet - Library-like environment</option>
-                        <option value="moderate">Moderate - Normal office environment</option>
-                        <option value="loud">Loud - Machinery, traffic, construction</option>
-                        <option value="very-loud">Very Loud - Hearing protection required</option>
-                    </select>
-                </div>
-
-                <div class="demand-item">
-                    <label>Hazard Exposure</label>
-                    <select class="form-control" id="environmental-hazards">
-                        <option value="">Select exposure...</option>
-                        <option value="none">None - Standard office environment</option>
-                        <option value="minimal">Minimal - Low risk environment</option>
-                        <option value="moderate">Moderate - Some safety precautions required</option>
-                        <option value="high">High - Significant safety protocols required</option>
-                    </select>
-                </div>
-
-                <div class="demand-item">
-                    <label>Temperature Extremes</label>
-                    <select class="form-control" id="environmental-temperature">
-                        <option value="">Select exposure...</option>
-                        <option value="none">None - Climate controlled</option>
-                        <option value="occasional">Occasional - Brief exposure to extremes</option>
-                        <option value="frequent">Frequent - Regular exposure to heat/cold</option>
-                        <option value="constant">Constant - Extreme temperatures common</option>
-                    </select>
-                </div>
-
-                <div class="demand-item">
-                    <label>Additional Environmental Factors</label>
-                    <textarea class="form-control" id="environmental-additional" rows="4"
-                              placeholder="Describe any additional environmental demands (chemicals, dust, fumes, etc.)..."></textarea>
-                </div>
+                <div id="${this.containerId}"></div>
             </div>
         `;
+    }
+
+    /**
+     * Initialize the table component after render
+     * Call this after the HTML has been inserted into the DOM
+     */
+    init() {
+        // Ensure container exists before initializing
+        const container = document.getElementById(this.containerId);
+        if (!container) {
+            console.warn(`Environmental demands container ${this.containerId} not found, will retry...`);
+            return;
+        }
+
+        // Define all environmental hazard rows
+        const headerRows = [
+            'Wet, humid, or slippery surfaces',
+            'Proximity to moving mechanical parts or machinery',
+            'Working at heights',
+            'Fumes, odors, dust, or airborne particles',
+            'Hazardous chemicals (toxic or caustic)',
+            'Extreme temperatures (hot or cold, weather-related or non-weather)',
+            'High noise levels requiring hearing protection',
+            'Hand-arm vibration (e.g., from power tools)',
+            'Whole-body vibration (e.g., from vehicles or platforms)',
+            'Electrical hazards',
+            'Radiation exposure (ionizing or non-ionizing)',
+            'Poor lighting or illumination',
+            'Confined spaces',
+            'Biological hazards (e.g., pathogens or allergens)'
+        ];
+
+        this.table = new Table({
+            containerId: this.containerId,
+            headerColumns: [
+                { lines: ['Not Applicable', '0%'] },
+                { lines: ['Occasional', '1-33%'] },
+                { lines: ['Frequent', '34-66%'] },
+                { lines: ['Constant', '67-100%'] },
+                { lines: ['Objective Measurements', '& General Comments'] }
+            ],
+            headerRows: headerRows,
+            cellType: 'selectable',
+            selectionMode: 'single',
+            rowHeaderWidth: '200px',
+            columnWidths: ['auto', 'auto', 'auto', 'auto', 'auto'],
+            columnTypes: ['selectable', 'selectable', 'selectable', 'selectable', 'input'],
+            striped: true,
+            hoverable: true,
+            showValidationErrors: true,
+            onChange: (data) => {
+                // Handle data changes if needed
+            }
+        });
     }
 
     /**
@@ -82,13 +91,11 @@ class EnvironmentalDemands {
      * @returns {Object} Environmental demands data
      */
     getData() {
-        return {
-            weather: document.getElementById('environmental-weather')?.value || '',
-            noise: document.getElementById('environmental-noise')?.value || '',
-            hazards: document.getElementById('environmental-hazards')?.value || '',
-            temperature: document.getElementById('environmental-temperature')?.value || '',
-            additional: document.getElementById('environmental-additional')?.value || ''
-        };
+        if (!this.table) {
+            console.warn('Environmental demands table not initialized yet, returning empty data');
+            return {};
+        }
+        return this.table.getData();
     }
 
     /**
@@ -98,35 +105,57 @@ class EnvironmentalDemands {
     setData(data) {
         if (!data) return;
 
-        if (data.weather) {
-            const weatherEl = document.getElementById('environmental-weather');
-            if (weatherEl) weatherEl.value = data.weather;
+        if (!this.table) {
+            console.warn('Environmental demands table not initialized yet, attempting to initialize...');
+            this.init();
         }
-        if (data.noise) {
-            const noiseEl = document.getElementById('environmental-noise');
-            if (noiseEl) noiseEl.value = data.noise;
+
+        if (this.table) {
+            this.table.setData(data);
+        } else {
+            console.error('Failed to initialize environmental demands table for setData');
         }
-        if (data.hazards) {
-            const hazardsEl = document.getElementById('environmental-hazards');
-            if (hazardsEl) hazardsEl.value = data.hazards;
-        }
-        if (data.temperature) {
-            const temperatureEl = document.getElementById('environmental-temperature');
-            if (temperatureEl) temperatureEl.value = data.temperature;
-        }
-        if (data.additional) {
-            const additionalEl = document.getElementById('environmental-additional');
-            if (additionalEl) additionalEl.value = data.additional;
+    }
+
+    /**
+     * Clear all data from the environmental demands section
+     */
+    clear() {
+        if (this.table) {
+            this.table.clear();
         }
     }
 
     /**
      * Validate environmental demands data
+     * Ensures each row has at least one selection
      * @returns {boolean} True if validation passes
      */
     validate() {
-        // Placeholder validation - can be enhanced as needed
-        return true;
+        if (!this.table) {
+            return false;
+        }
+        return this.table.validate();
+    }
+
+    /**
+     * Get validation errors from the table
+     * @returns {Object} Object containing validation errors
+     */
+    getValidationErrors() {
+        if (!this.table) {
+            return {};
+        }
+        return this.table.getValidationErrors();
+    }
+
+    /**
+     * Clear validation errors from the table
+     */
+    clearValidationErrors() {
+        if (this.table) {
+            this.table.clearValidationErrors();
+        }
     }
 }
 

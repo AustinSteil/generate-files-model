@@ -5,11 +5,17 @@
  * Includes fields for weight requirements and frequency of these activities.
  *
  * @author Austin Steil
+ * @version 1.0.0
+ * @license MIT <https://raw.githubusercontent.com/AustinSteil/generate-files-model/refs/heads/main/LICENSE>
+ * @copyright 2025 Austin Steil
+ * @created October 18, 2025
+ * @updated October 18, 2025
  */
 
 class LiftingPushingPulling {
     constructor() {
-        this.data = {};
+        this.table = null;
+        this.containerId = 'lifting-pushing-pulling-table-container';
     }
 
     /**
@@ -19,63 +25,54 @@ class LiftingPushingPulling {
     render() {
         return `
             <div class="demands-section lifting-pushing-pulling-demands">
-                <h3>Lifting, Pushing, and Pulling Demands</h3>
-                <p class="section-description">
-                    Describe the lifting, pushing, and pulling requirements of this position.
-                </p>
-
-                <div class="demand-item">
-                    <label>Maximum Weight Lifted</label>
-                    <select class="form-control" id="lifting-max-weight">
-                        <option value="">Select weight...</option>
-                        <option value="sedentary">Sedentary - Up to 10 lbs occasionally</option>
-                        <option value="light">Light - Up to 20 lbs occasionally, 10 lbs frequently</option>
-                        <option value="medium">Medium - Up to 50 lbs occasionally, 25 lbs frequently</option>
-                        <option value="heavy">Heavy - Up to 100 lbs occasionally, 50 lbs frequently</option>
-                        <option value="very-heavy">Very Heavy - Over 100 lbs occasionally, over 50 lbs frequently</option>
-                    </select>
-                </div>
-
-                <div class="demand-item">
-                    <label>Lifting Frequency</label>
-                    <select class="form-control" id="lifting-frequency">
-                        <option value="">Select frequency...</option>
-                        <option value="never">Never</option>
-                        <option value="occasionally">Occasionally (0-33%)</option>
-                        <option value="frequently">Frequently (34-66%)</option>
-                        <option value="constantly">Constantly (67-100%)</option>
-                    </select>
-                </div>
-
-                <div class="demand-item">
-                    <label>Pushing/Pulling Requirements</label>
-                    <select class="form-control" id="lifting-pushing-pulling">
-                        <option value="">Select requirement...</option>
-                        <option value="none">None - No pushing/pulling required</option>
-                        <option value="light">Light - Carts, doors, light equipment</option>
-                        <option value="moderate">Moderate - Heavy carts, equipment, materials</option>
-                        <option value="heavy">Heavy - Industrial equipment, heavy loads</option>
-                    </select>
-                </div>
-
-                <div class="demand-item">
-                    <label>Carrying Requirements</label>
-                    <select class="form-control" id="lifting-carrying">
-                        <option value="">Select requirement...</option>
-                        <option value="never">Never</option>
-                        <option value="occasionally">Occasionally - Short distances, light items</option>
-                        <option value="frequently">Frequently - Regular carrying of materials</option>
-                        <option value="constantly">Constantly - Continuous carrying throughout shift</option>
-                    </select>
-                </div>
-
-                <div class="demand-item">
-                    <label>Additional Lifting/Pushing/Pulling Details</label>
-                    <textarea class="form-control" id="lifting-additional" rows="4"
-                              placeholder="Describe specific items lifted, distances carried, or other relevant details..."></textarea>
-                </div>
+                <div id="${this.containerId}"></div>
             </div>
         `;
+    }
+
+    /**
+     * Initialize the table component after render
+     * Call this after the HTML has been inserted into the DOM
+     */
+    init() {
+        // Ensure container exists before initializing
+        const container = document.getElementById(this.containerId);
+        if (!container) {
+            console.warn(`Lifting, pushing, and pulling demands container ${this.containerId} not found, will retry...`);
+            return;
+        }
+
+        // Define all weight rows
+        const headerRows = [
+            'Less than 5 lbs',
+            '5-25 lbs',
+            '26-50 lbs',
+            '51-100 lbs',
+            'Over 100 lbs'
+        ];
+
+        this.table = new Table({
+            containerId: this.containerId,
+            headerColumns: [
+                { lines: ['N/A', 'or None'] },
+                { lines: ['Occasional', '1-33%', '<12 reps/hour'] },
+                { lines: ['Frequent', '34-66%', '12-60 reps/hour'] },
+                { lines: ['Constant', '67-100%', '>60 reps/hour'] },
+                { lines: ['Objective Measurements', '& General Comments'] }
+            ],
+            headerRows: headerRows,
+            cellType: 'selectable',
+            selectionMode: 'single',
+            rowHeaderWidth: 'auto',
+            columnWidths: ['auto', 'auto', 'auto', 'auto', 'auto'],
+            columnTypes: ['selectable', 'selectable', 'selectable', 'selectable', 'input'],
+            striped: true,
+            hoverable: true,
+            showValidationErrors: true,
+            onChange: (data) => {
+                // Handle data changes if needed
+            }
+        });
     }
 
     /**
@@ -83,13 +80,11 @@ class LiftingPushingPulling {
      * @returns {Object} Lifting, pushing, and pulling demands data
      */
     getData() {
-        return {
-            maxWeight: document.getElementById('lifting-max-weight')?.value || '',
-            frequency: document.getElementById('lifting-frequency')?.value || '',
-            pushingPulling: document.getElementById('lifting-pushing-pulling')?.value || '',
-            carrying: document.getElementById('lifting-carrying')?.value || '',
-            additional: document.getElementById('lifting-additional')?.value || ''
-        };
+        if (!this.table) {
+            console.warn('Lifting, pushing, and pulling demands table not initialized yet, returning empty data');
+            return {};
+        }
+        return this.table.getData();
     }
 
     /**
@@ -99,35 +94,57 @@ class LiftingPushingPulling {
     setData(data) {
         if (!data) return;
 
-        if (data.maxWeight) {
-            const maxWeightEl = document.getElementById('lifting-max-weight');
-            if (maxWeightEl) maxWeightEl.value = data.maxWeight;
+        if (!this.table) {
+            console.warn('Lifting, pushing, and pulling demands table not initialized yet, attempting to initialize...');
+            this.init();
         }
-        if (data.frequency) {
-            const frequencyEl = document.getElementById('lifting-frequency');
-            if (frequencyEl) frequencyEl.value = data.frequency;
+
+        if (this.table) {
+            this.table.setData(data);
+        } else {
+            console.error('Failed to initialize lifting, pushing, and pulling demands table for setData');
         }
-        if (data.pushingPulling) {
-            const pushingPullingEl = document.getElementById('lifting-pushing-pulling');
-            if (pushingPullingEl) pushingPullingEl.value = data.pushingPulling;
-        }
-        if (data.carrying) {
-            const carryingEl = document.getElementById('lifting-carrying');
-            if (carryingEl) carryingEl.value = data.carrying;
-        }
-        if (data.additional) {
-            const additionalEl = document.getElementById('lifting-additional');
-            if (additionalEl) additionalEl.value = data.additional;
+    }
+
+    /**
+     * Clear all data from the lifting, pushing, and pulling demands section
+     */
+    clear() {
+        if (this.table) {
+            this.table.clear();
         }
     }
 
     /**
      * Validate lifting, pushing, and pulling demands data
+     * Ensures each row has at least one selection
      * @returns {boolean} True if validation passes
      */
     validate() {
-        // Placeholder validation - can be enhanced as needed
-        return true;
+        if (!this.table) {
+            return false;
+        }
+        return this.table.validate();
+    }
+
+    /**
+     * Get validation errors from the table
+     * @returns {Object} Object containing validation errors
+     */
+    getValidationErrors() {
+        if (!this.table) {
+            return {};
+        }
+        return this.table.getValidationErrors();
+    }
+
+    /**
+     * Clear validation errors from the table
+     */
+    clearValidationErrors() {
+        if (this.table) {
+            this.table.clearValidationErrors();
+        }
     }
 }
 
