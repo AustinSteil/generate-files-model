@@ -206,9 +206,9 @@ Created comprehensive documentation:
 </div>
 ```
 
-### Step 3: Update Word Template
+### Step 3: Update PDF Template Generator
 
-Add `{projectName}` placeholder to your `template_1.docx` file.
+Add `{projectName}` placeholder to your PDF template generator (e.g., `src/templates/pdf/generators/template_1.js`).
 
 ### That's It
 
@@ -287,9 +287,3 @@ The storage system is now more robust, maintainable, and scalable. By using `var
 - ✅ Added better error detection
 
 You can now confidently add new document variables knowing the storage system will automatically handle them!
-
----
-
-**Date**: 2025-10-12
-**Author**: Austin Steil
-**Version**: 1.0.0

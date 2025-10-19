@@ -175,42 +175,54 @@ class IntroTab {
                 content: 'Traditional professional document layout',
                 image: 'src/templates/images/template_1.png',
                 pdf: 'src/templates/pdf/template_1.pdf',
-                value: 'template_1'
+                value: 'template_1',
+                generator: 'Template1Generator',
+                preview: 'Template1Preview'
             },
             {
                 title: 'Modern Template',
                 content: 'Clean contemporary design with bold headers',
                 image: 'src/templates/images/template_2.png',
                 pdf: 'src/templates/pdf/template_2.pdf',
-                value: 'template_2'
+                value: 'template_2',
+                generator: 'Template2Generator',
+                preview: 'Template2Preview'
             },
             {
                 title: 'Minimal Template',
                 content: 'Simple and elegant minimalist approach',
                 image: 'src/templates/images/template_3.png',
                 pdf: 'src/templates/pdf/template_3.pdf',
-                value: 'template_3'
+                value: 'template_3',
+                generator: 'Template3Generator',
+                preview: 'Template3Preview'
             },
             {
                 title: 'Corporate Template',
                 content: 'Professional business document format',
                 image: 'src/templates/images/template_4.png',
                 pdf: 'src/templates/pdf/template_4.pdf',
-                value: 'template_4'
+                value: 'template_4',
+                generator: 'Template4Generator',
+                preview: 'Template4Preview'
             },
             {
                 title: 'Creative Template',
                 content: 'Artistic layout with creative elements',
                 image: 'src/templates/images/template_5.png',
                 pdf: 'src/templates/pdf/template_5.pdf',
-                value: 'template_5'
+                value: 'template_5',
+                generator: 'Template5Generator',
+                preview: 'Template5Preview'
             },
             {
                 title: 'Academic Template',
                 content: 'Structured format for academic documents',
                 image: 'src/templates/images/template_6.png',
                 pdf: 'src/templates/pdf/template_6.pdf',
-                value: 'template_6'
+                value: 'template_6',
+                generator: 'Template6Generator',
+                preview: 'Template6Preview'
             }
         ];
 
@@ -239,6 +251,28 @@ class IntroTab {
                 }
             }
         });
+    }
+
+    /**
+     * Get the selected template's generator and preview class names
+     * @returns {Object} Object with generator and preview class names
+     */
+    getSelectedTemplateClasses() {
+        if (!this.selectedTemplate || !this.templateCards) {
+            return { generator: null, preview: null };
+        }
+
+        // Find the selected template card
+        const selectedCard = this.templateCards.cards.find(card => card.value === this.selectedTemplate);
+
+        if (selectedCard) {
+            return {
+                generator: selectedCard.generator,
+                preview: selectedCard.preview
+            };
+        }
+
+        return { generator: null, preview: null };
     }
 
     /**

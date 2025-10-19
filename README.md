@@ -1,6 +1,6 @@
 # Generate Files Model
 
-A web-based document generation tool that creates Word documents from templates using user-provided data. Built with docxtemplater and PizZip for reliable document processing.
+A web-based document generation tool that creates PDF documents from templates using user-provided data. Built with jsPDF for reliable PDF generation.
 
 Live demo: <https://austinsteil.github.io/generate-files-model/>
 
@@ -19,15 +19,16 @@ Copyright 2025 Austin Steil
 
 ## Features
 
-- 📄 Generate Word documents from predefined templates
+- 📄 Generate PDF documents from predefined templates
 - 🎨 Clean, responsive web interface
 - 📝 Form-based data input with validation
-- 💾 Automatic document download
+- 💾 Automatic PDF download
 - 🔧 Configurable template variables via JSON
 - 🃏 Card Selection - Interactive card-based choice system with responsive layouts
 - 💾 **Save for Later** - Securely store your form data for future use
 - 🎨 **Color System** - Centralized color management for consistent UI
 - 🌙 **Dark Mode** - Toggleable dark mode for improved readability
+- 👁️ **Live Preview** - See your PDF before generating it
 
 ### Save for Later Security
 
@@ -115,7 +116,7 @@ The toggle button shows the current mode and allows instant switching between li
    - Date
    - Content
 
-2. Click "Generate Document" to create and download your Word document
+2. Click "Generate Document" to create and download your PDF document
 
 ### Using Save for Later
 
@@ -309,7 +310,7 @@ Edit `src/fields/vars.json` to customize the template variable mappings:
 
 1. Add the field to `src/fields/vars.json`
 2. Add the corresponding HTML form element to `index.html`
-3. Add the placeholder to your Word template
+3. Add the placeholder to your PDF template generator
 
 The storage system automatically adapts to changes in `src/fields/vars.json` - no code changes needed!
 
@@ -319,16 +320,16 @@ For detailed documentation, see [`src/fields/vars.json.README.md`](src/fields/va
 
 The application supports multiple templates organized in the `src/templates/` folder:
 
-- **Add new templates**: Place files in `src/templates/word/`, `src/templates/pdf/`, and `src/templates/images/`
-- **Template naming**: Use consistent naming (e.g., `template_7.docx`, `template_7.pdf`, `template_7.png`)
-- **Variable consistency**: Ensure all templates use the same placeholder variables defined in `src/fields/vars.json`
+- **Add new templates**: Create generator and preview classes in `src/templates/pdf/generators/` and `src/templates/pdf/previews/`, and add preview images to `src/templates/images/`
+- **Template naming**: Use consistent naming (e.g., `template_7.js` for generator, `template_7_preview.js` for preview, `template_7.png` for image)
+- **Variable consistency**: Ensure all templates use the same data fields defined in `src/fields/vars.json`
 - **Update template cards**: Add new template configurations to `src/tabs/intro/intro.js`
 
 **Template Workflow**:
 
 1. **PNG Image**: Shows as card preview in template selection
-2. **PDF File**: Displays in full-screen preview when user clicks expand button
-3. **DOCX File**: Used for actual document generation based on user's selection
+2. **PDF Preview**: Displays in full-screen preview when user clicks expand button
+3. **PDF Generator**: Used for actual PDF document generation based on user's selection
 
 ## Project Structure
 
@@ -343,8 +344,6 @@ generate-files-model/
 ├── package-lock.json       # Locked dependency versions
 ├── LICENSE                 # MIT license
 ├── README.md               # This file
-├── docxtemplater.js        # Generated: Document templating library
-├── pizzip.js               # Generated: ZIP file handling library
 ├── node_modules/           # NPM dependencies (generated)
 └── src/                    # Source code organization
     ├── color-system/       # Color management and dark mode
@@ -450,22 +449,30 @@ generate-files-model/
     │   │       ├── template_4-archived.png # Archived corporate template
     │   │       ├── template_5-archived.png # Archived creative template
     │   │       └── template_6-archived.png # Archived academic template
-    │   ├── pdf/            # PDF files for full-screen preview
+    │   ├── pdf/            # PDF generation and preview files
     │   │   ├── README.md                  # PDF templates documentation
-    │   │   ├── template_1.pdf             # Classic template full preview
-    │   │   ├── template_2.pdf             # Modern template full preview
-    │   │   ├── template_3.pdf             # Minimal template full preview
-    │   │   ├── template_4.pdf             # Corporate template full preview
-    │   │   ├── template_5.pdf             # Creative template full preview
-    │   │   └── template_6.pdf             # Academic template full preview
-    │   └── word/           # DOCX templates for document generation
-    │       ├── README.md                  # Word templates documentation
-    │       ├── template_1.docx            # Classic template source
-    │       ├── template_2.docx            # Modern template source
-    │       ├── template_3.docx            # Minimal template source
-    │       ├── template_4.docx            # Corporate template source
-    │       ├── template_5.docx            # Creative template source
-    │       └── template_6.docx            # Academic template source
+    │   │   ├── generators/               # PDF generator classes
+    │   │   │   ├── pdf-utils.js          # Shared PDF utilities
+    │   │   │   ├── template_1.js         # Template 1 PDF generator
+    │   │   │   ├── template_2.js         # Template 2 PDF generator
+    │   │   │   ├── template_3.js         # Template 3 PDF generator
+    │   │   │   ├── template_4.js         # Template 4 PDF generator
+    │   │   │   ├── template_5.js         # Template 5 PDF generator
+    │   │   │   └── template_6.js         # Template 6 PDF generator
+    │   │   ├── previews/                 # HTML preview generators
+    │   │   │   ├── preview-utils.js      # Shared preview utilities
+    │   │   │   ├── template_1_preview.js # Template 1 HTML preview
+    │   │   │   ├── template_2_preview.js # Template 2 HTML preview
+    │   │   │   ├── template_3_preview.js # Template 3 HTML preview
+    │   │   │   ├── template_4_preview.js # Template 4 HTML preview
+    │   │   │   ├── template_5_preview.js # Template 5 HTML preview
+    │   │   │   └── template_6_preview.js # Template 6 HTML preview
+    │   │   ├── template_1.pdf            # Classic template reference PDF
+    │   │   ├── template_2.pdf            # Modern template reference PDF
+    │   │   ├── template_3.pdf            # Minimal template reference PDF
+    │   │   ├── template_4.pdf            # Corporate template reference PDF
+    │   │   ├── template_5.pdf            # Creative template reference PDF
+    │   │   └── template_6.pdf            # Academic template reference PDF
     ├── tabs/               # Tab-based application structure
     │   ├── tabs.js                 # Tab management and navigation
     │   ├── tabs.css                # Tab styling and layout
@@ -507,18 +514,16 @@ generate-files-model/
 
 ## Dependencies
 
-- **docxtemplater** (^3.66.7): Document templating and variable replacement
-- **pizzip** (^3.2.0): ZIP file handling for DOCX processing
+- **jsPDF** (^3.0.3): PDF document generation and rendering
 
-> **Note:** The bundled JS files (`docxtemplater.js`, `pizzip.js`) are generated from npm packages during setup and should not be committed to version control.
+> **Note:** jsPDF is loaded from CDN in `index.html` for optimal performance.
 
 ## Development
 
 ### NPM Scripts
 
 - `npm install` - Install dependencies
-- `npm run setup` - Copy required libraries from node_modules to project root
-- `npm run clean` - Remove generated library files
+- `npm start` - Start development server
 
 ### Adding New Components
 
@@ -562,5 +567,5 @@ The application follows web accessibility best practices:
 
 ## Acknowledgments
 
-- [docxtemplater](https://docxtemplater.com/) for the excellent templating engine
-- [PizZip](https://github.com/Stuk/jszip) for ZIP file processing capabilities
+- [jsPDF](https://github.com/parallax/jsPDF) for the excellent PDF generation library
+- [Quill.js](https://quilljs.com/) for rich text editing capabilities

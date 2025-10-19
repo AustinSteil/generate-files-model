@@ -34,7 +34,7 @@ This directory contains PNG preview images for each of the six available documen
 
 ## Usage
 
-These images are referenced by the template selection component to display visual previews of each template option. When a user selects a template, the corresponding Word template from `src/templates/word/` is used for document generation.
+These images are referenced by the template selection component to display visual previews of each template option. When a user selects a template, the corresponding PDF generator from `src/templates/pdf/generators/` is used for document generation.
 
 ## Image Specifications
 
@@ -45,6 +45,7 @@ These images are referenced by the template selection component to display visua
 
 ## Related Files
 
-- Word templates: `src/templates/word/`
-- PDF templates: `src/templates/pdf/`
+- PDF generators: `src/templates/pdf/generators/`
+- PDF previews: `src/templates/pdf/previews/`
+- PDF reference files: `src/templates/pdf/`
 - Template selection component: `src/tabs/intro/`

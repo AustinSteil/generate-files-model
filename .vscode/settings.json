@@ -3,21 +3,18 @@
         "Anytown",
         "checkmark",
         "describedby",
-        "docxtemplater",
         "Dorsiflexion",
         "dotenv",
         "ehthumbs",
         "Flexbox",
         "hoverable",
+        "jspdf",
         "labelledby",
         "maxlength",
         "mets",
         "navpanes",
         "newtab",
         "nums",
-        "officedocument",
-        "openxmlformats",
-        "pizzip",
         "Plantarflexion",
         "quilljs",
         "rgba",
@@ -27,7 +24,6 @@
         "tabchange",
         "Toggleable",
         "WCAG",
-        "WMSPW",
-        "wordprocessingml"
+        "WMSPW"
     ]
 }

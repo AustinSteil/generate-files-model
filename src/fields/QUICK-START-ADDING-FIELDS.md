@@ -78,18 +78,19 @@ Add the form field to your HTML:
 </select>
 ```
 
-### Step 3: Add to Word Template
+### Step 3: Add to PDF Template Generator
 
-1. Open `template_1.docx` in Microsoft Word
+1. Open the PDF template generator (e.g., `src/templates/pdf/generators/template_1.js`)
 2. Add the placeholder where you want the value to appear: `{yourNewField}`
-3. Save the template
+3. Save the file
 
 **Example:**
 
-```text
-Project Name: {projectName}
-Client: {clientName}
-Date: {documentDate}
+```javascript
+// In the template generator, add the field to the appropriate section:
+this.addField('Project Name', this.data.projectName);
+this.addField('Client', this.data.clientName);
+this.addField('Date', this.data.documentDate);
 ```
 
 ## That's It! 🎉
@@ -178,17 +179,17 @@ Add after the existing fields:
 </div>
 ```
 
-### 3. Update `template_1.docx`
+### 3. Update PDF Template Generator
 
-Add to your Word template:
+Add to your PDF template generator (e.g., `src/templates/pdf/generators/template_1.js`):
 
-```text
-Document Title: {documentTitle}
-Project: {projectName}
-Author: {authorName}
-Date: {documentDate}
-
-{documentContent}
+```javascript
+// Add the new field to the appropriate section of your template
+this.addField('Document Title', this.data.documentTitle);
+this.addField('Project', this.data.projectName);
+this.addField('Author', this.data.authorName);
+this.addField('Date', this.data.documentDate);
+this.addContent(this.data.documentContent);
 ```
 
 ### 4. Test It
@@ -214,9 +215,9 @@ Date: {documentDate}
 
 **Check:**
 
-- [ ] Template variable is in Word document
+- [ ] Template variable is in PDF generator
 - [ ] Template variable matches `vars.json` value
-- [ ] Template variable has curly braces: `{fieldName}`
+- [ ] Template variable is properly referenced in the generator code
 
 ### Console warnings
 
@@ -303,8 +304,3 @@ document.getElementById('documentDate').value = new Date().toISOString().split('
 - **Detailed documentation**: See `vars.json.README.md` (in this same folder)
 - **Architecture overview**: See `STORAGE-SYSTEM-IMPROVEMENTS.md` (in this same folder)
 - **Main README**: See `../README.md`
-
----
-
-**Last Updated**: 2025-10-12
-**Author**: Austin Steil

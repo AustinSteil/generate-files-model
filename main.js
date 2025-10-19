@@ -1,13 +1,12 @@
 /**
  * Document Generator Application
  *
- * A web-based tool for generating Word documents using docxtemplater and PizZip.
- * This application allows users to fill out a form and generate a Word document
- * based on a predefined template with placeholder variables.
+ * A web-based tool for generating PDF documents using jsPDF.
+ * This application allows users to fill out a form and generate a PDF document
+ * based on a selected template with dynamic data binding.
  *
  * Dependencies:
- * - docxtemplater: For template processing and variable replacement
- * - PizZip: For handling ZIP file operations (DOCX files are ZIP archives)
+ * - jsPDF: For PDF document generation and rendering
  *
  * @author Austin Steil
  * @version 1.0.0
@@ -32,7 +31,6 @@ class DocumentGenerator {
         // See src/fields/vars.json.README.md for detailed documentation
         this.varsConfig = {}; // Configuration mapping for template variables
 
-        this.templatePath = 'src/templates/word/template_1.docx'; // Default template file path
         this.secureStorage = new SecureStorage(); // Secure storage instance
         this.storageUIManager = null; // Storage UI manager instance
         this.storageDataManager = null; // Storage data manager instance
@@ -45,10 +43,6 @@ class DocumentGenerator {
      * Initialize the application by loading configuration and setting up event listeners
      */
     async init() {
-        // Check if required libraries are available
-        console.log('PizZip available:', typeof window.PizZip);
-        console.log('docxtemplater available:', typeof window.docxtemplater);
-
         // Load variable configuration from vars.json
         await this.loadVarsConfig();
 
@@ -280,18 +274,15 @@ class DocumentGenerator {
 
         this.collectFormData();
 
-        // Set the template path based on selected template
-        this.setTemplateFromSelection();
-
         try {
-            // Generate document using docxtemplater
-            const generatedDoc = await this.generateDocumentWithTemplate();
+            // Generate PDF using the selected template's generator
+            const generatedPDF = await this.generatePDFWithTemplate();
 
             // Trigger download directly
-            this.createDownloadLinkForDoc(generatedDoc);
+            this.createDownloadLinkForPDF(generatedPDF);
 
             // Show success message
-            showSuccess('Document generated and download started successfully!');
+            showSuccess('PDF generated and download started successfully!');
 
         } catch (error) {
             console.error('Document generation failed:', error);
@@ -307,181 +298,56 @@ class DocumentGenerator {
     }
 
     /**
-     * Set the template path based on the selected template from the intro tab
+     * Generate PDF using the selected template's generator class
      */
-    setTemplateFromSelection() {
-        // Get the selected template from form data
+    async generatePDFWithTemplate() {
+        // Get the selected template
         const selectedTemplate = this.formData.selectedTemplate || this.formData.template;
-
-        if (selectedTemplate) {
-            this.templatePath = `src/templates/word/${selectedTemplate}.docx`;
-            console.log('Using template:', this.templatePath);
-        } else {
-            console.warn('No template selected, using default template');
-            this.templatePath = 'src/templates/word/template_1.docx';
-        }
-    }
-
-    async generateDocumentWithTemplate() {
-        // Check if libraries are loaded
-        if (!window.PizZip || !window.docxtemplater) {
-            throw new Error('Required libraries (PizZip or docxtemplater) are not loaded');
+        if (!selectedTemplate) {
+            throw new Error('No template selected');
         }
 
-        // Load the template file from the server
-        const templateBuffer = await this.loadTemplateFromPath(this.templatePath);
-
-        // Create a PizZip instance with the template
-        const zip = new window.PizZip(templateBuffer);
-
-        // Create docxtemplater instance
-        const doc = new window.docxtemplater(zip, {
-            paragraphLoop: true,
-            linebreaks: true,
-        });
-
-        // Prepare data for template replacement
-        const templateData = this.prepareTemplateData();
-
-        try {
-            // Render the document (replace placeholders with actual data)
-            doc.render(templateData);
-        } catch (error) {
-            console.error('Template rendering error:', error);
-            throw new Error(`Template error: ${error.message}`);
+        // Get the generator class name from the intro tab
+        const templateClasses = this.tabsManager.introTab?.getSelectedTemplateClasses();
+        if (!templateClasses || !templateClasses.generator) {
+            throw new Error('Generator class not found for selected template');
         }
 
-        // Generate the document as a buffer
-        const generatedBuffer = doc.getZip().generate({
-            type: 'arraybuffer',
-            compression: 'DEFLATE',
-        });
-
-        return generatedBuffer;
-    }
-
-    async loadTemplateFromPath(templatePath) {
-        try {
-            const response = await fetch(templatePath);
-            if (!response.ok) {
-                throw new Error(`Failed to load template: ${response.status} ${response.statusText}`);
-            }
-            return await response.arrayBuffer();
-        } catch (error) {
-            throw new Error(`Template loading error: ${error.message}`);
+        // Get the generator class from window
+        const GeneratorClass = window[templateClasses.generator];
+        if (!GeneratorClass) {
+            throw new Error(`Generator class ${templateClasses.generator} not found`);
         }
-    }
 
+        // Create an instance of the generator
+        const generator = new GeneratorClass();
 
+        // Generate the PDF
+        const doc = generator.generate(this.formData);
 
-    prepareTemplateData() {
-        // Map form data to template variables using varsConfig
-        const templateData = {};
-
-        Object.entries(this.formData).forEach(([key, value]) => {
-            // Remove the curly braces from the variable name in varsConfig
-            const templateKey = this.varsConfig[key] ?
-                this.varsConfig[key].replace(/[{}]/g, '') : key;
-
-            // Handle nested objects (like workSchedule) by flattening them
-            if (key === 'workSchedule' && value && typeof value === 'object' && !Array.isArray(value)) {
-                // Flatten workSchedule object for easier template access
-                templateData.weeklyHours = value.weeklyHours || 0;
-                templateData.shiftLength = value.shiftLength || 0;
-                templateData.shiftsPerWeek = value.shiftsPerWeek || 0;
-                // Also keep the original nested structure for advanced templates
-                templateData[templateKey] = value;
-            } else if (key === 'jobsData' && value && typeof value === 'object') {
-                // Handle jobs data - convert table data to readable format for templates
-                templateData[templateKey] = value;
-
-                // Process physical demands table data into readable format
-                if (value.physicalDemands) {
-                    templateData.physicalDemandsFormatted = this.formatTableDataForTemplate(
-                        value.physicalDemands,
-                        ['Not Applicable', 'Occasional', 'Frequent', 'Constant'],
-                        [
-                            'Awkward position', 'Bending over', 'Carrying', 'Driving',
-                            'Fine motor tasks', 'Gripping or grasping', 'Handling', 'Kneeling',
-                            'Lifting', 'Lifting overhead', 'Pulling', 'Pushing', 'Reaching',
-                            'Sitting', 'Squatting or crouching', 'Standing', 'Talking and hearing',
-                            'Twisting or turning', 'Walking'
-                        ]
-                    );
-                }
-            } else if (['physicalDemands', 'mobilityDemands', 'cognitiveSensoryDemands',
-                        'environmentalDemands', 'liftingPushingPulling', 'classificationOfWork'].includes(key)) {
-                // Handle individual demand sections
-                templateData[templateKey] = value;
-            } else {
-                // For arrays and simple values, pass them directly
-                templateData[templateKey] = value;
-            }
-        });
-
-        // Add some additional useful data
-        templateData.generatedDate = new Date().toLocaleDateString();
-        templateData.generatedTime = new Date().toLocaleTimeString();
-
-        console.log('Template data prepared:', templateData);
-        return templateData;
+        // Return the PDF as a blob
+        return doc.output('blob');
     }
 
     /**
-     * Format table data into a readable structure for Word templates
-     * @param {Object} tableData - Raw table data (row/column indices with boolean values)
-     * @param {Array} columnHeaders - Column header labels
-     * @param {Array} rowHeaders - Row header labels
-     * @returns {Array} Formatted array of objects for template consumption
+     * Create a download link for the generated PDF and trigger download
      */
-    formatTableDataForTemplate(tableData, columnHeaders, rowHeaders) {
-        const formatted = [];
+    createDownloadLinkForPDF(pdfBlob) {
+        // Create a blob URL
+        const blobUrl = URL.createObjectURL(pdfBlob);
 
-        Object.keys(tableData).forEach(rowIndex => {
-            const rowData = tableData[rowIndex];
-            const rowLabel = rowHeaders[rowIndex] || `Row ${rowIndex}`;
+        // Create a temporary link element
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.download = `job-analysis-${new Date().getTime()}.pdf`;
 
-            // Find which column is selected (true value)
-            let selectedColumn = null;
-            Object.keys(rowData).forEach(colIndex => {
-                if (rowData[colIndex] === true) {
-                    selectedColumn = columnHeaders[colIndex] || `Column ${colIndex}`;
-                }
-            });
+        // Trigger the download
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
 
-            formatted.push({
-                activity: rowLabel,
-                frequency: selectedColumn || 'Not Selected'
-            });
-        });
-
-        return formatted;
-    }
-
-    createDownloadLinkForDoc(documentBuffer) {
-        // Create blob from the generated document buffer
-        const blob = new Blob([documentBuffer], {
-            type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-        });
-        const url = URL.createObjectURL(blob);
-
-        // Create download link dynamically
-        const downloadLink = document.createElement('a');
-        downloadLink.href = url;
-        downloadLink.download = `${this.formData.documentTitle || 'document'}.docx`;
-        downloadLink.style.display = 'none'; // Hide the link since we're auto-clicking it
-
-        // Add to document temporarily for download
-        document.body.appendChild(downloadLink);
-
-        // Trigger automatic download
-        downloadLink.click();
-
-        // Clean up
-        setTimeout(() => {
-            URL.revokeObjectURL(url);
-            document.body.removeChild(downloadLink);
-        }, 100);
+        // Clean up the blob URL
+        URL.revokeObjectURL(blobUrl);
     }
 
 

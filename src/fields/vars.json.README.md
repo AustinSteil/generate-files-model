@@ -20,7 +20,7 @@ Copyright 2025 Austin Steil
 1. **Which form fields exist** and should be collected
 2. **Which data gets saved** when using "Save Data for Later"
 3. **Which data gets loaded** when using "Load Last Saved Data"
-4. **How form data maps** to template variables in the Word document
+4. **How form data maps** to template variables in the PDF generators
 
 ## How It Works
 
@@ -47,9 +47,9 @@ The application automatically uses `vars.json` to:
   - Example: `"documentTitle"`
   - Must match the `id` of an input/textarea/select element in `index.html`
 
-- **Value (right side)**: The template variable name used in the Word document
+- **Value (right side)**: The template variable name used in the PDF generators
   - Example: `"{documentTitle}"`
-  - Must match the placeholder in your `.docx` template file
+  - Must match the placeholder in your PDF template generator
   - Curly braces `{}` are required
 
 ## Adding New Fields
@@ -79,9 +79,9 @@ Add the corresponding form field:
 </div>
 ```
 
-### Step 3: Add to Word Template
+### Step 3: Add to PDF Template Generator
 
-Add the placeholder `{newFieldName}` to your `template_1.docx` file where you want the value to appear.
+Add the placeholder `{newFieldName}` to your PDF template generator (e.g., `src/templates/pdf/generators/template_1.js`) where you want the value to appear.
 
 **That's it!** The storage system will automatically:
 
@@ -96,7 +96,7 @@ To remove a field:
 
 1. Remove the entry from `vars.json`
 2. Remove the form field from `index.html`
-3. Remove the placeholder from your Word template
+3. Remove the placeholder from your PDF template generators
 
 The storage system will automatically stop collecting/saving that field.
 
@@ -125,7 +125,7 @@ Example:
 
 ### Template Variable Format
 
-Template variables in the Word document must:
+Template variables in the PDF generators must:
 
 - Be wrapped in curly braces: `{variableName}`
 - Match the value (right side) in `vars.json`
@@ -240,7 +240,7 @@ If you load saved data that's **missing** new fields in `vars.json`:
 
 **Check:**
 
-1. Is the template variable in the Word document?
+1. Is the template variable in the PDF generator?
 2. Does it match the value in `vars.json` (including curly braces)?
 3. Is the template variable spelled correctly?
 
@@ -257,12 +257,3 @@ Field "fieldName" defined in vars.json but not found in form
 - The field exists in `vars.json`
 - But there's no matching HTML element with that `id`
 - Add the HTML element or remove the entry from `vars.json`
-
-## Version History
-
-- **v1.0.0** (Current): Initial implementation with dynamic field collection based on `vars.json`
-
----
-
-**Last Updated**: 2025-10-12
-**Author**: Austin Steil

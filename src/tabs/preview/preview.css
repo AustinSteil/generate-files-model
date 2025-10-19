@@ -17,6 +17,157 @@
  */
 
 /* ============================================
+   PDF PREVIEW CONTAINER (New PDF Generation System)
+   ============================================ */
+.pdf-preview-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2xl);
+    padding: var(--spacing-lg);
+    background: var(--color-background-secondary);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border-light);
+}
+
+.pdf-page {
+    background: var(--color-background-primary);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-2xl);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    page-break-after: always;
+}
+
+.pdf-page h1,
+.pdf-page h2,
+.pdf-page h3 {
+    color: var(--color-text-primary);
+    margin-top: 0;
+}
+
+.pdf-page h1 {
+    font-size: 1.75rem;
+    margin-bottom: var(--spacing-lg);
+}
+
+.pdf-page h2 {
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-md);
+    border-bottom: 2px solid var(--color-primary);
+    padding-bottom: var(--spacing-md);
+}
+
+.pdf-page h3 {
+    font-size: 1.25rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.pdf-page p {
+    color: var(--color-text-primary);
+    line-height: 1.6;
+    margin: var(--spacing-sm) 0;
+}
+
+.pdf-page ul,
+.pdf-page ol {
+    color: var(--color-text-primary);
+    margin: var(--spacing-md) 0;
+    padding-left: var(--spacing-2xl);
+}
+
+.pdf-page li {
+    margin: var(--spacing-sm) 0;
+    line-height: 1.6;
+}
+
+.cover-page {
+    text-align: center;
+    padding: var(--spacing-3xl) 0;
+}
+
+.document-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-lg);
+}
+
+.job-title {
+    font-size: 1.75rem;
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-2xl);
+}
+
+.company-info {
+    margin: var(--spacing-2xl) 0;
+    padding: var(--spacing-lg);
+    background: var(--color-background-secondary);
+    border-radius: var(--radius-md);
+}
+
+.document-metadata {
+    margin-top: var(--spacing-2xl);
+    padding-top: var(--spacing-2xl);
+    border-top: 1px solid var(--color-border-light);
+}
+
+.section-header {
+    color: var(--color-primary);
+    border-bottom: 2px solid var(--color-primary);
+    padding-bottom: var(--spacing-md);
+}
+
+.preview-field {
+    margin: var(--spacing-md) 0;
+    padding: var(--spacing-md);
+    background: var(--color-background-secondary);
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--color-primary);
+}
+
+.preview-field strong {
+    color: var(--color-text-secondary);
+    display: block;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: var(--spacing-xs);
+}
+
+.preview-field p {
+    margin: 0;
+    color: var(--color-text-primary);
+}
+
+.demand-section {
+    margin: var(--spacing-lg) 0;
+    padding: var(--spacing-md);
+    background: var(--color-background-secondary);
+    border-radius: var(--radius-sm);
+}
+
+.demand-section h3 {
+    margin-top: 0;
+    color: var(--color-primary);
+}
+
+.demand-section ul {
+    margin: var(--spacing-md) 0;
+}
+
+.demand-section li {
+    margin: var(--spacing-sm) 0;
+}
+
+.error-state {
+    color: var(--color-error);
+    padding: var(--spacing-lg);
+    background: rgba(var(--color-error-rgb), 0.1);
+    border-radius: var(--radius-md);
+    border-left: 3px solid var(--color-error);
+}
+
+/* ============================================
    PREVIEW CONTENT CONTAINER
    ============================================ */
 .preview-content {
