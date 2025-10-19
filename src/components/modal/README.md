@@ -2,6 +2,19 @@
 
 A flexible, reusable modal dialog component with beautiful styling and comprehensive accessibility features. Built on the centralized color system for consistency.
 
+## About
+
+Author: Austin Steil  
+Version: 1.0.0
+Created October 18, 2025
+Updated October 18, 2025
+
+## License & Copyright
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Live License Page Link: <https://raw.githubusercontent.com/AustinSteil/generate-files-model/refs/heads/main/LICENSE>
+Copyright 2025 Austin Steil
+
 ## Features
 
 - **Multiple Types**: dialog (default), fullscreen, custom

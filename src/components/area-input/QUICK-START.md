@@ -2,6 +2,19 @@
 
 Get up and running with the AreaInput component in 3 simple steps!
 
+## About
+
+Author: Austin Steil  
+Version: 1.0.0
+Created October 18, 2025
+Updated October 18, 2025
+
+## License & Copyright
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Live License Page Link: <https://raw.githubusercontent.com/AustinSteil/generate-files-model/refs/heads/main/LICENSE>
+Copyright 2025 Austin Steil
+
 ## 🚀 Quick Start
 
 ### Step 1: Add to Your HTML
@@ -130,7 +143,7 @@ resize: 'both'
 
 ## ✅ Validation Examples
 
-### Required Field
+### Required Fields
 
 ```javascript
 required: true
@@ -252,6 +265,7 @@ descriptionInput.setData({ description: 'saved text' });
 ## 🌙 Dark Mode
 
 Dark mode is automatically supported! The component uses your color system and will adapt to:
+
 - System preferences (`prefers-color-scheme: dark`)
 - Manual dark mode toggle (`.dark-mode` class)
 
@@ -262,6 +276,7 @@ No additional configuration needed!
 ## 📱 Responsive Design
 
 The component is mobile-friendly out of the box:
+
 - Touch-friendly resize handles
 - Proper font sizing (prevents iOS zoom)
 - Responsive padding and spacing
@@ -318,7 +333,7 @@ const isValid = myTextarea.validate();
 
 ---
 
-## 🎉 You're Ready!
+## 🎉 You're Ready
 
 You now know everything you need to use the AreaInput component. Start simple and add features as needed!
 
@@ -331,6 +346,3 @@ new AreaInput({
     label: 'My Field'
 });
 ```
-
-Happy coding! 🚀
-

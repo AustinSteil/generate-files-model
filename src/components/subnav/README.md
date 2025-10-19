@@ -2,6 +2,19 @@
 
 A vertical side navigation component with content panel layout.
 
+## About
+
+Author: Austin Steil  
+Version: 1.0.0
+Created October 18, 2025
+Updated October 18, 2025
+
+## License & Copyright
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Live License Page Link: <https://raw.githubusercontent.com/AustinSteil/generate-files-model/refs/heads/main/LICENSE>
+Copyright 2025 Austin Steil
+
 ## Features
 
 - Vertical side navigation with content panel
@@ -119,6 +132,7 @@ The component uses the project's color system and follows these design principle
 ## Example: Jobs Tab
 
 See `src/tabs/jobs/jobs.js` for a complete implementation example with 6 demand categories:
+
 - Physical Demands
 - Mobility Demands
 - Cognitive & Sensory
@@ -129,6 +143,7 @@ See `src/tabs/jobs/jobs.js` for a complete implementation example with 6 demand 
 ## Browser Support
 
 Works in all modern browsers that support:
+
 - CSS Grid
 - CSS Custom Properties (CSS Variables)
 - ES6 Classes
@@ -139,4 +154,3 @@ Works in all modern browsers that support:
 - `subnav.js` - Component logic
 - `subnav.css` - Component styles
 - `README.md` - This documentation
-

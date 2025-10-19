@@ -2,6 +2,19 @@
 
 A flexible, reusable card selection component with responsive grid layouts, single/multi-select modes, and comprehensive validation support.
 
+## About
+
+Author: Austin Steil  
+Version: 1.0.0
+Created October 18, 2025
+Updated October 18, 2025
+
+## License & Copyright
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Live License Page Link: <https://raw.githubusercontent.com/AustinSteil/generate-files-model/refs/heads/main/LICENSE>
+Copyright 2025 Austin Steil
+
 ## Features
 
 - 🎯 **Flexible Selection**: Single-select or multi-select modes
@@ -308,7 +321,3 @@ The component includes comprehensive accessibility features:
 
 - Color Management System (`src/color-system/colors.css`)
 - Alert System (for validation errors)
-
-## License
-
-Part of the Document Generator project by Austin Steil.

@@ -4,6 +4,19 @@
 
 This color management system provides a centralized, consistent approach to colors across the entire codebase. It's inspired by the beautiful gradient approach used in the alert component and extends it to all UI elements.
 
+## About
+
+Author: Austin Steil  
+Version: 1.0.0
+Created October 18, 2025
+Updated October 18, 2025
+
+## License & Copyright
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Live License Page Link: <https://raw.githubusercontent.com/AustinSteil/generate-files-model/refs/heads/main/LICENSE>
+Copyright 2025 Austin Steil
+
 ## Features
 
 ✅ **Semantic color naming** - Use meaningful names like `success`, `warning`, `error`  
@@ -278,13 +291,3 @@ transition: all var(--transition-cubic); /* 0.3s cubic-bezier */
     box-shadow: var(--shadow-md);
 }
 ```
-
-## Support
-
-For questions or to add new colors to the system, edit `src/colors.css` and follow the existing patterns.
-
----
-
-**Version:** 1.0.0  
-**Author:** Austin Steil  
-**Last Updated:** Oct 11, 2025

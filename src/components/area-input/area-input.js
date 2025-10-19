@@ -13,22 +13,25 @@
  * - Live character counter for validation feedback
  * - Debounced onChange for performance
  * - Enhanced accessibility with ARIA attributes
- *
- * @author Austin Steil
- * @version 1.1.0
- *
- * Recent improvements:
+ * - Recent improvements:
  * - Added debounced onChange to prevent excessive calls during typing
  * - Enhanced validation UX with live character counter
  * - Improved destroy method with proper event cleanup
  * - Added ARIA attributes for better accessibility
  * - Auto-focus and scroll on validation errors
- */
-
-/**
+ *
  * Debounce utility function
  * Delays function execution until after wait time has elapsed since last call
+ * 
+ *
+ * @author Austin Steil
+ * @version 1.0.0
+ * @license MIT <https://raw.githubusercontent.com/AustinSteil/generate-files-model/refs/heads/main/LICENSE>
+ * @copyright 2025 Austin Steil
+ * @created October 18, 2025
+ * @updated October 18, 2025
  */
+
 function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {

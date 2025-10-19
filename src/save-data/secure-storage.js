@@ -8,7 +8,11 @@
  * Security: AES-GCM 256-bit encryption with PBKDF2 key derivation
  *
  * @author Austin Steil
- * @version 2.0.0
+ * @version 1.0.0
+ * @license MIT <https://raw.githubusercontent.com/AustinSteil/generate-files-model/refs/heads/main/LICENSE>
+ * @copyright 2025 Austin Steil
+ * @created October 18, 2025
+ * @updated October 18, 2025
  */
 
 class SecureStorage {

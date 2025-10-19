@@ -2,6 +2,19 @@
 
 A floating dark mode toggle that automatically detects system preferences and allows manual override.
 
+## About
+
+Author: Austin Steil  
+Version: 1.0.0
+Created October 18, 2025
+Updated October 18, 2025
+
+## License & Copyright
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Live License Page Link: <https://raw.githubusercontent.com/AustinSteil/generate-files-model/refs/heads/main/LICENSE>
+Copyright 2025 Austin Steil
+
 ## Features
 
 ✅ **System preference detection** - Automatically detects user's OS dark mode setting  
@@ -226,9 +239,3 @@ Works in all modern browsers that support:
 - localStorage
 - matchMedia API
 - ES6 classes
-
----
-
-**Version:** 1.0.0  
-**Author:** Austin Steil  
-**Dependencies:** Toggle component, Color system

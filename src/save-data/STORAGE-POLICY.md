@@ -1,9 +1,22 @@
 # 🔒 Data Storage & Privacy Policy
 
-**Last Updated:** October 16, 2025  
-**Effective Date:** October 16, 2025
+**Last Updated:** October 18, 2025  
+**Effective Date:** October 18, 2025
 
 ---
+
+## About
+
+Author: Austin Steil  
+Version: 1.0.0
+Created October 18, 2025
+Updated October 18, 2025
+
+## License & Copyright
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Live License Page Link: <https://raw.githubusercontent.com/AustinSteil/generate-files-model/refs/heads/main/LICENSE>
+Copyright 2025 Austin Steil
 
 ## 📋 Quick Summary
 
@@ -219,15 +232,13 @@ If you have data saved in the old cookie format:
 
 If you have questions about this storage policy:
 
-- **Email**: <austinsteil21@gmail.com>
 - **GitHub**: [Report an Issue](https://github.com/austinsteil/generate-files-model/issues)
 
 ---
 
 ## 📜 Version History
 
-- **v2.0.0** (2025-10-16): Migrated from cookies to localStorage for larger capacity
-- **v1.0.0** (2025-10-12): Initial implementation with cookie-based storage
+- **v1.0.0** (October 18, 2025): Initial implementation
 
 ---
 

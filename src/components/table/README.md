@@ -2,6 +2,19 @@
 
 A flexible, reusable table component designed for physical demands analysis and similar data collection forms. Supports configurable rows, columns, headers, and cell types (selectable or input).
 
+## About
+
+Author: Austin Steil  
+Version: 1.0.0
+Created October 18, 2025
+Updated October 18, 2025
+
+## License & Copyright
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Live License Page Link: <https://raw.githubusercontent.com/AustinSteil/generate-files-model/refs/heads/main/LICENSE>
+Copyright 2025 Austin Steil
+
 ## Features
 
 ✅ **Configurable Structure** - Define custom rows and columns
@@ -412,11 +425,3 @@ You can add custom classes to style specific tables:
 ## Demo
 
 See `src/components/table/demo.html` for a complete working demo with multiple examples.
-
-## Author
-
-Austin Steil
-
-## Version
-
-1.0.0

@@ -2,6 +2,19 @@
 
 A reusable component for calculating work week parameters with synchronized inputs and plus/minus buttons for easy adjustment.
 
+## About
+
+Author: Austin Steil  
+Version: 1.0.0
+Created October 18, 2025
+Updated October 18, 2025
+
+## License & Copyright
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Live License Page Link: <https://raw.githubusercontent.com/AustinSteil/generate-files-model/refs/heads/main/LICENSE>
+Copyright 2025 Austin Steil
+
 ## Features
 
 - **Three Synchronized Inputs**: Weekly hours, shift length, and shifts per week automatically calculate each other
@@ -108,9 +121,11 @@ if (!workWeekCalc.validate()) {
 ## Plus/Minus Button Behavior
 
 ### Single Click
+
 - Increments or decrements the value by 0.25 (15 minutes)
 
 ### Click and Hold
+
 - **Initial click**: Immediately changes value by 0.25
 - **After 500ms**: Begins rapid increment/decrement
 - **Rapid speed**: Changes value every 100ms (10 times per second)
@@ -125,26 +140,32 @@ The component uses the formula: **weeklyHours = shiftLength × shiftsPerWeek**
 All values are rounded to 0.25 (quarter hour increments) for consistency.
 
 ### When Weekly Hours Changes
+
 - Shifts per week stays constant
 - Shift length is recalculated
 
 **Example**: Change weekly hours from 40 to 30
+
 - Shifts per week: 5 (unchanged)
 - Shift length: 30 ÷ 5 = 6 hrs/shift
 
 ### When Shift Length Changes
+
 - Shifts per week stays constant
 - Weekly hours is recalculated
 
 **Example**: Change shift length from 8 to 10
+
 - Shifts per week: 5 (unchanged)
 - Weekly hours: 10 × 5 = 50 hrs/week
 
 ### When Shifts Per Week Changes
+
 - Weekly hours stays constant
 - Shift length is recalculated
 
 **Example**: Change shifts per week from 5 to 4
+
 - Weekly hours: 40 hrs (unchanged)
 - Shift length: 40 ÷ 4 = 10 hrs/shift
 
@@ -322,12 +343,3 @@ The component uses the centralized color system and automatically supports:
 - Focus indicators
 - Reduced motion support
 - High contrast mode support
-
-## Author
-
-Austin Steil
-
-## Version
-
-1.0.0
-

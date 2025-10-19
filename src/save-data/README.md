@@ -2,6 +2,19 @@
 
 Client-side encrypted data storage system for securely saving and loading form data with user-controlled encryption.
 
+## About
+
+Author: Austin Steil  
+Version: 1.0.0
+Created October 18, 2025
+Updated October 18, 2025
+
+## License & Copyright
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Live License Page Link: <https://raw.githubusercontent.com/AustinSteil/generate-files-model/refs/heads/main/LICENSE>
+Copyright 2025 Austin Steil
+
 ## Overview
 
 The Save Data system provides a complete solution for users to save their form progress locally on their device with high-grade encryption. All data is encrypted client-side using the user's chosen passphrase, ensuring that only the user can decrypt and access their information. The system uses localStorage for storage (with fallback to cookies for backward compatibility) and includes a floating UI button for easy access to save/load/clear operations.

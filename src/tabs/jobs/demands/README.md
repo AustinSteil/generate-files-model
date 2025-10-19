@@ -2,6 +2,19 @@
 
 Comprehensive job analysis demands collection modules for the Jobs tab. This directory contains specialized form sections for capturing detailed physical, cognitive, environmental, and mobility demands of job positions.
 
+## About
+
+Author: Austin Steil  
+Version: 1.0.0
+Created October 18, 2025
+Updated October 18, 2025
+
+## License & Copyright
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Live License Page Link: <https://raw.githubusercontent.com/AustinSteil/generate-files-model/refs/heads/main/LICENSE>
+Copyright 2025 Austin Steil
+
 ## Overview
 
 The demands section is a critical part of the job analysis workflow, allowing users to document the specific physical and cognitive requirements of a position. Each module handles a distinct category of job demands and provides consistent data management through `render()`, `getData()`, `setData()`, and `validate()` methods.

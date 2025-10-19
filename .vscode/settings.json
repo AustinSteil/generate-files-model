@@ -1,18 +1,33 @@
 {
     "cSpell.words": [
+        "Anytown",
+        "checkmark",
+        "describedby",
         "docxtemplater",
+        "Dorsiflexion",
         "dotenv",
         "ehthumbs",
         "Flexbox",
+        "hoverable",
+        "labelledby",
+        "maxlength",
+        "mets",
+        "navpanes",
         "newtab",
+        "nums",
         "officedocument",
         "openxmlformats",
         "pizzip",
+        "Plantarflexion",
+        "quilljs",
         "rgba",
+        "sectionchange",
         "stylesheet",
+        "subnav",
         "tabchange",
         "Toggleable",
         "WCAG",
+        "WMSPW",
         "wordprocessingml"
     ]
 }

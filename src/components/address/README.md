@@ -2,6 +2,19 @@
 
 A comprehensive, reusable address input component that integrates multiple form elements for collecting US addresses. Built using the existing TextInput and Dropdown components for consistency.
 
+## About
+
+Author: Austin Steil  
+Version: 1.0.0
+Created October 18, 2025
+Updated October 18, 2025
+
+## License & Copyright
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Live License Page Link: <https://raw.githubusercontent.com/AustinSteil/generate-files-model/refs/heads/main/LICENSE>
+Copyright 2025 Austin Steil
+
 ## Features
 
 - 🏠 **Complete Address Collection**: Street, City, State, ZIP code

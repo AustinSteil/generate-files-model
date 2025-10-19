@@ -5,6 +5,19 @@
 
 ---
 
+## About
+
+Author: Austin Steil  
+Version: 1.0.0
+Created October 18, 2025
+Updated October 18, 2025
+
+## License & Copyright
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Live License Page Link: <https://raw.githubusercontent.com/AustinSteil/generate-files-model/refs/heads/main/LICENSE>
+Copyright 2025 Austin Steil
+
 ## 📋 Table of Contents
 
 1. [What Are Cookies?](#-what-are-cookies)
@@ -15,7 +28,6 @@
 6. [Security & Encryption](#️-security--encryption)
 7. [User Risks & Responsibilities](#️-user-risks--responsibilities)
 8. [Managing Your Cookie Preferences](#️-managing-your-cookie-preferences)
-9. [Contact Information](#-contact-information)
 
 ---
 
@@ -249,18 +261,6 @@ You can check remaining time by attempting to load your data.
 
 ---
 
-## 📞 Contact Information
-
-If you have questions about this Cookie Policy or our data practices:
-
-**Developer**: Austin Steil
-**Project**: Document Generator
-**Policy Version**: 2.0.0 (Updated for localStorage migration)
-
-**For detailed storage security information, see [STORAGE-POLICY.md](./STORAGE-POLICY.md)**
-
----
-
 ## 📋 Policy Updates
 
 This policy may be updated to reflect changes in our cookie and storage usage. When updates occur:
@@ -271,9 +271,7 @@ This policy may be updated to reflect changes in our cookie and storage usage. W
 
 ### Recent Updates
 
-- **v2.0.0 (October 16, 2025)**: Migrated from cookie-based storage to localStorage for better capacity and reliability. Same encryption security maintained.
-- **v1.1.0 (October 14, 2025)**: Enhanced cookie policy documentation
-- **v1.0.0 (October 11, 2025)**: Initial cookie policy
+- **v1.0.0 (October 18, 2025)**: Initial cookie policy
 
 ---
 

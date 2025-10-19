@@ -1,5 +1,18 @@
 # Color Contrast Audit Report
 
+## About
+
+Author: Austin Steil  
+Version: 1.0.0
+Created October 18, 2025
+Updated October 18, 2025
+
+## License & Copyright
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Live License Page Link: <https://raw.githubusercontent.com/AustinSteil/generate-files-model/refs/heads/main/LICENSE>
+Copyright 2025 Austin Steil
+
 ## WCAG 2.1 Compliance Standards
 
 - **AA Normal Text (< 18pt):** 4.5:1 minimum
@@ -191,7 +204,7 @@
 
 1. Test with actual users who have visual impairments
 2. Test in different lighting conditions
-3. Test on different screen types (LCD, OLED, etc.)
+3. Test on different screen types
 4. Test with color blindness simulators
 
 ### Browser DevTools
@@ -210,9 +223,3 @@ console.log('Primary text on dark:', getContrastRatio('#f9fafb', '#1f2937'));
 ✅ **WCAG 2.1 Level AA:** Fully compliant for normal text  
 ✅ **WCAG 2.1 Level AA:** Fully compliant for large text  
 ⚠️ **WCAG 2.1 Level AAA:** Mostly compliant (tertiary text is AA only)
-
----
-
-**Last Updated:** 2025-10-11  
-**Audited By:** Austin Steil  
-**Standard:** WCAG 2.1 Level AA

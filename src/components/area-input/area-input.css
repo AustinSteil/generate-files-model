@@ -5,14 +5,11 @@
  * Uses the centralized color management system for consistency.
  *
  * @author Austin Steil
- * @version 1.1.0
- *
- * Recent improvements:
- * - Deduplicated dark mode rules using CSS custom properties
- * - Enhanced resize handle visibility and touch-friendliness
- * - Improved error states with solid backgrounds
- * - Added universal scrollbar styling for Firefox/other browsers
- * - Faster animations for better mobile performance
+ * @version 1.0.0
+ * @license MIT <https://raw.githubusercontent.com/AustinSteil/generate-files-model/refs/heads/main/LICENSE>
+ * @copyright 2025 Austin Steil
+ * @created October 18, 2025
+ * @updated October 18, 2025
  */
 
 /* ============================================

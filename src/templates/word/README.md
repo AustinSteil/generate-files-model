@@ -2,6 +2,19 @@
 
 DOCX document templates for generating customized job analysis reports.
 
+## About
+
+Author: Austin Steil  
+Version: 1.0.0
+Created October 18, 2025
+Updated October 18, 2025
+
+## License & Copyright
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Live License Page Link: <https://raw.githubusercontent.com/AustinSteil/generate-files-model/refs/heads/main/LICENSE>
+Copyright 2025 Austin Steil
+
 ## Overview
 
 This directory contains six DOCX (Microsoft Word) templates that serve as the foundation for document generation. These templates are populated with user data collected through the application to create customized job analysis reports.

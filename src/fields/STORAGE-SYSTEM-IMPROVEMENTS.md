@@ -4,6 +4,19 @@
 
 The "Save Data for Later" system has been refactored to use **`vars.json` as the single source of truth**. This architectural improvement means you can now add or remove document variables without modifying any storage-related code.
 
+## About
+
+Author: Austin Steil  
+Version: 1.0.0
+Created October 18, 2025
+Updated October 18, 2025
+
+## License & Copyright
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Live License Page Link: <https://raw.githubusercontent.com/AustinSteil/generate-files-model/refs/heads/main/LICENSE>
+Copyright 2025 Austin Steil
+
 ## What Changed
 
 ### Before (Old System)

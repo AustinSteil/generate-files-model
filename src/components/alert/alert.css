@@ -11,7 +11,12 @@
  * NOTE: This component uses the centralized color management system from src/color-system/colors.css
  * All colors are referenced using CSS custom properties (variables) for consistency.
  *
- * @version 2.0.0
+ * @author Austin Steil
+ * @version 1.0.0
+ * @license MIT <https://raw.githubusercontent.com/AustinSteil/generate-files-model/refs/heads/main/LICENSE>
+ * @copyright 2025 Austin Steil
+ * @created October 18, 2025
+ * @updated October 18, 2025
  */
 
 /* Alert Container - Fixed positioning at top of page */

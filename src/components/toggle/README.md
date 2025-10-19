@@ -2,6 +2,19 @@
 
 A reusable, accessible toggle switch component with smooth animations and clean design.
 
+## About
+
+Author: Austin Steil  
+Version: 1.0.0
+Created October 18, 2025
+Updated October 18, 2025
+
+## License & Copyright
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Live License Page Link: <https://raw.githubusercontent.com/AustinSteil/generate-files-model/refs/heads/main/LICENSE>
+Copyright 2025 Austin Steil
+
 ## Features
 
 ✅ **Accessible** - Keyboard navigation (Space/Enter), screen reader friendly  
@@ -89,6 +102,7 @@ const disabledToggle = new Toggle({
 ## API Methods
 
 ### `toggle()`
+
 Toggle the current state.
 
 ```javascript
@@ -96,6 +110,7 @@ myToggle.toggle();
 ```
 
 ### `setState(newState)`
+
 Set the state programmatically.
 
 ```javascript
@@ -104,6 +119,7 @@ myToggle.setState(false); // Turn off
 ```
 
 ### `getState()`
+
 Get the current state.
 
 ```javascript
@@ -111,6 +127,7 @@ const isOn = myToggle.getState();
 ```
 
 ### `enable()`
+
 Enable a disabled toggle.
 
 ```javascript
@@ -118,6 +135,7 @@ myToggle.enable();
 ```
 
 ### `disable()`
+
 Disable the toggle.
 
 ```javascript
@@ -125,6 +143,7 @@ myToggle.disable();
 ```
 
 ### `getElement()`
+
 Get the DOM element.
 
 ```javascript
@@ -133,6 +152,7 @@ document.body.appendChild(element);
 ```
 
 ### `destroy()`
+
 Remove the toggle and clean up.
 
 ```javascript
@@ -165,12 +185,7 @@ The component uses the centralized color management system. You can customize co
 ## Browser Support
 
 Works in all modern browsers that support:
+
 - CSS custom properties
 - ES6 classes
 - Flexbox
-
----
-
-**Version:** 1.0.0  
-**Author:** Austin Steil
-
