@@ -338,19 +338,24 @@ class AreaInput {
      * Validate the input value
      */
     validateInput() {
+        // For rich text editors, use plain text for validation
+        // For regular textareas, use the value directly
+        const plainText = this.getPlainText();
         const value = this.getValue();
         let isValid = true;
         let errorMessage = '';
 
-        // Required field validation
-        if (this.options.required && !value.trim()) {
+        // Required field validation - use plain text for rich text editors
+        if (this.options.required && !plainText.trim()) {
             isValid = false;
             errorMessage = `${this.options.label} is required`;
         }
 
-        // Custom validation function
+        // Custom validation function - pass plain text for rich text editors
         if (isValid && this.options.validation && typeof this.options.validation === 'function') {
-            const validationResult = this.options.validation(value);
+            // For rich text editors, pass plain text; for regular textareas, pass the value
+            const validationValue = this.quillEditor ? plainText : value;
+            const validationResult = this.options.validation(validationValue);
             if (validationResult !== true) {
                 isValid = false;
                 errorMessage = validationResult || 'Invalid input';
@@ -437,7 +442,8 @@ class AreaInput {
      */
     getPlainText() {
         if (this.quillEditor) {
-            return this.quillEditor.getText();
+            // Quill's getText() returns '\n' for empty editor, so we need to trim it
+            return this.quillEditor.getText().trim();
         } else if (this.textareaElement) {
             return this.textareaElement.value;
         }

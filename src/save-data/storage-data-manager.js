@@ -242,7 +242,7 @@ class StorageDataManager {
                         tabData.intro[fieldName] = formData[fieldName];
                     } else if (['jobTitle', 'jobPurpose', 'essentialFunctions', 'marginalFunctions', 'workSchedule', 'breaks', 'otherShiftInfo'].includes(fieldName)) {
                         tabData.demographics[fieldName] = formData[fieldName];
-                    } else if (['documentContent'].includes(fieldName)) {
+                    } else if (['documentContent', 'summaryText'].includes(fieldName)) {
                         tabData.summary[fieldName] = formData[fieldName];
                     }
                     // Jobs-related fields are handled separately above

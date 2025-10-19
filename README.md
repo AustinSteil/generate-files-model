@@ -6,7 +6,7 @@ Live demo: <https://austinsteil.github.io/generate-files-model/>
 
 ## About
 
-Author: Austin Steil  
+Author: Austin Steil
 Version: 1.0.0
 Created October 18, 2025
 Updated October 18, 2025
@@ -145,7 +145,6 @@ The project includes interactive demo pages for testing and showcasing component
 - **[Area Input Demo](https://austinsteil.github.io/generate-files-model/src/components/area-input/area-input-example.html)** - Multi-line text input with auto-grow, character counter, and rich text editor options
 - **[Work Week Calculator Demo](https://austinsteil.github.io/generate-files-model/src/components/work-week-calculator/work-week-calculator-example.html)** - Interactive work schedule calculator with auto-calculating fields
 - **[Table Component Demo](https://austinsteil.github.io/generate-files-model/src/components/table/demo.html)** - Flexible table component with selectable cells and input fields for data collection
-- **[Demand Level Selector Demo](https://austinsteil.github.io/generate-files-model/src/components/demands-level-selector/demands-level-selector-example.html)** - Comparison interface for selecting physical demand levels
 
 These demo files can be opened directly in your browser or served through a local web server.
 
@@ -283,6 +282,8 @@ Comparison interface for selecting physical demand levels:
 - **Validation support** - Required field enforcement
 - **Dark mode** - Full light/dark mode support
 
+For a demo of this component, see the Jobs tab's demand level sections in the main application.
+
 ## Configuration
 
 ### Template Variables (vars.json)
@@ -333,14 +334,18 @@ The application supports multiple templates organized in the `src/templates/` fo
 
 ```text
 generate-files-model/
+├── .gitignore              # Git ignore rules
+├── .vscode                 # VS Code workspace settings
 ├── index.html              # Main application interface
 ├── main.js                 # Core application logic
 ├── main.css                # Main styling and responsive design
 ├── package.json            # Project dependencies and scripts
+├── package-lock.json       # Locked dependency versions
 ├── LICENSE                 # MIT license
 ├── README.md               # This file
 ├── docxtemplater.js        # Generated: Document templating library
 ├── pizzip.js               # Generated: ZIP file handling library
+├── node_modules/           # NPM dependencies (generated)
 └── src/                    # Source code organization
     ├── color-system/       # Color management and dark mode
     │   ├── colors.css                      # Color system variables
@@ -368,11 +373,13 @@ generate-files-model/
     │   ├── tooltip/        # Tooltip component
     │   │   ├── tooltip.js          # Tooltip functionality
     │   │   ├── tooltip.css         # Tooltip styling
+    │   │   ├── tooltip-demo.css    # Tooltip demo styling
     │   │   ├── tooltip-example.html # Tooltip demo page
     │   │   └── README.md           # Tooltip documentation
     │   ├── dropdown/       # Dropdown component
     │   │   ├── dropdown.js         # Dropdown functionality
-    │   │   └── dropdown.css        # Dropdown styling
+    │   │   ├── dropdown.css        # Dropdown styling
+    │   │   └── README.md           # Dropdown documentation
     │   ├── toggle/         # Toggle switch component
     │   │   ├── toggle.js           # Toggle functionality
     │   │   ├── toggle.css          # Toggle styling
@@ -417,11 +424,9 @@ generate-files-model/
     │   │   ├── subnav.js           # SubNav functionality
     │   │   ├── subnav.css          # SubNav styling
     │   │   └── README.md           # SubNav documentation
-    │   └── demands-level-selector/ # Demand Level Selector component
-    │       ├── demands-level-selector.js # Selector functionality
-    │       ├── demands-level-selector.css # Selector styling
-    │       ├── demands-level-selector-example.html # Selector demo page
-    │       └── README.md           # Selector documentation
+    │   └── demand-level-selector/ # Demand Level Selector component
+    │       ├── demand-level-selector.js # Selector functionality
+    │       └── demand-level-selector.css # Selector styling
     ├── fields/             # Field configuration and documentation
     │   ├── vars.json           # Template variable configuration (single source of truth)
     │   ├── vars.json.README.md # Detailed vars.json documentation
@@ -430,27 +435,37 @@ generate-files-model/
     │   └── STORAGE-SYSTEM-IMPROVEMENTS.md # Storage system architecture
     ├── templates/          # Template files organized by type
     │   ├── images/         # PNG preview images for template cards
-    │   │   ├── template_1.png          # Classic template preview
-    │   │   ├── template_2.png          # Modern template preview
-    │   │   ├── template_3.png          # Minimal template preview
-    │   │   ├── template_4.png          # Corporate template preview
-    │   │   ├── template_5.png          # Creative template preview
-    │   │   ├── template_6.png          # Academic template preview
-    │   │   └── archived/               # Archived template images
+    │   │   ├── README.md                   # Template images documentation
+    │   │   ├── template_1.png             # Classic template preview
+    │   │   ├── template_2.png             # Modern template preview
+    │   │   ├── template_3.png             # Minimal template preview
+    │   │   ├── template_4.png             # Corporate template preview
+    │   │   ├── template_5.png             # Creative template preview
+    │   │   ├── template_6.png             # Academic template preview
+    │   │   └── archived/                  # Archived template images
+    │   │       ├── README.md              # Archived images documentation
+    │   │       ├── template_1-archived.png # Archived classic template
+    │   │       ├── template_2-archived.png # Archived modern template
+    │   │       ├── template_3-archived.png # Archived minimal template
+    │   │       ├── template_4-archived.png # Archived corporate template
+    │   │       ├── template_5-archived.png # Archived creative template
+    │   │       └── template_6-archived.png # Archived academic template
     │   ├── pdf/            # PDF files for full-screen preview
-    │   │   ├── template_1.pdf          # Classic template full preview
-    │   │   ├── template_2.pdf          # Modern template full preview
-    │   │   ├── template_3.pdf          # Minimal template full preview
-    │   │   ├── template_4.pdf          # Corporate template full preview
-    │   │   ├── template_5.pdf          # Creative template full preview
-    │   │   └── template_6.pdf          # Academic template full preview
+    │   │   ├── README.md                  # PDF templates documentation
+    │   │   ├── template_1.pdf             # Classic template full preview
+    │   │   ├── template_2.pdf             # Modern template full preview
+    │   │   ├── template_3.pdf             # Minimal template full preview
+    │   │   ├── template_4.pdf             # Corporate template full preview
+    │   │   ├── template_5.pdf             # Creative template full preview
+    │   │   └── template_6.pdf             # Academic template full preview
     │   └── word/           # DOCX templates for document generation
-    │       ├── template_1.docx         # Classic template source
-    │       ├── template_2.docx         # Modern template source
-    │       ├── template_3.docx         # Minimal template source
-    │       ├── template_4.docx         # Corporate template source
-    │       ├── template_5.docx         # Creative template source
-    │       └── template_6.docx         # Academic template source
+    │       ├── README.md                  # Word templates documentation
+    │       ├── template_1.docx            # Classic template source
+    │       ├── template_2.docx            # Modern template source
+    │       ├── template_3.docx            # Minimal template source
+    │       ├── template_4.docx            # Corporate template source
+    │       ├── template_5.docx            # Creative template source
+    │       └── template_6.docx            # Academic template source
     ├── tabs/               # Tab-based application structure
     │   ├── tabs.js                 # Tab management and navigation
     │   ├── tabs.css                # Tab styling and layout
@@ -465,26 +480,29 @@ generate-files-model/
     │   ├── jobs/           # Jobs tab (job demands analysis)
     │   │   ├── jobs.js             # Jobs tab with SubNav integration
     │   │   └── demands/            # Modular demand section files
-    │   │       ├── physical-demands.js # Physical demands section
-    │   │       ├── mobility-demands.js # Mobility demands section
+    │   │       ├── README.md                      # Demands sections documentation
+    │   │       ├── physical-demands.js            # Physical demands section
+    │   │       ├── mobility-demands.js            # Mobility demands section
     │   │       ├── cognitive-and-sensory-demands.js # Cognitive & sensory section
-    │   │       ├── environmental-demands.js # Environmental demands section
+    │   │       ├── environmental-demands.js       # Environmental demands section
     │   │       ├── lifting-pushing-and-pulling.js # Lifting/pushing/pulling section
-    │   │       └── classification-of-work.js # Classification of work section
+    │   │       └── classification-of-work.js      # Classification of work section
     │   ├── summary/        # Summary and additional info
     │   │   └── summary.js          # Summary form
     │   └── preview/        # Preview all data
-    │       └── preview.js          # Preview display
+    │       ├── preview.js          # Preview display
+    │       └── preview.css         # Preview styling
     └── save-data/          # Storage and data management
-        ├── secure-storage.js       # Encrypted storage foundation
-        ├── phrase-modal.js         # Passphrase modal for security
-        ├── storage-data-manager.js # Data management logic
-        ├── storage-ui-manager.js   # Storage UI coordination
-        ├── floating-storage-button.js # Storage button component
-        ├── COOKIE-POLICY.md        # Cookie security policy
-        ├── STORAGE-POLICY.md       # Storage security policy
-        ├── COOKIE-POLICY.pdf       # Cookie policy PDF
-        └── STORAGE-POLICY.pdf      # Storage policy PDF
+        ├── README.md                   # Save data documentation
+        ├── secure-storage.js           # Encrypted storage foundation
+        ├── phrase-modal.js             # Passphrase modal for security
+        ├── storage-data-manager.js     # Data management logic
+        ├── storage-ui-manager.js       # Storage UI coordination
+        ├── floating-storage-button.js  # Storage button component
+        ├── COOKIE-POLICY.md            # Cookie security policy
+        ├── STORAGE-POLICY.md           # Storage security policy
+        ├── COOKIE-POLICY.pdf           # Cookie policy PDF
+        └── STORAGE-POLICY.pdf          # Storage policy PDF
 ```
 
 ## Dependencies

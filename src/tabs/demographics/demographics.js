@@ -43,7 +43,7 @@ class DemographicsTab {
     render() {
         this.container.innerHTML = `
             <div class="demographics-content">
-                <h2>Demographics</h2>
+                <h2>Overview</h2>
                 <p>This section will collect demographic information.</p>
 
                 <div id="job-title-container"></div>

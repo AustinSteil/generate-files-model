@@ -39,7 +39,7 @@ class NextButtonManager {
             'intro': 'Please complete all required fields and select a template before continuing.',
             'demographics': 'Please enter your name before continuing.',
             'jobs': 'Please add at least one job entry before continuing.',
-            'summary': 'Summary validation passed.' // Summary is optional
+            'summary': 'Please complete all required fields in the summary before continuing.'
         };
     }
 
@@ -256,9 +256,11 @@ class NextButtonManager {
             const isValid = validator();
 
             if (!isValid) {
-                // Show error message
-                const errorMessage = this.errorMessages[tabName] || 'Please complete all required fields.';
-                showError(errorMessage, { duration: 6 });
+                // For summary tab, skip alert since AreaInput component displays specific error
+                if (tabName !== 'summary') {
+                    const errorMessage = this.errorMessages[tabName] || 'Please complete all required fields.';
+                    showError(errorMessage, { duration: 6 });
+                }
             }
 
             return isValid;

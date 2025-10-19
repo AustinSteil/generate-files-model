@@ -40,11 +40,6 @@ class SummaryTab {
                 <!-- Summary rich text area -->
                 <div id="summary-text-container"></div>
 
-                <div class="form-group">
-                    <label for="summary-keywords">Keywords:</label>
-                    <input type="text" id="summary-keywords" placeholder="Enter keywords separated by commas">
-                </div>
-
                 <!-- Next button container -->
                 <div class="form-actions-right">
                     <div id="summary-next-button-container"></div>
@@ -59,15 +54,30 @@ class SummaryTab {
         // Initialize rich text editor for summary
         this.summaryInput = new AreaInput({
             containerId: 'summary-text-container',
-            id: 'summary-text',
-            name: 'text',
+            id: 'summaryText',
+            name: 'summaryText',
             label: 'Summary',
             placeholder: 'Enter a summary or additional notes...',
             useRichText: true,
             resize: 'vertical',
             minHeight: '250px',
             maxHeight: '600px',
-            required: false,
+            required: true,
+            minLength: 10,
+            maxLength: 5000,
+            showCharCounter: true,
+            validation: (value) => {
+                if (!value || value.trim().length === 0) {
+                    return 'Summary is required';
+                }
+                if (value.length < 10) {
+                    return 'Summary must be at least 10 characters';
+                }
+                if (value.length > 5000) {
+                    return 'Summary cannot exceed 5,000 characters';
+                }
+                return true;
+            },
             quillConfig: {
                 theme: 'snow',
                 modules: {
@@ -90,8 +100,7 @@ class SummaryTab {
      */
     getData() {
         return {
-            text: this.summaryInput ? this.summaryInput.getValue() : '',
-            keywords: document.getElementById('summary-keywords')?.value || ''
+            summaryText: this.summaryInput ? this.summaryInput.getValue() : ''
         };
     }
 
@@ -100,21 +109,22 @@ class SummaryTab {
      * @param {Object} data - Data to populate the form
      */
     setData(data) {
-        if (data.text && this.summaryInput) {
-            this.summaryInput.setValue(data.text);
-        }
-        if (data.keywords) {
-            document.getElementById('summary-keywords').value = data.keywords;
+        if (data.summaryText && this.summaryInput) {
+            this.summaryInput.setValue(data.summaryText);
         }
     }
 
     /**
      * Validate summary tab data
-     * @returns {boolean} True if valid (summary is optional)
+     * @returns {boolean} True if valid (summary is required with 10-5000 chars)
      */
     validate() {
-        // Summary is optional, so always return true
-        return true;
+        if (!this.summaryInput) {
+            return false;
+        }
+
+        // Use the component's validateInput method which displays error messages
+        return this.summaryInput.validateInput();
     }
 
     /**

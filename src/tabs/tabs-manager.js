@@ -116,19 +116,23 @@ class TabsManager {
      */
     validateAll() {
         const errors = [];
-        
+
         if (!this.introTab.validate()) {
             errors.push('Intro tab: Title and Author are required');
         }
-        
+
         if (!this.demographicsTab.validate()) {
             errors.push('Demographics tab: Name is required');
         }
-        
+
         if (!this.jobsTab.validate()) {
             errors.push('Jobs tab: At least one job entry is required');
         }
-        
+
+        if (!this.summaryTab.validate()) {
+            errors.push('Summary tab: Summary is required (10-5,000 characters)');
+        }
+
         return {
             isValid: errors.length === 0,
             errors: errors

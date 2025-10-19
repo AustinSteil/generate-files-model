@@ -23,5 +23,6 @@
   "cognitiveSensoryDemands": "{cognitiveSensoryDemands}",
   "environmentalDemands": "{environmentalDemands}",
   "liftingPushingPulling": "{liftingPushingPulling}",
-  "classificationOfWork": "{classificationOfWork}"
+  "classificationOfWork": "{classificationOfWork}",
+  "summaryText": "{summaryText}"
 }
