@@ -185,4 +185,3 @@ class Template5Generator {
 
 // Expose the class to the window object for dynamic loading
 window.Template5Generator = Template5Generator;
-console.log('✅ Template5Generator class loaded and exposed to window');

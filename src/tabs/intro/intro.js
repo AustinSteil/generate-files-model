@@ -71,7 +71,6 @@ class IntroTab {
     }
 
     init() {
-        console.log('Intro tab initialized');
         this.initializeTextInputs();
         this.initializeAddressComponent();
         this.initializeTemplateSelection();
@@ -240,7 +239,6 @@ class IntroTab {
                     if (hiddenInput) {
                         hiddenInput.value = this.selectedTemplate;
                     }
-                    console.log('Selected template:', this.selectedTemplate);
                 } else {
                     this.selectedTemplate = null;
                     // Clear hidden input

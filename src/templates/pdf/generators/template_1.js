@@ -1,8 +1,8 @@
 /**
  * Template 1 PDF Generator - Classic Template
  *
- * Generates PDF documents for Template 1 (Classic Template) using jsPDF.
- * Traditional professional document layout with standard formatting.
+ * Generates professional PDF documents with demand tables using jsPDF and autoTable.
+ * Creates 8.5" x 12" (letter size) PDFs with proper pagination and styling.
  *
  * @author Austin Steil
  * @version 1.0.0
@@ -14,11 +14,67 @@
 
 class Template1Generator {
     constructor() {
-        this.pageWidth = 210; // A4 width in mm
-        this.pageHeight = 297; // A4 height in mm
-        this.margin = 15;
-        this.lineHeight = 7;
+        this.pageWidth = 215.9; // 8.5" in mm
+        this.pageHeight = 304.8; // 12" in mm
+        this.margin = 12.7; // 0.5" margins
+        this.lineHeight = 5;
         this.currentY = this.margin;
+
+        // Demand table headers and rows
+        this.demandHeaders = {
+            physicalDemands: {
+                columns: ['N/A <1%', 'Occasional 1-33%', 'Frequent 34-66%', 'Constant 67-100%', 'Comments'],
+                rows: [
+                    'Awkward position', 'Bending over', 'Carrying', 'Driving', 'Fine motor tasks',
+                    'Gripping or grasping', 'Handling', 'Kneeling', 'Lifting', 'Lifting overhead',
+                    'Pulling', 'Pushing', 'Reaching', 'Sitting', 'Squatting or crouching',
+                    'Standing', 'Talking and hearing', 'Twisting or turning', 'Walking'
+                ]
+            },
+            mobilityDemands: {
+                columns: ['N/A <1%', 'Occasional 1-33%', 'Frequent 34-66%', 'Constant 67-100%', 'Comments'],
+                rows: [
+                    'Flexion/Extension', 'Rotation', 'Lateral Flexion/Extension',
+                    'Flexion/Extension', 'Abduction/Adduction', 'Internal/External Rotation', 'Elevation/Depression',
+                    'Flexion/Extension', 'Supination/Pronation',
+                    'Flexion/Extension', 'Ulnar/Radial Deviation', 'Gripping (Power or Pinch)',
+                    'Flexion/Extension', 'Rotation', 'Lateral Flexion/Extension',
+                    'Flexion/Extension', 'Rotation', 'Lateral Flexion/Extension',
+                    'Flexion/Extension', 'Abduction/Adduction', 'Internal/External Rotation',
+                    'Flexion/Extension',
+                    'Dorsiflexion/Plantarflexion'
+                ]
+            },
+            cognitiveSensoryDemands: {
+                columns: ['Required', 'Comments'],
+                rows: [
+                    'Near Vision', 'Far Vision', 'Peripheral Vision', 'Depth Perception', 'Color Vision',
+                    'Perceive Safety/Emergency Indicators',
+                    'Distinguish Sounds or Tones', 'Verbal or Electronic Communication', 'Perceive Safety/Emergency Indicators',
+                    'Tactile Sense (Touch)', 'Olfactory Sense (Smell)', 'Gustatory Sense (Taste)',
+                    'Vestibular Sense (Balance)', 'Kinesthetic Sense (Proprioception)',
+                    'Memory (Short or Long Term)', 'Multitasking', 'Decision Making and Reasoning',
+                    'Simple Math', 'Time Management', 'Literacy (Reading/Writing)',
+                    'Work Independently', 'Work with a Team', 'Supervision of Others'
+                ]
+            },
+            environmentalDemands: {
+                columns: ['N/A <1%', 'Occasional 1-33%', 'Frequent 34-66%', 'Constant 67-100%', 'Comments'],
+                rows: [
+                    'Wet, humid, or slippery surfaces', 'Proximity to moving mechanical parts or machinery',
+                    'Working at heights', 'Fumes, odors, dust, or airborne particles',
+                    'Hazardous chemicals (toxic or caustic)', 'Extreme temperatures (hot or cold, weather-related or non-weather)',
+                    'High noise levels requiring hearing protection', 'Hand-arm vibration (e.g., from power tools)',
+                    'Whole-body vibration (e.g., from vehicles or platforms)', 'Electrical hazards',
+                    'Radiation exposure (ionizing or non-ionizing)', 'Poor lighting or illumination',
+                    'Confined spaces', 'Biological hazards (e.g., pathogens or allergens)'
+                ]
+            },
+            liftingPushingPulling: {
+                columns: ['N/A, <1%', 'Occasional 1-33%, <12 reps/hour', 'Frequent 34-66%, 12-60 reps/hour', 'Constant 67-100%, >60 reps/hour', 'Comments'],
+                rows: ['Less than 5 lbs', '5-25 lbs', '26-50 lbs', '51-100 lbs', 'Over 100 lbs']
+            }
+        };
     }
 
     /**
@@ -28,7 +84,12 @@ class Template1Generator {
      */
     generate(data) {
         const jsPDF = window.jspdf.jsPDF;
-        this.doc = new jsPDF();
+        // Create PDF with custom page size: 8.5" x 12" (letter width x 12" height)
+        this.doc = new jsPDF({
+            orientation: 'portrait',
+            unit: 'mm',
+            format: [215.9, 304.8] // 8.5" x 12" in mm
+        });
         this.data = data;
         this.currentY = this.margin;
 
@@ -197,11 +258,10 @@ class Template1Generator {
         this.doc.text(`${label}:`, this.margin, this.currentY);
 
         this.doc.setFont(undefined, 'normal');
-        // Ensure value is a string before passing to splitTextToSize
-        let fieldValue = value || 'Not specified';
-        if (typeof fieldValue !== 'string') {
-            fieldValue = JSON.stringify(fieldValue);
-        }
+
+        // Format the value based on its type
+        let fieldValue = this.formatFieldValue(value);
+
         const lines = this.doc.splitTextToSize(fieldValue, this.pageWidth - (this.margin * 2) - 40);
         this.doc.text(lines, this.margin + 40, this.currentY);
 
@@ -209,28 +269,196 @@ class Template1Generator {
     }
 
     /**
-     * Add a demand table
+     * Format field value based on its type
+     */
+    formatFieldValue(value) {
+        if (!value) return 'Not specified';
+
+        // Handle arrays
+        if (Array.isArray(value)) {
+            return this.formatArray(value);
+        }
+
+        // Handle objects
+        if (typeof value === 'object') {
+            return this.formatObject(value);
+        }
+
+        // Handle strings
+        return String(value);
+    }
+
+    /**
+     * Format array values
+     */
+    formatArray(arr) {
+        if (arr.length === 0) return 'Not specified';
+
+        return arr.map((item) => {
+            if (typeof item === 'object') {
+                // For objects in arrays, extract meaningful values
+                const values = Object.values(item).filter(v => v && v.trim && v.trim().length > 0);
+                return values.join(' - ');
+            }
+            return String(item);
+        }).join('; ');
+    }
+
+    /**
+     * Format object values
+     */
+    formatObject(obj) {
+        const entries = Object.entries(obj);
+        if (entries.length === 0) return 'Not specified';
+
+        // Special handling for work schedule
+        if (obj.weeklyHours !== undefined) {
+            return `${obj.weeklyHours} hours/week, ${obj.shiftLength} hour shifts, ${obj.shiftsPerWeek} shifts/week`;
+        }
+
+        // General object formatting
+        return entries
+            .map(([key, value]) => {
+                const formattedKey = key.replace(/([A-Z])/g, ' $1').trim();
+                return `${formattedKey}: ${value}`;
+            })
+            .join('; ');
+    }
+
+    /**
+     * Add a demand table using autoTable
+     * @param {string} title - Table title
+     * @param {Object} data - Table data indexed by row and column
      */
     addDemandTable(title, data) {
         if (!data || Object.keys(data).length === 0) return;
 
-        this.checkPageBreak(20);
-        this.doc.setFontSize(10);
+        // Get headers for this demand type
+        const demandType = this.getDemandTypeFromTitle(title);
+        const headers = this.demandHeaders[demandType];
+        if (!headers) return;
+
+        this.checkPageBreak(30);
+
+        // Add title
+        this.doc.setFontSize(11);
         this.doc.setFont(undefined, 'bold');
         this.doc.text(title, this.margin, this.currentY);
         this.currentY += 6;
 
-        // Simple table format
-        this.doc.setFontSize(9);
-        this.doc.setFont(undefined, 'normal');
+        // Build table rows from data
+        const rows = this.buildDemandTableRows(data, headers);
 
-        Object.entries(data).forEach(([key, value]) => {
-            const displayKey = key.charAt(0).toUpperCase() + key.slice(1);
-            this.doc.text(`• ${displayKey}: ${value || 'N/A'}`, this.margin + 5, this.currentY);
-            this.currentY += 5;
+        // Calculate column widths - give more space to activity and comments columns
+        const pageContentWidth = this.pageWidth - (this.margin * 2);
+        const numFrequencyColumns = headers.columns.length - 2; // All columns except activity and comments
+        const frequencyColWidth = pageContentWidth * 0.12; // Each frequency column gets 12% of width
+        const activityColWidth = pageContentWidth * 0.25; // Activity column gets 25%
+        const commentsColWidth = pageContentWidth - activityColWidth - (frequencyColWidth * numFrequencyColumns); // Comments gets remainder
+
+        // Build column configuration with explicit widths
+        // Include "Activity" as first column header, then all the data column headers
+        const columns = [
+            { header: 'Activity', width: activityColWidth },
+            ...headers.columns.map((col, index) => {
+                let width;
+                if (index === headers.columns.length - 1) {
+                    width = commentsColWidth;
+                } else {
+                    width = frequencyColWidth;
+                }
+                return {
+                    header: col,
+                    width: width
+                };
+            })
+        ];
+
+        // Use autoTable to render the table
+        this.doc.autoTable({
+            columns: columns,
+            body: rows,
+            startY: this.currentY,
+            margin: this.margin,
+            theme: 'grid',
+            styles: {
+                fontSize: 8,
+                cellPadding: 2.5,
+                overflow: 'linebreak',
+                halign: 'center',
+                valign: 'top'
+            },
+            headStyles: {
+                fillColor: [41, 128, 185],
+                textColor: 255,
+                fontStyle: 'bold',
+                halign: 'center',
+                valign: 'middle'
+            },
+            bodyStyles: {
+                halign: 'center',
+                valign: 'top'
+            },
+            columnStyles: {
+                0: { halign: 'left', valign: 'top' }, // Activity column left-aligned
+                [columns.length - 1]: { halign: 'left', valign: 'top' } // Comments column left-aligned
+            },
+            alternateRowStyles: {
+                fillColor: [245, 245, 245]
+            },
+            didDrawPage: (data) => {
+                this.currentY = data.cursor.y + 3;
+            }
         });
 
-        this.currentY += 3;
+        // Update currentY after table
+        this.currentY = this.doc.lastAutoTable.finalY + 5;
+    }
+
+    /**
+     * Get demand type from title
+     */
+    getDemandTypeFromTitle(title) {
+        const titleMap = {
+            'Physical Demands': 'physicalDemands',
+            'Mobility Demands': 'mobilityDemands',
+            'Cognitive/Sensory Demands': 'cognitiveSensoryDemands',
+            'Environmental Demands': 'environmentalDemands',
+            'Lifting/Pushing/Pulling': 'liftingPushingPulling'
+        };
+        return titleMap[title] || null;
+    }
+
+    /**
+     * Build table rows from indexed data
+     * Data structure: { rowIndex: { colIndex: value } }
+     * Note: First column in row array is the activity name (not from data)
+     *       Remaining columns map directly to data columns (0-indexed)
+     */
+    buildDemandTableRows(data, headers) {
+        const rows = [];
+
+        headers.rows.forEach((rowLabel, rowIndex) => {
+            const row = [rowLabel]; // First column is the activity name
+
+            // Add all data columns for this row (0 to numColumns-1)
+            for (let colIndex = 0; colIndex < headers.columns.length; colIndex++) {
+                const cellValue = data[rowIndex]?.[colIndex];
+
+                // For checkbox columns, show X if true (more compatible with PDF fonts)
+                if (typeof cellValue === 'boolean') {
+                    row.push(cellValue ? 'X' : '');
+                } else if (typeof cellValue === 'string') {
+                    row.push(cellValue);
+                } else {
+                    row.push('');
+                }
+            }
+
+            rows.push(row);
+        });
+
+        return rows;
     }
 
     /**
@@ -253,5 +481,3 @@ class Template1Generator {
 
 // Expose the class to the window object for dynamic loading
 window.Template1Generator = Template1Generator;
-console.log('✅ Template1Generator class loaded and exposed to window');
-

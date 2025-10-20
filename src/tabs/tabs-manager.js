@@ -45,8 +45,6 @@ class TabsManager {
             });
         }
 
-        console.log('Tabs Manager initialized');
-
         // Initialize Next button manager after tabs are set up
         this.initializeNextButtons();
     }
@@ -69,8 +67,6 @@ class TabsManager {
         this.nextButtonManager.addNextButton('demographics', 'demographics-next-button-container');
         this.nextButtonManager.addNextButton('jobs', 'jobs-next-button-container');
         this.nextButtonManager.addNextButton('summary', 'summary-next-button-container');
-
-        console.log('Next buttons initialized');
     }
     
     /**
@@ -78,8 +74,6 @@ class TabsManager {
      * @param {Object} detail - Event detail with tab info
      */
     onTabChange(detail) {
-        console.log(`Switched to tab: ${detail.tabId} (index: ${detail.index})`);
-        
         // If switching to preview tab, update the preview
         if (detail.tabId === 'tab-preview') {
             this.previewTab.updatePreview();

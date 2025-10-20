@@ -64,7 +64,6 @@ class DocumentGenerator {
         try {
             const response = await fetch('src/fields/vars.json');
             this.varsConfig = await response.json();
-            console.log('Loaded vars config:', this.varsConfig);
         } catch (error) {
             console.warn('Could not load src/fields/vars.json, using default configuration');
             this.varsConfig = this.getDefaultVarsConfig();
@@ -91,7 +90,6 @@ class DocumentGenerator {
         if (typeof TabsManager !== 'undefined') {
             this.tabsManager = new TabsManager();
             this.tabsManager.init();
-            console.log('Tabs manager initialized');
         } else {
             // Retry if TabsManager isn't loaded yet
             setTimeout(() => this.initializeTabsManager(), 100);
@@ -102,15 +100,14 @@ class DocumentGenerator {
      * Set up all DOM event listeners for form interactions
      */
     setupEventListeners() {
-        // Wait for the preview tab and its generate button to be created
+        // Wait for the summary tab and its generate button to be created
         const setupGenerateButton = () => {
-            // Try to access the preview tab through the tabs manager
-            if (this.tabsManager && this.tabsManager.previewTab) {
+            // Try to access the summary tab through the tabs manager
+            if (this.tabsManager && this.tabsManager.summaryTab) {
                 // Use the new method to set the button handler
-                this.tabsManager.previewTab.setGenerateButtonHandler(() => {
+                this.tabsManager.summaryTab.setGenerateButtonHandler(() => {
                     this.generateDocument();
                 });
-                console.log('Generate button handler attached via Button component');
             } else {
                 // Fallback to the old method if the new approach isn't available
                 const generateBtn = document.getElementById('generateBtn');
@@ -118,7 +115,6 @@ class DocumentGenerator {
                     generateBtn.addEventListener('click', () => {
                         this.generateDocument();
                     });
-                    console.log('Generate button event listener attached (fallback method)');
                 } else {
                     // Retry if button isn't created yet
                     setTimeout(setupGenerateButton, 100);
@@ -175,10 +171,6 @@ class DocumentGenerator {
         // Get all data from tabs
         const allTabData = this.tabsManager.getAllData();
 
-        console.log('=== COLLECT FORM DATA DEBUG ===');
-        console.log('All tab data:', allTabData);
-        console.log('Jobs data from tabs:', allTabData.jobs);
-
         // Flatten the tab data structure into formData
         this.formData = {
             ...allTabData.intro,
@@ -194,14 +186,6 @@ class DocumentGenerator {
             liftingPushingPulling: allTabData.jobs?.liftingPushingPulling || {},
             classificationOfWork: allTabData.jobs?.classificationOfWork || {}
         };
-
-        console.log('Collected form data from tabs:', this.formData);
-        console.log('Physical demands in formData:', this.formData.physicalDemands);
-        console.log('Mobility demands in formData:', this.formData.mobilityDemands);
-        console.log('Cognitive sensory demands in formData:', this.formData.cognitiveSensoryDemands);
-        console.log('Environmental demands in formData:', this.formData.environmentalDemands);
-        console.log('Lifting pushing pulling in formData:', this.formData.liftingPushingPulling);
-        console.log('Classification of work in formData:', this.formData.classificationOfWork);
         return this.formData;
     }
 
@@ -236,9 +220,9 @@ class DocumentGenerator {
      * Get the generate button (Button component or fallback)
      */
     getGenerateButton() {
-        // Try Button component first
-        if (this.tabsManager?.previewTab?.generateButton) {
-            return this.tabsManager.previewTab.generateButton;
+        // Try Button component first (now in summary tab)
+        if (this.tabsManager?.summaryTab?.generateButton) {
+            return this.tabsManager.summaryTab.generateButton;
         }
 
         // Fallback to DOM element

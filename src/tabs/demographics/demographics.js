@@ -68,7 +68,6 @@ class DemographicsTab {
     }
 
     init() {
-        console.log('Demographics tab initialized');
         this.initializeComponents();
     }
 

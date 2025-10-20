@@ -75,7 +75,7 @@
                 <button class="tab-button" role="tab" aria-selected="false" aria-controls="tab-summary" tabindex="-1">
                     Summary
                 </button>
-                <button class="tab-button" role="tab" aria-selected="false" aria-controls="tab-preview" tabindex="-1">
+                <button class="tab-button" role="tab" aria-selected="false" aria-controls="tab-preview" tabindex="-1" style="display: none;">
                     Review
                 </button>
             </div>
@@ -148,6 +148,9 @@
     <!-- Load jsPDF library from CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
+    <!-- Load jsPDF autoTable plugin from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
     <!-- Load PDF utilities and generators -->
     <script src="src/templates/pdf/generators/pdf-utils.js"></script>
     <script src="src/templates/pdf/generators/template_1.js"></script>
@@ -156,15 +159,6 @@
     <script src="src/templates/pdf/generators/template_4.js"></script>
     <script src="src/templates/pdf/generators/template_5.js"></script>
     <script src="src/templates/pdf/generators/template_6.js"></script>
-
-    <!-- Load preview utilities and generators -->
-    <script src="src/templates/pdf/previews/preview-utils.js"></script>
-    <script src="src/templates/pdf/previews/template_1_preview.js"></script>
-    <script src="src/templates/pdf/previews/template_2_preview.js"></script>
-    <script src="src/templates/pdf/previews/template_3_preview.js"></script>
-    <script src="src/templates/pdf/previews/template_4_preview.js"></script>
-    <script src="src/templates/pdf/previews/template_5_preview.js"></script>
-    <script src="src/templates/pdf/previews/template_6_preview.js"></script>
 
     <!-- Quill.js for rich text editing -->
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>

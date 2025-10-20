@@ -75,7 +75,6 @@ class StorageUIManager {
 
                 // If data is expired (0 or negative days), automatically clear it
                 if (remainingDays !== null && remainingDays <= 0) {
-                    console.log('Saved data has expired. Automatically clearing...');
                     this.secureStorage.clearStoredData();
                     if (this.floatingButton) {
                         this.floatingButton.resetUnlockedState();

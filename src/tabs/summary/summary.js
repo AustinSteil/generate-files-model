@@ -23,6 +23,7 @@ class SummaryTab {
 
         // Component references
         this.summaryInput = null;
+        this.generateButton = null;
 
         this.render();
         this.init();
@@ -40,16 +41,15 @@ class SummaryTab {
                 <!-- Summary rich text area -->
                 <div id="summary-text-container"></div>
 
-                <!-- Next button container -->
-                <div class="form-actions-right">
-                    <div id="summary-next-button-container"></div>
+                <!-- Generate button container -->
+                <div class="form-actions" id="generate-button-container">
+                    <!-- Generate button will be created here by the Button component -->
                 </div>
             </div>
         `;
     }
 
     init() {
-        console.log('Summary tab initialized');
 
         // Initialize rich text editor for summary
         this.summaryInput = new AreaInput({
@@ -92,6 +92,43 @@ class SummaryTab {
                 placeholder: 'Enter a summary or additional notes...'
             }
         });
+
+        // Create the generate button
+        this.createGenerateButton();
+    }
+
+    /**
+     * Create the generate document button using the reusable Button component
+     */
+    createGenerateButton() {
+        // Check if Button class is available
+        if (typeof Button === 'undefined') {
+            console.error('Button component not loaded. Make sure to include button.js');
+            return;
+        }
+
+        // Create the generate button with success variant (green)
+        this.generateButton = new Button({
+            containerId: 'generate-button-container',
+            id: 'generateBtn',
+            text: 'Generate Document',
+            variant: 'success',
+            size: 'medium',
+            onClick: (_, __) => {
+            }
+        });
+    }
+
+    /**
+     * Set the click handler for the generate button
+     * This method can be called by main.js to set the actual handler
+     */
+    setGenerateButtonHandler(handler) {
+        if (this.generateButton && typeof handler === 'function') {
+            this.generateButton.options.onClick = (_, __) => {
+                handler(_, __);
+            };
+        }
     }
 
     /**

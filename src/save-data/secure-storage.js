@@ -177,9 +177,6 @@ class SecureStorage {
             const dataSize = encryptedData.length;
             const dataSizeKB = (dataSize / 1024).toFixed(2);
             const dataSizeMB = (dataSize / (1024 * 1024)).toFixed(2);
-            console.log(`=== STORAGE SIZE CHECK ===`);
-            console.log(`Encrypted data size: ${dataSize} bytes (${dataSizeKB} KB / ${dataSizeMB} MB)`);
-            console.log(`localStorage limit: ~5-10 MB (varies by browser)`);
 
             // Store in localStorage (much larger limit than cookies)
             localStorage.setItem(this.storageName, encryptedData);
@@ -191,8 +188,6 @@ class SecureStorage {
             const expirationDate = new Date();
             expirationDate.setTime(expirationDate.getTime() + (this.storageExpireDays * 24 * 60 * 60 * 1000));
             localStorage.setItem('dataExpiration', expirationDate.getTime().toString());
-
-            console.log('Data saved successfully to localStorage');
 
             // Clean up any old cookie data
             this.deleteCookie(this.cookieName);
@@ -229,7 +224,6 @@ class SecureStorage {
                 source = 'cookie (legacy)';
             }
 
-            console.log(`=== STORAGE LOAD CHECK ===`);
             if (!encryptedData) {
                 console.error('No encrypted data found in localStorage or cookies');
                 return null;
@@ -237,15 +231,11 @@ class SecureStorage {
 
             const dataSize = encryptedData.length;
             const dataSizeKB = (dataSize / 1024).toFixed(2);
-            console.log(`Retrieved data from ${source}`);
-            console.log(`Data size: ${dataSize} bytes (${dataSizeKB} KB)`);
 
             const formData = await this.decryptData(encryptedData, userPhrase);
-            console.log('Decryption successful!');
 
             // If we loaded from cookie, migrate to localStorage
             if (source === 'cookie (legacy)') {
-                console.log('Migrating data from cookie to localStorage...');
                 await this.saveFormData(formData, userPhrase);
             }
 
@@ -284,8 +274,6 @@ class SecureStorage {
         this.deleteCookie(this.cookieName);
         this.deleteCookie('hasStoredData');
         this.deleteCookie('dataExpiration');
-
-        console.log('All stored data cleared from localStorage and cookies');
     }
 
     /**

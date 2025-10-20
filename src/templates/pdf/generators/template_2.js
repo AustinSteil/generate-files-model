@@ -186,4 +186,3 @@ class Template2Generator {
 
 // Expose the class to the window object for dynamic loading
 window.Template2Generator = Template2Generator;
-console.log('✅ Template2Generator class loaded and exposed to window');

@@ -19,7 +19,8 @@
     "start": "echo \"Open index.html with Live Server extension in VS Code\" && echo \"Or serve the files using any local web server\""
   },
   "dependencies": {
-    "jspdf": "^3.0.3"
+    "jspdf": "^3.0.3",
+    "jspdf-autotable": "^5.0.2"
   },
   "engines": {
     "node": ">=14.0.0"

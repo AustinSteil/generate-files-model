@@ -115,7 +115,6 @@ class Address {
         if (this.options.containerId) {
             this.container = document.getElementById(this.options.containerId);
             if (!this.container) {
-                console.error(`Address: Container with ID '${this.options.containerId}' not found`);
                 return;
             }
         }

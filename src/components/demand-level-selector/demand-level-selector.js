@@ -19,7 +19,9 @@
  * const selector = new DemandLevelSelector({
  *     containerId: 'demand-level-container',
  *     required: true,
- *     onChange: (level) => console.log('Selected:', level)
+ *     onChange: (level) => {
+ *         // Handle level selection
+ *     }
  * });
  * ```
  *

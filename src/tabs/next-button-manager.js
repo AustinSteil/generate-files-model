@@ -51,20 +51,17 @@ class NextButtonManager {
     addNextButton(tabName, containerId) {
         // Don't add Next button to preview tab (it's the final tab)
         if (tabName === 'preview') {
-            console.log('Next button not needed for preview tab');
             return;
         }
 
         // Check if Button class is available
         if (typeof Button === 'undefined') {
-            console.error('Button component not loaded. Make sure to include button.js');
             return;
         }
 
         // Check if container exists, if not, wait and retry
         const container = document.getElementById(containerId);
         if (!container) {
-            console.log(`Container ${containerId} not found, retrying in 100ms...`);
             setTimeout(() => this.addNextButton(tabName, containerId), 100);
             return;
         }
@@ -79,7 +76,6 @@ class NextButtonManager {
         });
 
         this.nextButtons.set(tabName, nextButton);
-        console.log(`Next button added to ${tabName} tab`);
     }
 
     /**
@@ -125,7 +121,6 @@ class NextButtonManager {
             }
 
         } catch (error) {
-            console.error('Error during validation:', error);
             showError('An error occurred during validation. Please try again.');
 
             // Reset button state
@@ -142,7 +137,6 @@ class NextButtonManager {
     handleJobsTabNavigation(button) {
         const jobsTab = this.tabsManager?.jobsTab;
         if (!jobsTab || !jobsTab.subNav) {
-            console.error('Jobs tab or SubNav not available');
             button.setText('Next');
             button.setVariant('primary');
             button.setLoading(false);
@@ -210,7 +204,6 @@ class NextButtonManager {
 
             const validator = sectionValidators[sectionId];
             if (!validator) {
-                console.warn(`No validator found for section: ${sectionId}`);
                 return true; // Allow navigation if no validator
             }
 
@@ -233,7 +226,6 @@ class NextButtonManager {
             return isValid;
 
         } catch (error) {
-            console.error(`Validation error for section ${sectionId}:`, error);
             showError('Validation failed. Please check your inputs and try again.');
             return false;
         }
@@ -248,7 +240,6 @@ class NextButtonManager {
         const validator = this.tabValidators[tabName];
 
         if (!validator) {
-            console.warn(`No validator found for tab: ${tabName}`);
             return true; // Allow navigation if no validator
         }
 
@@ -266,7 +257,6 @@ class NextButtonManager {
             return isValid;
 
         } catch (error) {
-            console.error(`Validation error for ${tabName} tab:`, error);
             showError('Validation failed. Please check your inputs and try again.');
             return false;
         }
@@ -278,16 +268,14 @@ class NextButtonManager {
      */
     navigateToNextTab(currentTabName) {
         const currentIndex = this.tabOrder.indexOf(currentTabName);
-        
+
         if (currentIndex === -1) {
-            console.error(`Tab "${currentTabName}" not found in tab order`);
             return;
         }
         
         const nextIndex = currentIndex + 1;
         
         if (nextIndex >= this.tabOrder.length) {
-            console.log('Already at the last tab');
             return;
         }
         
@@ -296,9 +284,6 @@ class NextButtonManager {
         // Use tabs manager to switch tabs
         if (this.tabsManager && this.tabsManager.switchToTab) {
             this.tabsManager.switchToTab(nextTabName);
-            console.log(`Navigated from ${currentTabName} to ${nextTabName}`);
-        } else {
-            console.error('Tabs manager not available or switchToTab method missing');
         }
     }
 
@@ -368,7 +353,6 @@ class NextButtonManager {
         if (button) {
             button.destroy();
             this.nextButtons.delete(tabName);
-            console.log(`Next button removed from ${tabName} tab`);
         }
     }
 
@@ -380,7 +364,6 @@ class NextButtonManager {
             button.destroy();
         }
         this.nextButtons.clear();
-        console.log('All Next buttons removed');
     }
 
     /**
@@ -391,7 +374,6 @@ class NextButtonManager {
     updateNextButton(tabName, options = {}) {
         const button = this.nextButtons.get(tabName);
         if (!button) {
-            console.warn(`Next button not found for tab: ${tabName}`);
             return;
         }
 
