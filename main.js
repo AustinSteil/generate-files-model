@@ -339,7 +339,7 @@ class DocumentGenerator {
         // Create a temporary link element
         const link = document.createElement('a');
         link.href = blobUrl;
-        link.download = `job-analysis-${new Date().getTime()}.pdf`;
+        link.download = `${this.formData.jobTitle || 'JDA Report'} - Job Demands Analysis - ${new Date().toLocaleDateString()}.pdf`;
 
         // Trigger the download
         document.body.appendChild(link);
