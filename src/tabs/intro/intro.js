@@ -27,6 +27,7 @@ class IntroTab {
         this.authorInput = null;
         this.emailInput = null;
         this.dateInput = null;
+        this.logoUpload = null;
         this.render();
         this.init();
     }
@@ -59,6 +60,7 @@ class IntroTab {
                         <div id="author-input-container"></div>
                         <div id="email-input-container"></div>
                         <div id="date-input-container"></div>
+                        <div id="logo-upload-container"></div>
                     </div>
                 </div>
 
@@ -74,6 +76,7 @@ class IntroTab {
         this.initializeTextInputs();
         this.initializeAddressComponent();
         this.initializeTemplateSelection();
+        this.initializeLogoUpload();
     }
 
     /**
@@ -155,6 +158,29 @@ class IntroTab {
             compact: false,
             required: true,
             showLabel: false
+        });
+    }
+
+    /**
+     * Initialize the logo upload component
+     */
+    initializeLogoUpload() {
+        // Wait for ImageUpload component to be available
+        if (typeof ImageUpload === 'undefined') {
+            setTimeout(() => this.initializeLogoUpload(), 100);
+            return;
+        }
+
+        this.logoUpload = new ImageUpload({
+            containerId: 'logo-upload-container',
+            id: 'intro-company-logo',
+            name: 'companyLogo',
+            label: 'Company Logo',
+            required: false,
+            maxFiles: 1,
+            maxFileSize: 5 * 1024 * 1024, // 5MB
+            acceptedFormats: ['image/jpeg', 'image/png', 'image/svg+xml'],
+            className: 'half-width'
         });
     }
 
@@ -300,6 +326,9 @@ class IntroTab {
             data.companyZip = addressData.zip;
         }
 
+        // Get data from Logo Upload component
+        if (this.logoUpload) Object.assign(data, this.logoUpload.getData());
+
         return data;
     }
 
@@ -337,6 +366,9 @@ class IntroTab {
                 hiddenInput.value = templateValue;
             }
         }
+
+        // Set data in Logo Upload component
+        if (this.logoUpload) this.logoUpload.setData(data);
     }
 
     /**

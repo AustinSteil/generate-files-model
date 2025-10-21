@@ -33,6 +33,9 @@ class DemographicsTab {
         this.marginalFunctionsRepeater = null;
         this.breaksRepeater = null;
 
+        // Initialize image upload component
+        this.imageUpload = null;
+
         this.render();
         this.init();
     }
@@ -59,6 +62,9 @@ class DemographicsTab {
                 <div id="breaks-container"></div>
                 <div id="other-shift-info-container"></div>
 
+                <!-- Image Upload Component -->
+                <div id="image-upload-container"></div>
+
                 <!-- Next button container -->
                 <div class="form-actions-right">
                     <div id="demographics-next-button-container"></div>
@@ -72,11 +78,11 @@ class DemographicsTab {
     }
 
     /**
-     * Initialize all components (text inputs, work week calculator, and repeaters)
+     * Initialize all components (text inputs, work week calculator, repeaters, and image upload)
      */
     initializeComponents() {
         // Wait for components to be available
-        if (typeof TextInput === 'undefined' || typeof Repeater === 'undefined' || typeof WorkWeekCalculator === 'undefined' || typeof AreaInput === 'undefined') {
+        if (typeof TextInput === 'undefined' || typeof Repeater === 'undefined' || typeof WorkWeekCalculator === 'undefined' || typeof AreaInput === 'undefined' || typeof ImageUpload === 'undefined') {
             setTimeout(() => this.initializeComponents(), 100);
             return;
         }
@@ -84,6 +90,7 @@ class DemographicsTab {
         this.initializeTextInputs();
         this.initializeWorkWeekCalculator();
         this.initializeRepeaters();
+        this.initializeImageUpload();
     }
 
     /**
@@ -252,6 +259,23 @@ class DemographicsTab {
     }
 
     /**
+     * Initialize image upload component
+     */
+    initializeImageUpload() {
+        this.imageUpload = new ImageUpload({
+            containerId: 'image-upload-container',
+            id: 'demo-job-images',
+            name: 'jobImages',
+            label: 'Job Images',
+            required: false,
+            maxFiles: 10,
+            maxFileSize: 5 * 1024 * 1024, // 5MB
+            acceptedFormats: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
+            helpText: 'Upload images related to the job (optional)'
+        });
+    }
+
+    /**
      * Set default break values
      */
     setDefaultBreaks() {
@@ -278,7 +302,8 @@ class DemographicsTab {
             ...this.marginalFunctionsRepeater?.getData(),
             ...this.workWeekCalculator?.getData(),
             ...this.breaksRepeater?.getData(),
-            ...this.otherShiftInfoInput?.getData()
+            ...this.otherShiftInfoInput?.getData(),
+            ...this.imageUpload?.getData()
         };
     }
 
@@ -294,6 +319,7 @@ class DemographicsTab {
         this.workWeekCalculator?.setData(data);
         this.breaksRepeater?.setData(data);
         this.otherShiftInfoInput?.setData(data);
+        this.imageUpload?.setData(data);
     }
 
     /**

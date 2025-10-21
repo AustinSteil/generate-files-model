@@ -115,6 +115,20 @@
 }
 
 /* ============================================
+   HALF-WIDTH IMAGE UPLOAD COMPONENT
+   ============================================ */
+
+.image-upload-component.half-width {
+    max-width: 50%;
+}
+
+@media (max-width: 768px) {
+    .image-upload-component.half-width {
+        max-width: 100%;
+    }
+}
+
+/* ============================================
    FORM STYLING WITHIN TABS
    ============================================ */
 .tab-panel .form-group {

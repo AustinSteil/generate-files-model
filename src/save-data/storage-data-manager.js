@@ -67,6 +67,9 @@ class StorageDataManager {
 
                 showSuccess(message, { duration: 8 });
 
+                // Alert user that images are not stored
+                showWarning('Note: Uploaded images are not stored for later. You will need to re-upload them when you load your saved data.', { duration: 7 });
+
                 // Handle UI state based on operation type
                 if (this.documentGenerator.storageUIManager) {
                     if (isUpdate) {
@@ -223,7 +226,7 @@ class StorageDataManager {
             Object.keys(varsConfig).forEach(fieldName => {
                 if (formData.hasOwnProperty(fieldName)) {
                     // Map fields to appropriate tabs based on field names
-                    if (['title', 'companyName', 'companyStreet', 'companyCity', 'companyState', 'companyZip', 'author', 'email', 'date', 'selectedTemplate', 'template'].includes(fieldName)) {
+                    if (['title', 'companyName', 'companyStreet', 'companyCity', 'companyState', 'companyZip', 'companyLogo', 'author', 'email', 'date', 'selectedTemplate', 'template'].includes(fieldName)) {
                         tabData.intro[fieldName] = formData[fieldName];
                     } else if (['jobTitle', 'jobPurpose', 'essentialFunctions', 'marginalFunctions', 'workSchedule', 'breaks', 'otherShiftInfo'].includes(fieldName)) {
                         tabData.demographics[fieldName] = formData[fieldName];
