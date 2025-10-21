@@ -20,6 +20,11 @@ class Template1Generator {
         this.lineHeight = 5;
         this.currentY = this.margin;
 
+        // Header/Footer configuration
+        this.headerHeight = 20; // Space reserved for header in mm
+        this.footerHeight = 15; // Space reserved for footer in mm
+        this.headerFooterMargin = 6.35; // 0.25" margin for header/footer area
+
         // Demand table headers and rows
         this.demandHeaders = {
             physicalDemands: {
@@ -101,6 +106,15 @@ class Template1Generator {
         this.addJobDemands();
         this.addSummary();
 
+        // Add headers and footers to all pages except cover page
+        HeaderFooterUtils.addHeadersAndFooters(this.doc, this.data, {
+            pageWidth: this.pageWidth,
+            pageHeight: this.pageHeight,
+            margin: this.margin,
+            headerHeight: 20,
+            footerHeight: 15
+        });
+
         return this.doc;
     }
 
@@ -145,7 +159,7 @@ class Template1Generator {
         this.currentY += 5;
         this.doc.text(`Email: ${this.data.email || 'Not specified'}`, this.margin, this.currentY);
         this.currentY += 5;
-        this.doc.text(`Date: ${this.data.date || new Date().toLocaleDateString()}`, this.margin, this.currentY);
+        this.doc.text(`Date: ${this.data.date || new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`, this.margin, this.currentY);
 
         this.addPageBreak();
     }
@@ -379,7 +393,12 @@ class Template1Generator {
             columns: columns,
             body: rows,
             startY: this.currentY,
-            margin: this.margin,
+            margin: {
+                top: this.margin,
+                right: this.margin,
+                bottom: this.margin + this.footerHeight,
+                left: this.margin
+            },
             theme: 'grid',
             styles: {
                 fontSize: 8,
@@ -407,12 +426,18 @@ class Template1Generator {
                 fillColor: [245, 245, 245]
             },
             didDrawPage: (data) => {
+                // When autoTable creates a new page, adjust the top margin to account for header
+                const currentPageNum = this.doc.getNumberOfPages();
+                if (currentPageNum > 1) {
+                    // On pages after cover, set margin to account for header
+                    data.settings.margin.top = this.margin + this.headerHeight + 3;
+                }
                 this.currentY = data.cursor.y + 3;
             }
         });
 
         // Update currentY after table
-        this.currentY = this.doc.lastAutoTable.finalY + 5;
+        this.currentY = this.doc.lastAutoTable.finalY + 15;
     }
 
     /**
@@ -465,7 +490,9 @@ class Template1Generator {
      * Check if page break is needed
      */
     checkPageBreak(spaceNeeded) {
-        if (this.currentY + spaceNeeded > this.pageHeight - this.margin) {
+        // Reserve space for footer at bottom of page
+        const bottomReserve = this.margin + this.footerHeight;
+        if (this.currentY + spaceNeeded > this.pageHeight - bottomReserve) {
             this.addPageBreak();
         }
     }
@@ -475,7 +502,14 @@ class Template1Generator {
      */
     addPageBreak() {
         this.doc.addPage();
-        this.currentY = this.margin;
+        // On pages after the cover page, start content below the header area
+        const currentPageNum = this.doc.getNumberOfPages();
+        if (currentPageNum > 1) {
+            // Start below header: margin + header height + small gap
+            this.currentY = this.margin + this.headerHeight + 3;
+        } else {
+            this.currentY = this.margin;
+        }
     }
 }
 

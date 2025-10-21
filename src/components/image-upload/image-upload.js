@@ -263,9 +263,9 @@ class ImageUpload {
     getData() {
         return {
             [this.options.name]: this.images.map(img => ({
-                name: img.file.name,
-                size: img.file.size,
-                type: img.file.type,
+                name: img.file ? img.file.name : 'image',
+                size: img.file ? img.file.size : 0,
+                type: img.file ? img.file.type : 'image/png',
                 preview: img.preview
             }))
         };

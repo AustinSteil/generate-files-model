@@ -35,6 +35,15 @@ class Template2Generator {
         this.addJobDemands();
         this.addSummary();
 
+        // Add headers and footers to all pages except cover page
+        HeaderFooterUtils.addHeadersAndFooters(this.doc, this.data, {
+            pageWidth: this.pageWidth,
+            pageHeight: this.pageHeight,
+            margin: this.margin,
+            headerHeight: 30,
+            footerHeight: 15
+        });
+
         return this.doc;
     }
 
