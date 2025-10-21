@@ -27,6 +27,8 @@ class IntroTab {
         this.authorInput = null;
         this.emailInput = null;
         this.dateInput = null;
+        this.brandColorPicker = null;
+        this.secondaryColorPicker = null;
         this.logoUpload = null;
         this.render();
         this.init();
@@ -60,9 +62,15 @@ class IntroTab {
                         <div id="author-input-container"></div>
                         <div id="email-input-container"></div>
                         <div id="date-input-container"></div>
-                        <div id="logo-upload-container"></div>
+                        <div class="intro-color-pickers">
+                            <div id="brand-color-picker-container"></div>
+                            <div id="secondary-color-picker-container"></div>
+                        </div>
                     </div>
                 </div>
+
+                <!-- Logo upload - full width below columns -->
+                <div id="logo-upload-container"></div>
 
                 <!-- Next button container -->
                 <div class="form-actions-right">
@@ -75,6 +83,7 @@ class IntroTab {
     init() {
         this.initializeTextInputs();
         this.initializeAddressComponent();
+        this.initializeColorPickers();
         this.initializeTemplateSelection();
         this.initializeLogoUpload();
     }
@@ -162,6 +171,41 @@ class IntroTab {
     }
 
     /**
+     * Initialize the brand and secondary color picker components
+     */
+    initializeColorPickers() {
+        // Wait for ColorPicker component to be available
+        if (typeof ColorPicker === 'undefined') {
+            setTimeout(() => this.initializeColorPickers(), 100);
+            return;
+        }
+
+        // Primary brand color picker
+        this.brandColorPicker = new ColorPicker({
+            containerId: 'brand-color-picker-container',
+            id: 'intro-brand-color',
+            name: 'brandColor',
+            label: 'Primary Brand Color',
+            defaultValue: '#003366',
+            required: false,
+            helpText: 'Select your primary brand color',
+            style: 'margin-top: calc(var(--spacing-md) * -1);'
+        });
+
+        // Secondary brand color picker
+        this.secondaryColorPicker = new ColorPicker({
+            containerId: 'secondary-color-picker-container',
+            id: 'intro-secondary-color',
+            name: 'secondaryBrandColor',
+            label: 'Secondary Brand Color',
+            defaultValue: '#047857',
+            required: false,
+            helpText: 'Select your secondary brand color',
+            style: 'margin-top: calc(var(--spacing-md) * -1);'
+        });
+    }
+
+    /**
      * Initialize the logo upload component
      */
     initializeLogoUpload() {
@@ -179,8 +223,7 @@ class IntroTab {
             required: false,
             maxFiles: 1,
             maxFileSize: 5 * 1024 * 1024, // 5MB
-            acceptedFormats: ['image/jpeg', 'image/png', 'image/svg+xml'],
-            className: 'half-width'
+            acceptedFormats: ['image/jpeg', 'image/png', 'image/svg+xml']
         });
     }
 
@@ -326,6 +369,10 @@ class IntroTab {
             data.companyZip = addressData.zip;
         }
 
+        // Get data from Brand Color Picker components
+        if (this.brandColorPicker) Object.assign(data, this.brandColorPicker.getData());
+        if (this.secondaryColorPicker) Object.assign(data, this.secondaryColorPicker.getData());
+
         // Get data from Logo Upload component
         if (this.logoUpload) Object.assign(data, this.logoUpload.getData());
 
@@ -354,6 +401,10 @@ class IntroTab {
             };
             this.companyAddress.setData(addressData);
         }
+
+        // Set data in Brand Color Picker components
+        if (this.brandColorPicker) this.brandColorPicker.setData(data);
+        if (this.secondaryColorPicker) this.secondaryColorPicker.setData(data);
 
         // Set template selection if available
         const templateValue = data.template || data.selectedTemplate;

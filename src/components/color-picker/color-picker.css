@@ -1,0 +1,156 @@
+/**
+ * ColorPicker Component Styles
+ * 
+ * Styling for the native HTML5 color picker component.
+ * Uses the centralized color management system for consistency.
+ * 
+ * @author Austin Steil
+ * @version 1.0.0
+ * @license MIT <https://raw.githubusercontent.com/AustinSteil/generate-files-model/refs/heads/main/LICENSE>
+ * @copyright 2025 Austin Steil
+ * @created October 18, 2025
+ * @updated October 18, 2025
+ */
+
+/* ============================================
+   COLOR PICKER COMPONENT BASE
+   ============================================ */
+
+.color-picker-component {
+    margin-bottom: var(--spacing-md);
+    position: relative;
+}
+
+.color-picker-component label {
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    font-weight: 600;
+    background: linear-gradient(135deg, var(--color-text-primary), var(--color-text-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 12px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+}
+
+.color-picker-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* ============================================
+   COLOR INPUT
+   ============================================ */
+
+.color-picker-input {
+    width: 100%;
+    height: 50px;
+    padding: 0 !important;
+    border: 2px solid var(--color-border-medium);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all var(--transition-cubic);
+}
+
+.color-picker-input:hover {
+    border-color: var(--color-border-dark);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.color-picker-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px rgba(var(--color-primary-rgb), 0.12),
+                0 2px 8px rgba(var(--color-primary-rgb), 0.15);
+}
+
+.color-picker-input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ============================================
+   HELP TEXT
+   ============================================ */
+
+.color-picker-help-text {
+    margin-top: var(--spacing-xs);
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+    text-align: left;
+}
+
+/* ============================================
+   ERROR STATES
+   ============================================ */
+
+.color-picker-input.error {
+    border-color: var(--color-error);
+    background: rgba(var(--color-error-rgb), 0.05);
+}
+
+.color-picker-input.error:focus {
+    border-color: var(--color-error);
+    box-shadow: 0 0 0 4px rgba(var(--color-error-rgb), 0.12),
+                0 2px 8px rgba(var(--color-error-rgb), 0.15);
+}
+
+.color-picker-error {
+    margin-top: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: rgba(var(--color-error-rgb), 0.1);
+    border: 1px solid rgba(var(--color-error-rgb), 0.2);
+    border-radius: var(--radius-md);
+    color: var(--color-error);
+    font-size: 14px;
+    font-weight: 500;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+    .color-picker-input {
+        height: 50px;
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: 16px;
+    }
+    
+    .color-picker-component label {
+        font-size: 13px;
+    }
+}
+
+/* ============================================
+   DARK MODE ADJUSTMENTS
+   ============================================ */
+
+@media (prefers-color-scheme: dark) {
+    .color-picker-input {
+        background: var(--color-bg-primary);
+    }
+    
+    .color-picker-input:hover {
+        background: var(--color-bg-primary);
+    }
+    
+    .color-picker-input:focus {
+        background: var(--color-bg-primary);
+    }
+}
+

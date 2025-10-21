@@ -52,7 +52,8 @@ class HeaderFooterUtils {
     /**
      * Add header to a page
      * Header includes: logo (left), company name/address (center), job title (right)
-     * 
+     * Company name is styled with brand color
+     *
      * @param {jsPDF} doc - The jsPDF document instance
      * @param {Object} data - Form data
      * @param {number} pageWidth - Page width in mm
@@ -83,11 +84,14 @@ class HeaderFooterUtils {
             }
         }
 
-        // Add company info in center
+        // Add company info in center with brand color
         const centerX = pageWidth / 2;
+        const brandColorRgb = PDFUtils.hexToRgb(data.brandColor || '#003366');
+        doc.setTextColor(...brandColorRgb);
         doc.setFontSize(9);
         doc.setFont(undefined, 'bold');
         doc.text(data.companyName || 'Company Name', centerX, headerY + 3, { align: 'center' });
+        doc.setTextColor(0, 0, 0); // Reset to black
 
         // Add address below company name
         doc.setFontSize(7);

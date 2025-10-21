@@ -6,16 +6,16 @@ Live demo: <https://austinsteil.github.io/generate-files-model/>
 
 ## About
 
-Author: Austin Steil
-Version: 1.0.0
-Created October 18, 2025
-Updated October 18, 2025
+- Author: Austin Steil
+- Version: 1.0.0
+- Created October 18, 2025
+- Updated October 18, 2025
 
 ## License & Copyright
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-Live License Page Link: <https://raw.githubusercontent.com/AustinSteil/generate-files-model/refs/heads/main/LICENSE>
-Copyright 2025 Austin Steil
+- This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+- Live License Page Link: <https://raw.githubusercontent.com/AustinSteil/generate-files-model/refs/heads/main/LICENSE>
+- Copyright 2025 Austin Steil
 
 ## Features
 

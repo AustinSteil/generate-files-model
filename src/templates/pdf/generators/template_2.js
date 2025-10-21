@@ -144,8 +144,12 @@ class Template2Generator {
         this.doc.setFont(undefined, 'bold');
         this.doc.text(title, this.margin, this.currentY);
         this.currentY += 8;
-        this.doc.setDrawColor(0);
+        // Underline with brand color
+        const brandColorRgb = PDFUtils.hexToRgb(this.data.brandColor || '#003366');
+        this.doc.setDrawColor(...brandColorRgb);
+        this.doc.setLineWidth(0.5);
         this.doc.line(this.margin, this.currentY - 2, this.pageWidth - this.margin, this.currentY - 2);
+        this.doc.setLineWidth(0.2); // Reset to default
         this.currentY += 3;
     }
 

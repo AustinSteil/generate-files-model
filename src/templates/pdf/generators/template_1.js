@@ -122,10 +122,13 @@ class Template1Generator {
      * Add cover page with document title and metadata
      */
     addCoverPage() {
-        // Title
+        // Title with brand color
+        const brandColorRgb = PDFUtils.hexToRgb(this.data.brandColor || '#003366');
+        this.doc.setTextColor(...brandColorRgb);
         this.doc.setFontSize(24);
         this.doc.setFont(undefined, 'bold');
         this.doc.text('Job Analysis Report', this.margin, this.currentY);
+        this.doc.setTextColor(0, 0, 0); // Reset to black for rest of document
         this.currentY += 15;
 
         // Job Title
@@ -248,7 +251,7 @@ class Template1Generator {
     }
 
     /**
-     * Add a section header
+     * Add a section header with brand color underline
      */
     addSectionHeader(title) {
         this.checkPageBreak(15);
@@ -257,9 +260,12 @@ class Template1Generator {
         this.doc.text(title, this.margin, this.currentY);
         this.currentY += 8;
 
-        // Underline
-        this.doc.setDrawColor(0);
+        // Underline with brand color
+        const brandColorRgb = PDFUtils.hexToRgb(this.data.brandColor || '#003366');
+        this.doc.setDrawColor(...brandColorRgb);
+        this.doc.setLineWidth(0.5);
         this.doc.line(this.margin, this.currentY - 2, this.pageWidth - this.margin, this.currentY - 2);
+        this.doc.setLineWidth(0.2); // Reset to default
         this.currentY += 3;
     }
 

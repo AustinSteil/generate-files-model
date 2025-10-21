@@ -106,18 +106,30 @@
     gap: var(--spacing-lg);
 }
 
+/* Color pickers side-by-side layout */
+.intro-color-pickers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+}
+
 /* Responsive behavior for intro columns */
 @media (max-width: 768px) {
     .intro-form-columns {
         grid-template-columns: 1fr;
         gap: var(--spacing-xl);
     }
+
+    .intro-color-pickers {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* ============================================
-   HALF-WIDTH IMAGE UPLOAD COMPONENT
+   IMAGE UPLOAD COMPONENT VARIANTS
    ============================================ */
 
+/* Half-width variant for other uses */
 .image-upload-component.half-width {
     max-width: 50%;
 }

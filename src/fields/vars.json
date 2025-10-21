@@ -6,6 +6,8 @@
   "companyState": "{companyState}",
   "companyZip": "{companyZip}",
   "companyLogo": "{companyLogo}",
+  "brandColor": "{brandColor}",
+  "secondaryBrandColor": "{secondaryBrandColor}",
   "author": "{authorName}",
   "email": "{authorEmail}",
   "date": "{documentDate}",
